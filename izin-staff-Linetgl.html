@@ -1,1 +1,1377 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard Data LINETOGEL</title>
+  <link rel="icon" href="https://cdn.areabermain.club/assets/cdn/az6/2026/01/08/20260108/0e9b0ec9a88ad88a5935bc5802bc41a5/linetogel-background-07januari2026.jpg" type="image/jpg">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    /* --- CSS VARIABLES (MARVEL THEME) --- */
+    :root {
+      --marvel-red: #EC1D24;
+      --marvel-dark-red: #990000;
+      --ironman-gold: #F0131E;
+      --cap-blue: #0A79DF;
+      --hulk-green: #78C258;
+      --venom-purple: #5C2D91;
+      --dark-panel-bg: rgba(18, 18, 24, 0.92);
+      --light-text: #ffffff;
+      --dim-text: #b0b3b8;
+      --border-glow: 0 0 15px rgba(236, 29, 36, 0.6);
+      --font-comic: 'Arial Black', 'Impact', sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      min-height: 100vh;
+      padding: 20px;
+      opacity: 0;
+      animation: fadeIn 1s forwards;
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      background-repeat: no-repeat;
+      transition: background-image 2s ease-in-out;
+      color: var(--light-text);
+      background-color: #0a0a0a; 
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: radial-gradient(circle, transparent 20%, #000000 120%);
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    @keyframes fadeIn {
+      to { opacity: 1; }
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 30px;
+      font-size: 2.5rem;
+      color: var(--marvel-red);
+      font-weight: 900;
+      text-transform: uppercase;
+      font-family: var(--font-comic);
+      letter-spacing: 2px;
+      text-shadow: 3px 3px 0px #000, 0 0 20px rgba(236, 29, 36, 0.8);
+      border-bottom: 4px solid var(--cap-blue);
+      display: inline-block;
+      padding-bottom: 10px;
+      background: rgba(0,0,0,0.6);
+      padding: 10px 40px;
+      clip-path: polygon(10% 0, 100% 0, 100% 70%, 90% 100%, 0 100%, 0 30%);
+    }
+
+    .search-box {
+      text-align: center;
+      margin-bottom: 30px;
+      position: relative;
+    }
+
+    .search-box i {
+      position: absolute;
+      left: 25px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--marvel-red);
+      font-size: 1.2rem;
+      z-index: 10;
+      background: transparent;
+    }
+
+    .search-box input {
+      width: 400px;
+      max-width: 100%;
+      padding: 16px 25px 16px 55px;
+      font-size: 1.1rem;
+      border: 2px solid var(--cap-blue);
+      border-radius: 50px;
+      background: rgba(0, 0, 0, 0.8);
+      color: white;
+      box-shadow: 0 0 15px rgba(10, 121, 223, 0.3);
+      transition: all 0.3s ease;
+      font-family: inherit;
+    }
+
+    .search-box input::placeholder {
+      color: var(--dim-text);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .search-box input:focus {
+      outline: none;
+      border-color: var(--marvel-red);
+      box-shadow: 0 0 25px rgba(236, 29, 36, 0.5), inset 0 0 10px rgba(236, 29, 36, 0.2);
+      background: rgba(20, 20, 20, 0.95);
+      transform: scale(1.02);
+    }
+
+    .main-container {
+      width: 100%;
+      max-width: 1400px;
+      padding: 30px;
+      background: var(--dark-panel-bg);
+      backdrop-filter: blur(15px);
+      border-radius: 15px;
+      border: 1px solid rgba(236, 29, 36, 0.3);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), inset 0 0 50px rgba(0,0,0,0.5);
+      text-align: center;
+      animation: slideUp 1s ease-out;
+      overflow-x: auto;
+      position: relative;
+      background-image: radial-gradient(rgba(255,255,255,0.05) 1px, transparent 1px);
+      background-size: 20px 20px;
+    }
+
+    .main-container::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 5px;
+      background: linear-gradient(90deg, var(--marvel-red), var(--cap-blue), var(--marvel-red));
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(40px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    /* --- TABLE STYLING --- */
+    table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0 3px;
+      margin-top: 30px;
+      animation: fadeIn 1s ease-out;
+      min-width: 1000px;
+      overflow: visible;
+      position: relative;
+      z-index: 1;
+    }
+
+    th, td {
+      padding: 18px 15px;
+      text-align: center;
+      vertical-align: middle;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      font-size: 1rem;
+      color: var(--light-text);
+      transition: all 0.2s ease;
+      line-height: 1.4;
+    }
+
+    th {
+      background: linear-gradient(180deg, var(--marvel-red) 0%, var(--marvel-dark-red) 100%);
+      color: white;
+      text-transform: uppercase;
+      font-size: 0.9rem;
+      font-weight: 800;
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+      letter-spacing: 1px;
+      border-top: 1px solid rgba(255,255,255,0.2);
+      border-bottom: 2px solid #000;
+      height: 65px;
+    }
+    
+    th:first-child { border-top-left-radius: 10px; }
+    th:last-child { border-top-right-radius: 10px; }
+
+    /* --- PARENT ROW (HEADER STAFF) STYLING --- */
+    /* Parent row uses a full width cell for robust alignment with child rows */
+    .staff-header-row td {
+      padding: 0; /* Remove padding from container td */
+    }
+    
+    .staff-header-content {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 15px 20px;
+      background: linear-gradient(90deg, rgba(40,40,40,0.95), rgba(30,30,30,0.98));
+      border-left: 4px solid var(--cap-blue);
+      border-right: 4px solid var(--cap-blue);
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+      transition: all 0.3s ease;
+      width: 100%;
+      height: 100%;
+    }
+
+    .staff-header-content:hover {
+      background: linear-gradient(90deg, rgba(60,60,60,0.95), rgba(50,50,50,0.98));
+      border-left-color: var(--marvel-red);
+      box-shadow: 0 6px 15px rgba(0,0,0,0.6);
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .header-info {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    
+    .staff-main-name {
+      font-size: 1.3rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      color: var(--light-text);
+    }
+    
+    .staff-sub-role {
+      font-size: 0.85rem;
+      color: var(--dim-text);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .toggle-icon {
+      transition: transform 0.3s ease;
+      font-size: 1.2rem;
+      color: var(--dim-text);
+    }
+
+    .expanded .toggle-icon {
+      transform: rotate(90deg);
+      color: var(--marvel-red);
+    }
+
+    /* --- CHILD ROW (DETAIL HISTORY) STYLING --- */
+    .staff-detail-row {
+      background-color: rgba(255, 255, 255, 0.03);
+      font-size: 0.95rem;
+      font-weight: normal;
+      transition: background 0.2s;
+    }
+
+    /* Kolom Nama di Child Row - Agar tetap terlihat */
+    .staff-detail-row td:nth-child(1) {
+      text-align: left !important;
+      padding-left: 40px !important; /* Indentasi */
+      color: rgba(255,255,255, 0.8); /* Sedikit redup dari nama utama */
+      font-style: italic;
+    }
+
+    .staff-detail-row:hover {
+      background-color: rgba(236, 29, 36, 0.1);
+    }
+
+    /* Utility untuk Hide/Show */
+    .hidden-row {
+      display: none;
+    }
+    
+    /* --- DURATION OVERLIMIT STYLE --- */
+    .duration-overlimit {
+      animation: blinkRed 1s infinite !important;
+      background: linear-gradient(90deg, rgba(255, 0, 0, 0.15), rgba(200, 0, 0, 0.25)) !important;
+      border-left: 4px solid #ff0000 !important;
+      border-right: 4px solid #ff0000 !important;
+      position: relative;
+      z-index: 5;
+    }
+
+    /* Target kolom Durasi (kolom ke-6) sebagai titik acuan label pada child row */
+    .staff-detail-row.duration-overlimit td:nth-child(6) {
+      position: relative; 
+      overflow: visible !important;
+    }
+
+    .staff-detail-row.duration-overlimit td:nth-child(6)::before {
+      content: "⚠️ DURASI LEWAT BATAS";
+      position: absolute;
+      top: -38px; 
+      left: 50%;
+      transform: translateX(-50%);
+      background: linear-gradient(135deg, var(--marvel-red), var(--marvel-dark-red));
+      color: white;
+      padding: 5px 12px;
+      border-radius: 4px;
+      font-size: 0.7rem;
+      font-weight: bold;
+      white-space: nowrap;
+      z-index: 50;
+      animation: blinkText 1s infinite;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      letter-spacing: 0.5px;
+      line-height: 1.3;
+      pointer-events: none;
+    }
+    
+    .duration-overlimit td:nth-child(6) {
+      color: #ff6666;
+      font-weight: bold;
+    }
+
+    @keyframes blinkRed {
+      0%, 100% { 
+        background: linear-gradient(90deg, rgba(255, 0, 0, 0.15), rgba(200, 0, 0, 0.25)) !important;
+        box-shadow: 0 0 8px rgba(255, 0, 0, 0.2);
+      }
+      50% { 
+        background: linear-gradient(90deg, rgba(255, 50, 50, 0.25), rgba(255, 0, 0, 0.35)) !important;
+        box-shadow: 0 0 15px rgba(255, 0, 0, 0.4);
+      }
+    }
+
+    @keyframes blinkText {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.8; }
+    }
+
+    .lewat-row {
+      background: linear-gradient(90deg, rgba(255, 0, 0, 0.2), rgba(100, 0, 0, 0.4)) !important;
+      color: #ffcccc !important;
+      font-weight: bold;
+      border-left: 4px solid var(--marvel-red);
+      animation: pulseWarning 2s infinite;
+    }
+
+    @keyframes pulseWarning {
+      0% { background-color: rgba(255, 0, 0, 0.1); }
+      50% { background-color: rgba(255, 0, 0, 0.25); }
+      100% { background-color: rgba(255, 0, 0, 0.1); }
+    }
+
+    .count-badge {
+      background: linear-gradient(135deg, #2c3e50, #000);
+      color: var(--cap-blue);
+      border: 1px solid var(--cap-blue);
+      padding: 6px 12px;
+      border-radius: 4px;
+      font-weight: bold;
+      font-size: 1rem;
+      display: inline-block;
+      min-width: 40px;
+      box-shadow: 0 0 10px rgba(10, 121, 223, 0.4);
+      text-transform: uppercase;
+      line-height: 1.2;
+    }
+
+    .count-high {
+      background: linear-gradient(135deg, var(--marvel-red), var(--marvel-dark-red));
+      color: white;
+      border-color: #ff9999;
+      animation: pulseCount 1.5s infinite;
+      box-shadow: 0 0 15px rgba(236, 29, 36, 0.6);
+    }
+
+    @keyframes pulseCount {
+      0%, 100% { transform: scale(1); box-shadow: 0 0 10px rgba(236, 29, 36, 0.5); }
+      50% { transform: scale(1.1); box-shadow: 0 0 20px rgba(236, 29, 36, 0.9); }
+    }
+    
+    .warning {
+      background: rgba(20, 0, 0, 0.9);
+      border: 2px solid var(--marvel-red);
+      color: #ffcccc;
+      padding: 20px;
+      border-radius: 10px;
+      margin-bottom: 25px;
+      text-align: center;
+      display: none;
+      animation: fadeIn 0.5s ease-out;
+      width: 100%;
+      box-shadow: 0 0 30px rgba(236, 29, 36, 0.3);
+      position: relative;
+    }
+
+    .warning h3 {
+      margin-bottom: 15px;
+      color: var(--marvel-red);
+      font-family: var(--font-comic);
+      text-shadow: 0 0 10px rgba(236, 29, 36, 0.8);
+      letter-spacing: 2px;
+    }
+    
+    .warning table {
+      min-width: 100%;
+      margin-top: 0;
+      background: rgba(0,0,0,0.5);
+    }
+    .warning th {
+      background: rgba(40, 40, 40, 0.9);
+      font-size: 0.8rem;
+      padding: 10px;
+      height: 50px;
+    }
+    .warning-row td {
+      background: rgba(50, 10, 10, 0.6);
+      border-bottom: 1px solid rgba(255,0,0,0.2);
+      font-size: 0.9rem;
+      height: 55px;
+    }
+
+    .stopwatch {
+      font-family: 'Courier New', monospace;
+      font-weight: bold;
+      font-size: 1.1rem;
+      padding: 8px 15px;
+      border-radius: 4px;
+      display: inline-block;
+      margin: 0 5px;
+      min-width: 100px;
+      text-align: center;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      border: 1px solid rgba(255,255,255,0.2);
+      line-height: 1.2;
+    }
+
+    .stopwatch-normal {
+      background: rgba(0, 204, 0, 0.15);
+      color: #00ff00;
+      border-color: #00ff00;
+      box-shadow: 0 0 10px rgba(0, 255, 0, 0.2);
+      animation: pulseGreen 2s infinite;
+    }
+
+    .stopwatch-over {
+      background: rgba(255, 0, 0, 0.2);
+      color: #ff3333;
+      border-color: #ff0000;
+      box-shadow: 0 0 15px rgba(255, 0, 0, 0.4);
+      animation: pulseRed 0.8s infinite;
+    }
+
+    @keyframes pulseGreen {
+      0%, 100% { box-shadow: 0 0 5px rgba(0, 255, 0, 0.2); }
+      50% { box-shadow: 0 0 15px rgba(0, 255, 0, 0.6); }
+    }
+    
+    @keyframes pulseRed {
+      0%, 100% { box-shadow: 0 0 10px rgba(255, 0, 0, 0.4); opacity: 1; }
+      50% { box-shadow: 0 0 25px rgba(255, 0, 0, 0.8); opacity: 0.9; }
+    }
+
+    .new-row {
+      animation: highlightNew 2s ease-out;
+    }
+    @keyframes highlightNew {
+      0% { background: linear-gradient(90deg, rgba(0, 121, 223, 0.5), transparent); }
+      100% { background: inherit; }
+    }
+
+    .updated-row {
+      animation: highlightUpdate 1.5s ease-out;
+    }
+    @keyframes highlightUpdate {
+      0% { background: linear-gradient(90deg, rgba(240, 19, 30, 0.5), transparent); }
+      100% { background: inherit; }
+    }
+
+    .duration-overlimit:hover {
+      transform: scale(1.008) !important;
+      box-shadow: 0 0 20px rgba(255, 0, 0, 0.5) !important;
+      z-index: 6 !important;
+    }
+
+    @media (max-width: 768px) {
+      .main-container {
+        padding: 15px;
+        border-radius: 0;
+      }
+      th, td {
+        font-size: 0.8rem;
+        padding: 10px 5px;
+      }
+      .search-box input {
+        width: 100%;
+      }
+      h2 {
+        font-size: 1.5rem;
+        padding: 10px 20px;
+        width: 100%;
+      }
+      .duration-overlimit td:nth-child(6)::before {
+        font-size: 0.6rem;
+        padding: 2px 6px;
+        top: -30px;
+        white-space: normal;
+        max-width: 80px;
+        text-align: center;
+        line-height: 1.2;
+      }
+      .header-left {
+        gap: 10px;
+      }
+      .staff-main-name {
+        font-size: 1rem;
+      }
+      .staff-detail-row td:nth-child(1) {
+        padding-left: 25px !important;
+        font-size: 0.8rem;
+      }
+    }
+
+    td {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      max-width: 200px;
+    }
+  </style>
+</head>
+<body>
+  <div class="main-container">
+    <h2><i class="fas fa-shield-alt" style="color:white; margin-right:10px;"></i>Linetogel<span style="color:var(--light-text)">Monitor</span></h2>
+
+    <div class="search-box">
+      <i class="fas fa-search"></i>
+      <input
+        type="text"
+        id="searchInput"
+        placeholder="MENCARI NAMA STAFF..."
+        onkeyup="filterByName()"
+      />
+    </div>
+    
+    <div id="warningMessage" class="warning" style="display: none;"></div>
+
+    <table id="dataTable">
+      <thead>
+        <tr>
+          <th style="width: 20%"><i class="fas fa-user-secret"></i>Name Staff</th>
+          <th style="width: 15%"><i class="fas fa-mask"></i> Role</th>
+          <th style="width: 15%"><i class="fas fa-calendar-day"></i> Date</th>
+          <th style="width: 12%"><i class="fas fa-sign-out-alt"></i> Out Time</th>
+          <th style="width: 12%"><i class="fas fa-sign-in-alt"></i> In Time</th>
+          <th style="width: 13%"><i class="fas fa-stopwatch"></i> Durasi</th>
+          <th style="width: 13%"><i class="fas fa-comment-dots"></i> Status</th>
+          <th style="width: auto"><i class="fas fa-redo"></i> Keterangan</th>
+        </tr>
+      </thead>
+      <tbody id="tableBody">
+        <!-- Data will be filled by JavaScript -->
+      </tbody>
+    </table>
+  </div>
+
+  <!-- SCRIPT SECTION -->
+  <script>
+    // Konfigurasi Google Sheets
+    const SPREADSHEET_ID = '1JcZW0LC1-4l0GlFS_UQEZwrCC2OrXfQKh-Kr5opOdZs';
+    const SHEET_NAME = 'DATABASE LINETOGEL';
+    const BACKGROUND_SHEET_NAME = 'background';
+    
+    // URL untuk mengambil data dalam format CSV
+    const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(SHEET_NAME)}`;
+    const BACKGROUND_SHEET_URL = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(BACKGROUND_SHEET_NAME)}`;
+    
+    // Variabel untuk real-time tracking
+    let lastDataHash = '';
+    let currentData = [];
+    let retryCount = 0;
+    const MAX_RETRIES = 10;
+    let updateInterval;
+    let backgroundInterval;
+    
+    // Background slideshow default
+    let backgroundLinks = [
+      "https://cdn.areabermain.club/assets/cdn/az6/2026/01/08/20260108/0e9b0ec9a88ad88a5935bc5802bc41a5/linetogel-background-07januari2026.jpg"
+    ];
+    
+    // Map untuk menyimpan stopwatch data per staff
+    const staffStopwatches = new Map();
+    
+    // Batas waktu maksimal durasi (dalam menit)
+    const DURATION_LIMIT_MINUTES = 15; 
+
+    // ---------------------------------------------------------
+    // FUNGSI 1: Normalisasi waktu & Parsing Detik (AM/PM Support)
+    // ---------------------------------------------------------
+    function normalizeTime(timeString) {
+      try {
+        if (!timeString || timeString.trim() === '') return { h: 0, m: 0, s: 0, is24h: false, original: '' };
+        
+        let time = timeString.trim().toUpperCase();
+        
+        // Jika sudah format 24 jam, parse saja
+        if (!time.includes('AM') && !time.includes('PM')) {
+          time = time.replace('.', ':').replace(',', ':');
+          let parts = time.split(':');
+          let h = parseInt(parts[0]) || 0;
+          let m = parseInt(parts[1]) || 0;
+          let s = parseInt(parts[2]) || 0;
+          
+          h = h % 24;
+          
+          return { h, m, s, is24h: true, original: timeString };
+        }
+        
+        let isPM = time.includes('PM');
+        time = time.replace('AM', '').replace('PM', '').trim();
+        time = time.replace('.', ':').replace(',', ':');
+        
+        let parts = time.split(':');
+        if (parts.length < 2) return { h: 0, m: 0, s: 0, is24h: false, original: timeString };
+        
+        let h = parseInt(parts[0]) || 0;
+        let m = parseInt(parts[1]) || 0;
+        let s = parseInt(parts[2]) || 0;
+        
+        if (isPM) {
+          if (h !== 12) h += 12;
+        } else {
+          if (h === 12) h = 0;
+        }
+        
+        h = h % 24;
+        
+        return { h, m, s, is24h: false, original: timeString };
+      } catch (error) {
+        console.error('Error normalizing time:', error, timeString);
+        return { h: 0, m: 0, s: 0, is24h: false, original: timeString };
+      }
+    }
+
+    function formatTimeDisplay(timeString) {
+      if (!timeString || timeString.trim() === '') return '-';
+      
+      const norm = normalizeTime(timeString);
+      let h = norm.h;
+      const m = norm.m;
+      const ampm = h >= 12 ? 'PM' : 'AM';
+      
+      h = h % 12;
+      h = h ? h : 12; 
+      
+      const mStr = m.toString().padStart(2, '0');
+      return `${h}:${mStr} ${ampm}`;
+    }
+    
+    function formatHistoryDuration(durationStr) {
+        if (!durationStr || durationStr === '-') return '-';
+        let cleanStr = durationStr.replace(/^0\s*hours?\s?/i, '');
+        cleanStr = cleanStr.trim();
+        return cleanStr || '-';
+    }
+
+    function parseDurationToMinutes(durationString) {
+      try {
+        if (!durationString || durationString.trim() === '') return 0;
+        let duration = durationString.trim().toLowerCase();
+        let totalMinutes = 0;
+        
+        const hourMatch = duration.match(/(\d+)\s*(jam|hour|h)/);
+        if (hourMatch) totalMinutes += parseInt(hourMatch[1]) * 60;
+        
+        const minuteMatch = duration.match(/(\d+)\s*(menit|minute|min|m)/);
+        if (minuteMatch) totalMinutes += parseInt(minuteMatch[1]);
+        
+        if (totalMinutes === 0 && !isNaN(parseInt(duration))) totalMinutes = parseInt(duration);
+        
+        const timeFormatMatch = duration.match(/(\d+):(\d+)/);
+        if (timeFormatMatch && totalMinutes === 0) {
+          totalMinutes = parseInt(timeFormatMatch[1]) * 60 + parseInt(timeFormatMatch[2]);
+        }
+        
+        return totalMinutes;
+      } catch (error) {
+        console.error('Error parsing duration:', error, durationString);
+        return 0;
+      }
+    }
+    
+    function calculateDurationFromTimes(startTime, endTime) {
+      try {
+        if (!startTime || !endTime) return 0;
+        
+        const start = normalizeTime(startTime);
+        const end = normalizeTime(endTime);
+        
+        const startTotalSeconds = start.h * 3600 + start.m * 60 + start.s;
+        let endTotalSeconds = end.h * 3600 + end.m * 60 + end.s;
+        
+        if (endTotalSeconds < startTotalSeconds) endTotalSeconds += 24 * 3600; 
+        
+        const durationSeconds = endTotalSeconds - startTotalSeconds;
+        return Math.floor(durationSeconds / 60); 
+      } catch (error) {
+        console.error('Error calculating duration from times:', error);
+        return 0;
+      }
+    }
+    
+    function isDurationOverLimit(durationString, startTime, endTime) {
+      let durationMinutes = parseDurationToMinutes(durationString);
+      if (durationMinutes <= 0 && startTime && endTime) {
+        durationMinutes = calculateDurationFromTimes(startTime, endTime);
+      }
+      return durationMinutes > DURATION_LIMIT_MINUTES;
+    }
+    
+    async function fetchBackgroundLinks() {
+      try {
+        const response = await fetch(BACKGROUND_SHEET_URL);
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+        
+        const csvText = await response.text();
+        const lines = csvText.split('\n').filter(line => line.trim() !== '');
+        
+        if (lines.length < 2) return backgroundLinks;
+        
+        const backgrounds = [];
+        for (let i = 1; i < lines.length; i++) {
+          const line = lines[i].trim();
+          if (!line) continue;
+          
+          const values = [];
+          let current = '';
+          let inQuotes = false;
+          
+          for (let j = 0; j < line.length; j++) {
+            const char = line[j];
+            if (char === '"') { inQuotes = !inQuotes; } 
+            else if (char === ',' && !inQuotes) { values.push(current); current = ''; } 
+            else { current += char; }
+          }
+          values.push(current);
+          
+          if (values.length > 1 && values[1]) {
+            const url = values[1].replace(/"/g, '').trim();
+            if (url && url.startsWith('http')) backgrounds.push(url);
+          }
+        }
+        return backgrounds.length > 0 ? backgrounds : backgroundLinks;
+      } catch (error) {
+        console.error('Error fetching background links:', error);
+        return backgroundLinks;
+      }
+    }
+    
+    function getTodayDate() {
+      const today = new Date();
+      return `${String(today.getDate()).padStart(2,'0')}/${String(today.getMonth()+1).padStart(2,'0')}/${today.getFullYear()}`;
+    }
+    
+    function formatDateToStandard(dateString) {
+      try {
+        if (!dateString) return '';
+        dateString = dateString.trim();
+        
+        if (dateString.includes('/')) {
+          const parts = dateString.split('/');
+          if (parts.length === 3) return `${parts[0].padStart(2,'0')}/${parts[1].padStart(2,'0')}/${parts[2]}`;
+        }
+        if (dateString.includes('-')) {
+          const parts = dateString.split('-');
+          if (parts.length === 3) {
+            if (parts[0].length === 4) return `${parts[2]}/${parts[1]}/${parts[0]}`;
+            return `${parts[0].padStart(2,'0')}/${parts[1].padStart(2,'0')}/${parts[2]}`;
+          }
+        }
+        return dateString;
+      } catch (error) {
+        console.error('Error formatting date:', error, dateString);
+        return dateString;
+      }
+    }
+    
+    function isToday(dateString) {
+      try {
+        return formatDateToStandard(dateString) === getTodayDate();
+      } catch (error) {
+        console.error('Error checking if date is today:', error, dateString);
+        return false;
+      }
+    }
+    
+    function startBackgroundSlideshow(links) {
+      if (backgroundInterval) clearInterval(backgroundInterval);
+      
+      if (links && links.length > 0) {
+        let index = 0;
+        const body = document.body;
+        if (links[0]) body.style.backgroundImage = `url('${links[0]}')`;
+        
+        if (links.length > 1) {
+          backgroundInterval = setInterval(() => {
+            index = (index + 1) % links.length;
+            if (links[index]) body.style.backgroundImage = `url('${links[index]}')`;
+          }, 8000);
+        }
+      }
+    }
+    
+    function calculateDataHash(data) {
+      return JSON.stringify(data).split('').reduce((a,b) => (((a << 5) - a) + b.charCodeAt(0))|0, 0);
+    }
+    
+    function calculateStopwatchTime(startDate, startTime) {
+      try {
+        if (!startDate || !startTime) return { formattedTime: "00:00", isOver15Min: false };
+        
+        const timeObj = normalizeTime(startTime);
+        const h = timeObj.h, m = timeObj.m, s = timeObj.s;
+        
+        let day, month, year;
+        if (startDate.includes('/')) {
+          const dateParts = startDate.split('/');
+          if (dateParts.length !== 3) return { formattedTime: "00:00", isOver15Min: false };
+          day = parseInt(dateParts[0]); month = parseInt(dateParts[1]) - 1; year = parseInt(dateParts[2]);
+        } else if (startDate.includes('-')) {
+          const dateParts = startDate.split('-');
+          if (dateParts.length !== 3) return { formattedTime: "00:00", isOver15Min: false };
+          year = parseInt(dateParts[0]); month = parseInt(dateParts[1]) - 1; day = parseInt(dateParts[2]);
+        } else {
+          return { formattedTime: "00:00", isOver15Min: false };
+        }
+        
+        if (isNaN(day) || isNaN(month) || isNaN(year) || isNaN(h) || isNaN(m)) {
+          return { formattedTime: "00:00", isOver15Min: false };
+        }
+        
+        if (year < 100) year += 2000;
+        const masukTime = new Date(year, month, day, h, m, s);
+        
+        if (isNaN(masukTime.getTime())) return { formattedTime: "00:00", isOver15Min: false };
+        
+        const now = new Date();
+        let diffMs = now - masukTime;
+        if (diffMs < 0) diffMs += 24 * 60 * 60 * 1000;
+        
+        const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+        const diffMinutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
+        const diffSeconds = Math.floor((diffMs % (1000 * 60)) / 1000);
+        
+        const format = (num) => num.toString().padStart(2, '0');
+        let formattedTime = (diffHours > 0) ? `${diffHours}:${format(diffMinutes)}:${format(diffSeconds)}` : `${format(diffMinutes)}:${format(diffSeconds)}`;
+        
+        const isOver15Min = (diffHours > 0) || (diffMinutes > 15) || (diffMinutes === 15 && diffSeconds > 59);
+        
+        return { formattedTime, isOver15Min };
+      } catch (error) {
+        console.error('Error calculating stopwatch:', error, startDate, startTime);
+        return { formattedTime: "00:00", isOver15Min: false };
+      }
+    }
+    
+    function checkForUpdates() {
+      fetchData().then(data => {
+        const newHash = calculateDataHash(data);
+        if (newHash !== lastDataHash) {
+          lastDataHash = newHash;
+          currentData = data;
+          updateTable(data);
+        }
+      }).catch(error => {
+        console.error('Error fetching data:', error);
+        retryCount++;
+        if (retryCount >= MAX_RETRIES) {
+          setTimeout(() => { retryCount = 0; checkForUpdates(); }, 30000);
+        } else {
+          setTimeout(checkForUpdates, 5000);
+        }
+      });
+    }
+    
+    async function fetchData() {
+      const response = await fetch(SHEET_URL);
+      if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+      const csvText = await response.text();
+      return parseCSVData(csvText);
+    }
+    
+    function parseCSVData(csvText) {
+      const lines = csvText.split('\n').filter(line => line.trim() !== '');
+      const result = { completeEntries: [], warningMessage: '', incompleteEntries: [] };
+      
+      if (lines.length === 0) return result;
+      
+      const headers = lines[0].split(',').map(header => header.trim().replace(/"/g, ''));
+      
+      const columnMapping = {
+        namaStaff: ['Nama Staff', 'Nama', 'Name', 'Staff'],
+        jobdesk: ['Jobdesk', 'Posisi', 'Job'],
+        date: ['Tanggal', 'Date'],
+        startTime: ['Jam Masuk', 'Masuk', 'Start Time'],
+        endTime: ['Jam Keluar', 'Keluar', 'End Time'],
+        durasi: ['Durasi', 'Lama Kerja', 'Duration'],
+        keterangan: ['Keterangan', 'Ket', 'Note'],
+        count: ['Status', 'Count']
+      };
+      
+      const columnIndices = {};
+      Object.keys(columnMapping).forEach(key => {
+        columnIndices[key] = -1;
+        columnMapping[key].some(colName => {
+          const index = headers.findIndex(h => h.toLowerCase().includes(colName.toLowerCase()));
+          if (index !== -1) { columnIndices[key] = index; return true; }
+          return false;
+        });
+      });
+      
+      for (let i = 1; i < lines.length; i++) {
+        const line = lines[i].trim();
+        if (!line) continue;
+        
+        const values = [];
+        let current = '';
+        let inQuotes = false;
+        
+        for (let j = 0; j < line.length; j++) {
+          const char = line[j];
+          if (char === '"') { inQuotes = !inQuotes; } 
+          else if (char === ',' && !inQuotes) { values.push(current); current = ''; } 
+          else { current += char; }
+        }
+        values.push(current);
+        
+        const rowData = {};
+        Object.keys(columnIndices).forEach(key => {
+          const index = columnIndices[key];
+          if (index !== -1 && values[index] !== undefined) {
+            rowData[key] = values[index].replace(/"/g, '').trim();
+          } else {
+            rowData[key] = '';
+          }
+        });
+        
+        if (!rowData.namaStaff && values.length > 0) rowData.namaStaff = values[0] || '';
+        if (!rowData.jobdesk && values.length > 1) rowData.jobdesk = values[1] || '';
+        if (!rowData.date && values.length > 2) rowData.date = values[2] || '';
+        if (!rowData.startTime && values.length > 3) rowData.startTime = values[3] || '';
+        if (!rowData.endTime && values.length > 4) rowData.endTime = values[4] || '';
+        if (!rowData.durasi && values.length > 5) rowData.durasi = values[5] || '';
+        if (!rowData.keterangan && values.length > 6) rowData.keterangan = values[6] || '';
+        if (!rowData.count && values.length > 7) rowData.count = values[7] || '';
+        
+        if (!isToday(rowData.date)) continue;
+        
+        if (!rowData.endTime || rowData.endTime === '-' || rowData.endTime === '' || 
+            rowData.endTime === 'Belum' || rowData.endTime.toLowerCase().includes('belum')) {
+          result.incompleteEntries.push(rowData);
+        } else {
+          result.completeEntries.push(rowData);
+        }
+      }
+      
+      if (result.incompleteEntries.length > 0) {
+        result.warningMessage = `Ada ${result.incompleteEntries.length} staff yang sedang keluar!`;
+      }
+      
+      return result;
+    }
+    
+    // ---------------------------------------------------------
+    // FUNGSI UTAMA: Tabel dengan Grouping (Parent/Child)
+    // ---------------------------------------------------------
+    function updateTable(data) {
+      const tbody = document.getElementById('tableBody');
+      const { completeEntries, incompleteEntries } = data;
+      
+      updateWarningMessage(incompleteEntries);
+      
+      const groupedData = {};
+      
+      completeEntries.forEach(entry => {
+        if (!groupedData[entry.namaStaff]) {
+          groupedData[entry.namaStaff] = { role: entry.jobdesk, trips: [], isActive: false };
+        }
+        groupedData[entry.namaStaff].trips.push(entry);
+      });
+      
+      incompleteEntries.forEach(entry => {
+        if (!groupedData[entry.namaStaff]) {
+          groupedData[entry.namaStaff] = { role: entry.jobdesk, trips: [], isActive: true };
+        } else {
+          groupedData[entry.namaStaff].isActive = true;
+        }
+        groupedData[entry.namaStaff].trips.unshift(entry);
+      });
+      
+      tbody.innerHTML = '';
+      
+      const sortedNames = Object.keys(groupedData).sort((a, b) => {
+        const activeA = groupedData[a].isActive ? 1 : 0;
+        const activeB = groupedData[b].isActive ? 1 : 0;
+        return activeB - activeA;
+      });
+
+      sortedNames.forEach((name) => {
+        const staff = groupedData[name];
+        const totalTrips = staff.trips.length;
+        
+        // --- Parent Row (Header) ---
+        const parentTr = document.createElement('tr');
+        parentTr.className = staff.isActive ? 'staff-header-row active expanded' : 'staff-header-row';
+        if (!staff.isActive) parentTr.classList.remove('expanded');
+        
+        parentTr.onclick = function() { toggleStaffRows(this); };
+
+        const toggleIconClass = (staff.isActive) ? 'fa-chevron-down' : 'fa-chevron-right';
+        
+        // Parent uses COLSPAN=8 to span full width for custom layout
+        parentTr.innerHTML = `
+            <td colspan="8">
+                <div class="staff-header-content">
+                    <div class="header-left">
+                        <i class="fas ${toggleIconClass} toggle-icon"></i>
+                        <i class="fas fa-user-shield" style="font-size: 1.5rem; color:${staff.isActive ? 'var(--marvel-red)' : 'var(--cap-blue)'}"></i>
+                        <div class="header-info">
+                            <span class="staff-main-name">${name}</span>
+                            <span class="staff-sub-role">${staff.role}</span>
+                        </div>
+                    </div>
+                    <div class="header-right">
+                        <div style="text-align:right;">
+                            <div style="font-size:0.8rem; color:var(--dim-text); text-transform:uppercase;">Total Trip</div>
+                            <div style="font-size:1.2rem; font-weight:bold;">${totalTrips}x</div>
+                        </div>
+                        <div style="width: 1px; height: 30px; background: rgba(255,255,255,0.2);"></div>
+                        ${staff.isActive ? 
+                            '<div style="color:var(--hulk-green); font-weight:bold;"><i class="fas fa-circle-notch fa-spin"></i> SEDANG KELUAR</div>' : 
+                            '<div style="color:var(--dim-text);">IDLE / SELESAI</div>'}
+                    </div>
+                </div>
+            </td>
+        `;
+        tbody.appendChild(parentTr);
+        
+        // --- Child Rows (Details) ---
+        staff.trips.forEach(trip => {
+            const childTr = document.createElement('tr');
+            childTr.className = 'staff-detail-row';
+            
+            if (!parentTr.classList.contains('expanded')) {
+                childTr.classList.add('hidden-row');
+            }
+
+            const isDurationOver = isDurationOverLimit(trip.durasi, trip.startTime, trip.endTime);
+            if (isDurationOver) childTr.classList.add("duration-overlimit");
+            
+            if (trip.keterangan && trip.keterangan.toLowerCase().includes("lewat")) {
+                childTr.classList.add("lewat-row");
+            }
+
+            const displayStartTime = formatTimeDisplay(trip.startTime);
+            const displayEndTime = formatTimeDisplay(trip.endTime);
+            let displayDuration = formatHistoryDuration(trip.durasi);
+            
+            if (isDurationOver) displayDuration = `⚠️ ${displayDuration} ⚠️`;
+            
+            // IMPORTANT: Tampilkan Nama di kolom 1 (Sesuai request "tetap tampilkan nama")
+            childTr.innerHTML = `
+                <td>${name}</td>
+                <td>${trip.jobdesk || '-'}</td>
+                <td>${trip.date || '-'}</td>
+                <td>${displayStartTime || '-'}</td>
+                <td>${displayEndTime || '-'}</td>
+                <td>${displayDuration}</td>
+                <td>${trip.keterangan || '-'}</td>
+                <td>
+                     <span class="count-badge" style="font-size:0.8rem; padding:4px 8px;">
+                        Detail
+                    </span>
+                </td>
+            `;
+            
+            tbody.appendChild(childTr);
+        });
+      });
+      
+      if (sortedNames.length === 0 && incompleteEntries.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="8" style="padding: 40px; color: #7f8c8d;">
+              <i class="fas fa-shield-alt" style="font-size: 2rem; margin-bottom: 10px; display: block;"></i>
+              NO DATA AVAILABLE...
+            </td>
+          </tr>
+        `;
+      }
+    }
+
+    function toggleStaffRows(parentRow) {
+        parentRow.classList.toggle('expanded');
+        
+        const icon = parentRow.querySelector('.toggle-icon');
+        if (icon) {
+            if (parentRow.classList.contains('expanded')) {
+                icon.classList.remove('fa-chevron-right');
+                icon.classList.add('fa-chevron-down');
+            } else {
+                icon.classList.remove('fa-chevron-down');
+                icon.classList.add('fa-chevron-right');
+            }
+        }
+        
+        let nextSibling = parentRow.nextElementSibling;
+        while (nextSibling && !nextSibling.classList.contains('staff-header-row')) {
+            if (parentRow.classList.contains('expanded')) {
+                nextSibling.classList.remove('hidden-row');
+            } else {
+                nextSibling.classList.add('hidden-row');
+            }
+            nextSibling = nextSibling.nextElementSibling;
+        }
+    }
+    
+    function updateWarningMessage(incompleteEntries) {
+      const warningDiv = document.getElementById('warningMessage');
+      
+      if (incompleteEntries.length > 0) {
+        warningDiv.style.display = 'block';
+        
+        let tableContent = `
+          <h3><i class="fas fa-exclamation-triangle"></i> Live</h3>
+          <table style="background: white; margin-top: 10px; border-radius: 8px; overflow: hidden; width: 100%;">
+            <thead>
+              <tr>
+                <th>Nama Staff</th>
+                <th>Role</th>
+                <th>JAM KELUAR</th>
+                <th>DURASI</th>
+              </tr>
+            </thead>
+            <tbody id="warningTableBody">
+        `;
+        
+        incompleteEntries.forEach(entry => {
+          const staffKey = `${entry.namaStaff}_${entry.date}_${entry.startTime}`;
+          if (!staffStopwatches.has(staffKey)) {
+            staffStopwatches.set(staffKey, {
+              startDate: entry.date,
+              startTime: entry.startTime,
+              lastUpdate: Date.now()
+            });
+          }
+        });
+        
+        const currentKeys = incompleteEntries.map(entry => 
+          `${entry.namaStaff}_${entry.date}_${entry.startTime}`
+        );
+        for (const key of staffStopwatches.keys()) {
+          if (!currentKeys.includes(key)) staffStopwatches.delete(key);
+        }
+        
+        warningDiv.innerHTML = tableContent;
+        const warningTbody = document.getElementById('warningTableBody');
+        warningTbody.innerHTML = '';
+        
+        incompleteEntries.forEach((entry, index) => {
+          const staffKey = `${entry.namaStaff}_${entry.date}_${entry.startTime}`;
+          const stopwatchData = staffStopwatches.get(staffKey);
+          
+          const timeResult = calculateStopwatchTime(
+            stopwatchData?.startDate || entry.date, 
+            stopwatchData?.startTime || entry.startTime
+          );
+          
+          const displayTimeOut = formatTimeDisplay(entry.startTime);
+          
+          const row = document.createElement('tr');
+          row.className = 'warning-row';
+          row.innerHTML = `
+            <td><i class="fas fa-running" style="margin-right: 8px;"></i>${entry.namaStaff || '-'}</td>
+            <td>${entry.jobdesk || '-'}</td>
+            <td><i class="fas fa-sign-in-alt" style="margin-right: 8px;"></i>${displayTimeOut || '-'}</td>
+            <td>
+              <div class="stopwatch ${timeResult.isOver15Min ? 'stopwatch-over' : 'stopwatch-normal'}" 
+                   id="stopwatch-${staffKey.replace(/[^a-zA-Z0-9]/g, '-')}">
+                <i class="fas fa-stopwatch"></i>${timeResult.formattedTime}
+              </div>
+            </td>
+          `;
+          
+          row.style.opacity = '0';
+          row.style.transform = 'translateY(10px)';
+          warningTbody.appendChild(row);
+          
+          setTimeout(() => {
+            row.style.transition = 'all 0.5s ease';
+            row.style.opacity = '1';
+            row.style.transform = 'translateY(0)';
+          }, index * 100);
+        });
+        
+        tableContent += `
+            </tbody>
+          </table>
+          <div style="margin-top: 15px; font-size: 0.9rem; opacity: 0.9;">
+            <span class="stopwatch stopwatch-normal" style="margin-right: 10px;">≤ 15:59</span>
+            <span class="stopwatch stopwatch-over" style="margin-right: 20px;">> 15:59</span>
+          </div>
+        `;
+        
+        startStopwatchUpdates();
+      } else {
+        warningDiv.style.display = 'none';
+        stopStopwatchUpdates();
+      }
+    }
+    
+    let stopwatchInterval = null;
+    
+    function startStopwatchUpdates() {
+      if (stopwatchInterval) clearInterval(stopwatchInterval);
+      
+      stopwatchInterval = setInterval(() => {
+        for (const [staffKey, stopwatchData] of staffStopwatches) {
+          const stopwatchElement = document.getElementById(`stopwatch-${staffKey.replace(/[^a-zA-Z0-9]/g, '-')}`);
+          if (stopwatchElement) {
+            const timeResult = calculateStopwatchTime(stopwatchData.startDate, stopwatchData.startTime);
+            stopwatchElement.innerHTML = `<i class="fas fa-stopwatch"></i>${timeResult.formattedTime}`;
+            if (timeResult.isOver15Min) {
+              stopwatchElement.className = 'stopwatch stopwatch-over';
+            } else {
+              stopwatchElement.className = 'stopwatch stopwatch-normal';
+            }
+          }
+        }
+      }, 1000);
+    }
+    
+    function stopStopwatchUpdates() {
+      if (stopwatchInterval) {
+        clearInterval(stopwatchInterval);
+        stopwatchInterval = null;
+      }
+    }
+    
+    function filterByName() {
+      const keyword = document.getElementById('searchInput').value.toLowerCase();
+      const parentRows = document.querySelectorAll('.staff-header-row');
+      
+      parentRows.forEach(parent => {
+        // Cari nama di dalam div staff-header-content
+        const nameText = parent.querySelector('.staff-main-name')?.textContent.toLowerCase() || '';
+        
+        if (nameText.includes(keyword)) {
+            parent.style.display = '';
+            if (keyword !== '') {
+                parent.classList.add('expanded');
+                const icon = parent.querySelector('.toggle-icon');
+                if(icon) {
+                    icon.classList.remove('fa-chevron-right');
+                    icon.classList.add('fa-chevron-down');
+                }
+                
+                let nextSibling = parent.nextElementSibling;
+                while (nextSibling && !nextSibling.classList.contains('staff-header-row')) {
+                    nextSibling.classList.remove('hidden-row');
+                    nextSibling.style.display = '';
+                    nextSibling = nextSibling.nextElementSibling;
+                }
+            }
+        } else {
+            parent.style.display = 'none';
+            let nextSibling = parent.nextElementSibling;
+            while (nextSibling && !nextSibling.classList.contains('staff-header-row')) {
+                nextSibling.style.display = 'none';
+                nextSibling = nextSibling.nextElementSibling;
+            }
+        }
+      });
+      
+      if (keyword === '') {
+          parentRows.forEach(parent => {
+              parent.style.display = '';
+              const isActive = parent.classList.contains('active');
+              if (!isActive) {
+                  parent.classList.remove('expanded');
+                  const icon = parent.querySelector('.toggle-icon');
+                  if(icon) {
+                      icon.classList.remove('fa-chevron-down');
+                      icon.classList.add('fa-chevron-right');
+                  }
+                  let nextSibling = parent.nextElementSibling;
+                  while (nextSibling && !nextSibling.classList.contains('staff-header-row')) {
+                      nextSibling.classList.add('hidden-row');
+                      nextSibling.style.display = '';
+                      nextSibling = nextSibling.nextElementSibling;
+                  }
+              } else {
+                  let nextSibling = parent.nextElementSibling;
+                  while (nextSibling && !nextSibling.classList.contains('staff-header-row')) {
+                      nextSibling.classList.remove('hidden-row');
+                      nextSibling.style.display = '';
+                      nextSibling = nextSibling.nextElementSibling;
+                  }
+              }
+          });
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', async function() {
+      startBackgroundSlideshow(backgroundLinks);
+      
+      try {
+        const fetchedBackgrounds = await fetchBackgroundLinks();
+        if (fetchedBackgrounds.length > 0) {
+          backgroundLinks = fetchedBackgrounds;
+          startBackgroundSlideshow(backgroundLinks);
+        }
+      } catch (error) {
+        console.error('Gagal mengambil data background:', error);
+      }
+      
+      fetchData().then(data => {
+        currentData = data;
+        lastDataHash = calculateDataHash(data);
+        updateTable(data);
+        
+        updateInterval = setInterval(checkForUpdates, 3000);
+        
+        setTimeout(() => {
+          setInterval(checkForUpdates, 4500);
+        }, 1500);
+      }).catch(error => {
+        console.error('Error initial load:', error);
+        setTimeout(() => {
+          document.location.reload();
+        }, 10000);
+      });
+      
+      document.addEventListener('keydown', function(e) {
+        if (e.ctrlKey && e.key === 'r') {
+          e.preventDefault();
+          checkForUpdates();
+        }
+        if (e.key === 'Escape') {
+          document.getElementById('searchInput').value = '';
+          filterByName();
+        }
+      });
+    });
+    
+    document.addEventListener('contextmenu', event => event.preventDefault());
+    
+    window.filterByName = filterByName;
+  </script>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon='{"version":"2024.11.0","token":"e3c1c9af36de41759418005494a48906","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+</body>
+</html>
 
