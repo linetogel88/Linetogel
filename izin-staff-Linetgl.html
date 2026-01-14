@@ -61,27 +61,26 @@
       to { opacity: 1; }
     }
 
-    /* --- UPDATED TITLE: COMPACT & HORIZONTAL --- */
+    /* --- TITLE: COMPACT & HORIZONTAL --- */
     h2 {
       text-align: center;
-      margin-bottom: 25px; /* Margin dikurangi biar lebih rapat */
+      margin-bottom: 25px; 
       font-size: 2.8rem;
       font-weight: 900;
       text-transform: uppercase;
       font-family: var(--font-comic);
-      display: flex; /* Flex agar menyatu horizontal */
+      display: flex; 
       align-items: center;
       justify-content: center;
       gap: 15px;
       position: relative;
       z-index: 5;
       text-shadow: 0 4px 10px rgba(0,0,0,0.8);
-      padding: 0; /* Padding dihapus biar makin hemat tempat */
+      padding: 0; 
     }
 
     .logo-icon {
       font-size: 2.5rem;
-      /* Efek Berdenyut */
       animation: iconPulse 2s infinite ease-in-out;
       filter: drop-shadow(0 0 10px rgba(236, 29, 36, 0.6));
       flex-shrink: 0;
@@ -94,7 +93,6 @@
     }
 
     .title-main {
-      /* Efek Gradasi Bergerak */
       background: linear-gradient(
         90deg, 
         #EC1D24 0%, 
@@ -112,22 +110,20 @@
     }
 
     .title-sub {
-      /* Warna Solid & Glow */
       color: var(--light-text);
       background: linear-gradient(180deg, #ffffff, #b0b3b8);
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
       font-weight: 700;
-      letter-spacing: 2px; /* Spacing disesuaikan agar nyatu */
+      letter-spacing: 2px; 
       line-height: 1;
       margin-left: 5px;
     }
 
-    /* Garis bawah yang tetap ada */
     .title-underline {
       position: absolute;
-      bottom: -8px; /* Posisi disesuaikan agar tidak terlalu jauh */
+      bottom: -8px; 
       left: 50%;
       transform: translateX(-50%);
       width: 80%;
@@ -1148,12 +1144,15 @@
         
         // --- Parent Row (Header) ---
         const parentTr = document.createElement('tr');
-        parentTr.className = staff.isActive ? 'staff-header-row active expanded' : 'staff-header-row';
-        if (!staff.isActive) parentTr.classList.remove('expanded');
+        
+        // PERUBAHAN DI SINI: Tidak ada 'expanded' secara default
+        // Aktif atau tidak, semuanya minimize awalnya.
+        parentTr.className = staff.isActive ? 'staff-header-row active' : 'staff-header-row';
         
         parentTr.onclick = function() { toggleStaffRows(this); };
 
-        const toggleIconClass = (staff.isActive) ? 'fa-chevron-down' : 'fa-chevron-right';
+        // Icon awal selalu Chevron Right (tutup) karena tidak ada expanded
+        const toggleIconClass = 'fa-chevron-right';
         
         // Parent uses COLSPAN=8 to span full width for custom layout
         parentTr.innerHTML = `
@@ -1187,6 +1186,7 @@
             const childTr = document.createElement('tr');
             childTr.className = 'staff-detail-row';
             
+            // Karena parent tidak punya class 'expanded', semua child akan otomatis hidden
             if (!parentTr.classList.contains('expanded')) {
                 childTr.classList.add('hidden-row');
             }
@@ -1416,27 +1416,18 @@
       if (keyword === '') {
           parentRows.forEach(parent => {
               parent.style.display = '';
-              const isActive = parent.classList.contains('active');
-              if (!isActive) {
-                  parent.classList.remove('expanded');
-                  const icon = parent.querySelector('.toggle-icon');
-                  if(icon) {
-                      icon.classList.remove('fa-chevron-down');
-                      icon.classList.add('fa-chevron-right');
-                  }
-                  let nextSibling = parent.nextElementSibling;
-                  while (nextSibling && !nextSibling.classList.contains('staff-header-row')) {
-                      nextSibling.classList.add('hidden-row');
-                      nextSibling.style.display = '';
-                      nextSibling = nextSibling.nextElementSibling;
-                  }
-              } else {
-                  let nextSibling = parent.nextElementSibling;
-                  while (nextSibling && !nextSibling.classList.contains('staff-header-row')) {
-                      nextSibling.classList.remove('hidden-row');
-                      nextSibling.style.display = '';
-                      nextSibling = nextSibling.nextElementSibling;
-                  }
+              // Saat search dikosongkan, tutup semua kembali (minimize)
+              parent.classList.remove('expanded');
+              const icon = parent.querySelector('.toggle-icon');
+              if(icon) {
+                  icon.classList.remove('fa-chevron-down');
+                  icon.classList.add('fa-chevron-right');
+              }
+              let nextSibling = parent.nextElementSibling;
+              while (nextSibling && !nextSibling.classList.contains('staff-header-row')) {
+                  nextSibling.classList.add('hidden-row');
+                  nextSibling.style.display = '';
+                  nextSibling = nextSibling.nextElementSibling;
               }
           });
       }
