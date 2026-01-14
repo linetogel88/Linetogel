@@ -15,7 +15,7 @@
       --cap-blue: #0A79DF;
       --hulk-green: #78C258;
       --venom-purple: #5C2D91;
-      --dark-panel-bg: rgba(20, 20, 30, 0.85); /* Sedikit transparan biar background terlihat */
+      --dark-panel-bg: rgba(20, 20, 30, 0.85);
       --light-text: #ffffff;
       --dim-text: #b0b3b8;
       --border-glow: 0 0 20px rgba(236, 29, 36, 0.4);
@@ -48,7 +48,6 @@
       background-color: #0a0a0a; 
     }
 
-    /* Efek Overlay gelap di seluruh body supaya background tidak terlalu menyilaukan */
     body::before {
       content: "";
       position: fixed;
@@ -125,19 +124,18 @@
     .main-container {
       width: 100%;
       max-width: 1400px;
-      padding: 0; /* Padding dihandle oleh table wrapper */
+      padding: 0;
       background: var(--dark-panel-bg);
-      backdrop-filter: blur(20px); /* Efek Kaca Blur yang kuat */
+      backdrop-filter: blur(20px);
       border-radius: 20px;
       border: 1px solid rgba(255, 255, 255, 0.08);
       box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8), inset 0 0 0 1px rgba(255,255,255,0.05);
       text-align: center;
       animation: slideUp 1s ease-out;
-      overflow: hidden; /* Supaya table rapi dalam kaca */
+      overflow: hidden;
       position: relative;
     }
 
-    /* Efek garis neon halus di pinggir container */
     .main-container::after {
       content: "";
       position: absolute;
@@ -164,7 +162,7 @@
     table {
       width: 100%;
       border-collapse: separate;
-      border-spacing: 0 8px; /* Jarak antar baris biar ada efek kaca */
+      border-spacing: 0 8px;
       margin-top: 30px;
       animation: fadeIn 1s ease-out;
       min-width: 1000px;
@@ -176,14 +174,13 @@
       padding: 18px 15px;
       text-align: center;
       vertical-align: middle;
-      border: none; /* Hilangkan border standar */
+      border: none;
       font-size: 1rem;
       color: var(--light-text);
       transition: all 0.3s ease;
       line-height: 1.4;
     }
 
-    /* Header Style */
     th {
       background: linear-gradient(180deg, rgba(20,20,20,0.9), rgba(10,10,10,0.95));
       color: var(--dim-text);
@@ -208,7 +205,6 @@
       align-items: center;
       justify-content: space-between;
       padding: 18px 25px;
-      /* Glass Gradient Background */
       background: linear-gradient(90deg, rgba(40,40,40,0.7), rgba(20,20,20,0.8));
       border-left: 3px solid var(--cap-blue);
       cursor: pointer;
@@ -244,9 +240,9 @@
       box-shadow: 0 5px 15px rgba(0,0,0,0.5);
     }
 
-    /* --- CHILD ROW (DETAIL HISTORY) - EFEK KACA KEREN --- */
+    /* --- CHILD ROW (DETAIL HISTORY) - EFEK KACA --- */
     .staff-detail-row td {
-      background: rgba(255, 255, 255, 0.02); /* Transparan gelap */
+      background: rgba(255, 255, 255, 0.02);
       backdrop-filter: blur(10px);
       border-radius: 8px;
       transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
@@ -255,7 +251,6 @@
       border: 1px solid rgba(255,255,255,0.03);
     }
 
-    /* Efek Cahaya Bergerak (Blink/Shimmer) pada Baris Data */
     .staff-detail-row td::after {
       content: '';
       position: absolute;
@@ -266,7 +261,7 @@
       background: linear-gradient(
         90deg, 
         transparent, 
-        rgba(236, 29, 36, 0.03), /* Merah redup */
+        rgba(236, 29, 36, 0.03), 
         rgba(255, 255, 255, 0.08), 
         rgba(236, 29, 36, 0.03), 
         transparent
@@ -274,7 +269,6 @@
       transform: skewX(-20deg);
       pointer-events: none;
       z-index: -1;
-      /* Animasi ini bikin efek seperti lampu lalu lalang halus */
       animation: glassShine 7s infinite linear;
     }
 
@@ -285,9 +279,8 @@
       100% { left: 150%; opacity: 0; }
     }
 
-    /* Hover pada Baris Data */
     .staff-detail-row:hover td {
-      background: rgba(255, 255, 255, 0.08); /* Lebih terang saat di-hover */
+      background: rgba(255, 255, 255, 0.08);
       transform: scale(1.015);
       z-index: 10;
       border: 1px solid rgba(236, 29, 36, 0.3);
@@ -305,7 +298,7 @@
       display: none;
     }
     
-    /* --- DURATION OVERLIMIT STYLE (RED ALERT) --- */
+    /* --- DURATION OVERLIMIT STYLE --- */
     .duration-overlimit td {
       background: linear-gradient(90deg, rgba(100, 0, 0, 0.4), rgba(50, 0, 0, 0.2)) !important;
       border: 1px solid rgba(255, 0, 0, 0.3) !important;
@@ -635,7 +628,7 @@
           let parts = time.split(':');
           let h = parseInt(parts[0]) || 0;
           let m = parseInt(parts[1]) || 0;
-          let s = parseInt(parts[2]) || 0;
+          let s = parseInt(parts[2]) || 0; // Detik diambil dari sini
           
           h = h % 24;
           
@@ -651,7 +644,7 @@
         
         let h = parseInt(parts[0]) || 0;
         let m = parseInt(parts[1]) || 0;
-        let s = parseInt(parts[2]) || 0;
+        let s = parseInt(parts[2]) || 0; // Detik
         
         if (isPM) {
           if (h !== 12) h += 12;
@@ -668,19 +661,25 @@
       }
     }
 
+    // --- UPDATE FUNGSI INI: Menambahkan Detik ---
     function formatTimeDisplay(timeString) {
       if (!timeString || timeString.trim() === '') return '-';
       
       const norm = normalizeTime(timeString);
       let h = norm.h;
       const m = norm.m;
+      const s = norm.s; // Ambil detik dari parsing
+      
       const ampm = h >= 12 ? 'PM' : 'AM';
       
       h = h % 12;
       h = h ? h : 12; 
       
       const mStr = m.toString().padStart(2, '0');
-      return `${h}:${mStr} ${ampm}`;
+      const sStr = s.toString().padStart(2, '0'); // Format detik (00)
+      
+      // Tambahkan detik ke output string
+      return `${h}:${mStr}:${sStr} ${ampm}`;
     }
     
     function formatHistoryDuration(durationStr) {
@@ -1008,9 +1007,7 @@
       
       const groupedData = {};
       
-      // --- PERUBAHAN DISINI: Loop Complete Entries secara terbalik ---
-      // Kita loop dari belakang ke depan agar data terbaru (baris paling bawah di CSV)
-      // masuk ke array trips paling awal.
+      // --- LOOP BALIK UNTUK COMPLETE ENTRIES (History) ---
       for (let i = completeEntries.length - 1; i >= 0; i--) {
         const entry = completeEntries[i];
         if (!groupedData[entry.namaStaff]) {
@@ -1019,14 +1016,13 @@
         groupedData[entry.namaStaff].trips.push(entry);
       }
       
-      // Incomplete entries tetap di paling atas (Active status)
+      // --- INCOMPLETE ENTRIES (Aktif) di paling atas ---
       incompleteEntries.forEach(entry => {
         if (!groupedData[entry.namaStaff]) {
           groupedData[entry.namaStaff] = { role: entry.jobdesk, trips: [], isActive: true };
         } else {
           groupedData[entry.namaStaff].isActive = true;
         }
-        // Unshift agar selalu di paling atas daftar history staff tersebut
         groupedData[entry.namaStaff].trips.unshift(entry);
       });
       
@@ -1094,13 +1090,13 @@
                 childTr.classList.add("lewat-row");
             }
 
+            // Memanggil formatTimeDisplay yang sudah diupdate (dengan detik)
             const displayStartTime = formatTimeDisplay(trip.startTime);
             const displayEndTime = formatTimeDisplay(trip.endTime);
             let displayDuration = formatHistoryDuration(trip.durasi);
             
             if (isDurationOver) displayDuration = `⚠️ ${displayDuration} ⚠️`;
             
-            // IMPORTANT: Tampilkan Nama di kolom 1 (Sesuai request "tetap tampilkan nama")
             childTr.innerHTML = `
                 <td>${name}</td>
                 <td>${trip.jobdesk || '-'}</td>
@@ -1280,7 +1276,6 @@
       const parentRows = document.querySelectorAll('.staff-header-row');
       
       parentRows.forEach(parent => {
-        // Cari nama di dalam div staff-header-content
         const nameText = parent.querySelector('.staff-main-name')?.textContent.toLowerCase() || '';
         
         if (nameText.includes(keyword)) {
