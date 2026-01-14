@@ -896,7 +896,7 @@
 
   <!-- ============================================
        NEW LOGIN FORM DESIGN
-    ============================================ -->
+  ============================================ -->
   <div id="loginForm">
     <div class="login-logo-wrapper">
       <img src="https://cdn.areabermain.club/assets/cdn/az4/2025/04/22/20250422/4a6f0daed9e848ec4e9c8fe031412552/14678257-removebg-preview.png" alt="Logo">
@@ -2034,7 +2034,9 @@
         startStatusPanelTimer();
         startRealtimeUpdates();
         
-        showPopup(`<div style="color:#2ed573;text-align:center;"><i class="fas fa-check-circle fa-2x"></i><br><strong>Login berhasil!</strong><br>Selamat datang <strong>${userFound.name}</strong></div>`, 4000);
+        // PERUBAHAN: HAPUS POPUP SELAMAT DATANG SAAT LOGIN
+        // Baris ini dihapus: showPopup(`<div style="color:#2ed573;text-align:center;"><i class="fas fa-check-circle fa-2x"></i><br><strong>Login berhasil!</strong><br>Selamat datang <strong>${userFound.name}</strong></div>`, 4000);
+        
         updateConnectionStatus(true, `Logged in as ${userFound.name}`);
       } catch (error) {
         console.error('Login error:', error);
@@ -2309,8 +2311,3 @@
 </body>
 
 </html>
-
-
-
-
-
