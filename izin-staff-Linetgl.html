@@ -15,10 +15,10 @@
       --cap-blue: #0A79DF;
       --hulk-green: #78C258;
       --venom-purple: #5C2D91;
-      --dark-panel-bg: rgba(18, 18, 24, 0.92);
+      --dark-panel-bg: rgba(20, 20, 30, 0.85); /* Sedikit transparan biar background terlihat */
       --light-text: #ffffff;
       --dim-text: #b0b3b8;
-      --border-glow: 0 0 15px rgba(236, 29, 36, 0.6);
+      --border-glow: 0 0 20px rgba(236, 29, 36, 0.4);
       --font-comic: 'Arial Black', 'Impact', sans-serif;
     }
 
@@ -48,11 +48,12 @@
       background-color: #0a0a0a; 
     }
 
+    /* Efek Overlay gelap di seluruh body supaya background tidak terlalu menyilaukan */
     body::before {
       content: "";
       position: fixed;
       top: 0; left: 0; width: 100%; height: 100%;
-      background: radial-gradient(circle, transparent 20%, #000000 120%);
+      background: radial-gradient(circle, transparent 20%, #000000 130%);
       pointer-events: none;
       z-index: -1;
     }
@@ -70,19 +71,21 @@
       text-transform: uppercase;
       font-family: var(--font-comic);
       letter-spacing: 2px;
-      text-shadow: 3px 3px 0px #000, 0 0 20px rgba(236, 29, 36, 0.8);
-      border-bottom: 4px solid var(--cap-blue);
+      text-shadow: 0 0 15px rgba(236, 29, 36, 0.6);
+      border-bottom: 2px solid var(--cap-blue);
       display: inline-block;
       padding-bottom: 10px;
       background: rgba(0,0,0,0.6);
-      padding: 10px 40px;
-      clip-path: polygon(10% 0, 100% 0, 100% 70%, 90% 100%, 0 100%, 0 30%);
+      padding: 15px 40px;
+      border-radius: 5px;
+      backdrop-filter: blur(5px);
     }
 
     .search-box {
       text-align: center;
       margin-bottom: 30px;
       position: relative;
+      z-index: 5;
     }
 
     .search-box i {
@@ -101,132 +104,377 @@
       max-width: 100%;
       padding: 16px 25px 16px 55px;
       font-size: 1.1rem;
-      border: 2px solid var(--cap-blue);
+      border: 1px solid rgba(255,255,255,0.2);
       border-radius: 50px;
-      background: rgba(0, 0, 0, 0.8);
+      background: rgba(0, 0, 0, 0.6);
       color: white;
-      box-shadow: 0 0 15px rgba(10, 121, 223, 0.3);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 0 20px rgba(0,0,0,0.5);
       transition: all 0.3s ease;
       font-family: inherit;
-    }
-
-    .search-box input::placeholder {
-      color: var(--dim-text);
-      text-transform: uppercase;
-      letter-spacing: 1px;
     }
 
     .search-box input:focus {
       outline: none;
       border-color: var(--marvel-red);
-      box-shadow: 0 0 25px rgba(236, 29, 36, 0.5), inset 0 0 10px rgba(236, 29, 36, 0.2);
-      background: rgba(20, 20, 20, 0.95);
+      box-shadow: 0 0 30px rgba(236, 29, 36, 0.4), inset 0 0 15px rgba(236, 29, 36, 0.1);
+      background: rgba(30, 30, 30, 0.9);
       transform: scale(1.02);
     }
 
     .main-container {
       width: 100%;
       max-width: 1400px;
-      padding: 30px;
+      padding: 0; /* Padding dihandle oleh table wrapper */
       background: var(--dark-panel-bg);
-      backdrop-filter: blur(15px);
-      border-radius: 15px;
-      border: 1px solid rgba(236, 29, 36, 0.3);
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), inset 0 0 50px rgba(0,0,0,0.5);
+      backdrop-filter: blur(20px); /* Efek Kaca Blur yang kuat */
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8), inset 0 0 0 1px rgba(255,255,255,0.05);
       text-align: center;
       animation: slideUp 1s ease-out;
-      overflow-x: auto;
+      overflow: hidden; /* Supaya table rapi dalam kaca */
       position: relative;
-      background-image: radial-gradient(rgba(255,255,255,0.05) 1px, transparent 1px);
-      background-size: 20px 20px;
     }
 
-    .main-container::before {
-      content: '';
+    /* Efek garis neon halus di pinggir container */
+    .main-container::after {
+      content: "";
       position: absolute;
-      top: 0; left: 0; width: 100%; height: 5px;
-      background: linear-gradient(90deg, var(--marvel-red), var(--cap-blue), var(--marvel-red));
+      top: 0; left: 0; right: 0; bottom: 0;
+      border-radius: 20px;
+      box-shadow: inset 0 0 40px rgba(0,0,0,0.8);
+      pointer-events: none;
+      z-index: 1;
     }
 
     @keyframes slideUp {
-      from { transform: translateY(40px); opacity: 0; }
+      from { transform: translateY(50px); opacity: 0; }
       to { transform: translateY(0); opacity: 1; }
     }
 
     /* --- TABLE STYLING --- */
+    .table-wrapper {
+      padding: 30px;
+      overflow-x: auto;
+      position: relative;
+      z-index: 2;
+    }
+
     table {
       width: 100%;
       border-collapse: separate;
-      border-spacing: 0 3px;
+      border-spacing: 0 8px; /* Jarak antar baris biar ada efek kaca */
       margin-top: 30px;
       animation: fadeIn 1s ease-out;
       min-width: 1000px;
       overflow: visible;
       position: relative;
-      z-index: 1;
     }
 
     th, td {
       padding: 18px 15px;
       text-align: center;
       vertical-align: middle;
-      border-bottom: 1px solid rgba(255,255,255,0.1);
+      border: none; /* Hilangkan border standar */
       font-size: 1rem;
       color: var(--light-text);
-      transition: all 0.2s ease;
+      transition: all 0.3s ease;
       line-height: 1.4;
     }
 
+    /* Header Style */
     th {
-      background: linear-gradient(180deg, var(--marvel-red) 0%, var(--marvel-dark-red) 100%);
-      color: white;
+      background: linear-gradient(180deg, rgba(20,20,20,0.9), rgba(10,10,10,0.95));
+      color: var(--dim-text);
       text-transform: uppercase;
-      font-size: 0.9rem;
-      font-weight: 800;
+      font-size: 0.85rem;
+      font-weight: 700;
       position: sticky;
       top: 0;
       z-index: 20;
-      text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
-      letter-spacing: 1px;
-      border-top: 1px solid rgba(255,255,255,0.2);
-      border-bottom: 2px solid #000;
-      height: 65px;
+      text-shadow: 1px 1px 0 #000;
+      letter-spacing: 1.5px;
+      border-bottom: 2px solid rgba(236, 29, 36, 0.3);
     }
-    
-    th:first-child { border-top-left-radius: 10px; }
-    th:last-child { border-top-right-radius: 10px; }
 
-    /* --- PARENT ROW (HEADER STAFF) STYLING --- */
-    /* Parent row uses a full width cell for robust alignment with child rows */
+    /* --- PARENT ROW (HEADER STAFF) --- */
     .staff-header-row td {
-      padding: 0; /* Remove padding from container td */
+      padding: 0; 
     }
     
     .staff-header-content {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 15px 20px;
-      background: linear-gradient(90deg, rgba(40,40,40,0.95), rgba(30,30,30,0.98));
-      border-left: 4px solid var(--cap-blue);
-      border-right: 4px solid var(--cap-blue);
+      padding: 18px 25px;
+      /* Glass Gradient Background */
+      background: linear-gradient(90deg, rgba(40,40,40,0.7), rgba(20,20,20,0.8));
+      border-left: 3px solid var(--cap-blue);
       cursor: pointer;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.5);
       transition: all 0.3s ease;
       width: 100%;
       height: 100%;
+      position: relative;
+      overflow: hidden;
+      border-top: 1px solid rgba(255,255,255,0.05);
+      border-bottom: 1px solid rgba(0,0,0,0.3);
+    }
+
+    .staff-header-content::before {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%; width: 40%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
+      transform: skewX(-20deg);
+      animation: shimmerHeader 4s infinite;
+      pointer-events: none;
+    }
+
+    @keyframes shimmerHeader {
+      0% { left: -100%; }
+      20% { left: 200%; }
+      100% { left: 200%; }
     }
 
     .staff-header-content:hover {
-      background: linear-gradient(90deg, rgba(60,60,60,0.95), rgba(50,50,50,0.98));
+      background: linear-gradient(90deg, rgba(60,60,60,0.8), rgba(40,40,40,0.9));
       border-left-color: var(--marvel-red);
-      box-shadow: 0 6px 15px rgba(0,0,0,0.6);
+      transform: translateX(5px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.5);
     }
 
+    /* --- CHILD ROW (DETAIL HISTORY) - EFEK KACA KEREN --- */
+    .staff-detail-row td {
+      background: rgba(255, 255, 255, 0.02); /* Transparan gelap */
+      backdrop-filter: blur(10px);
+      border-radius: 8px;
+      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+      position: relative;
+      z-index: 1;
+      border: 1px solid rgba(255,255,255,0.03);
+    }
+
+    /* Efek Cahaya Bergerak (Blink/Shimmer) pada Baris Data */
+    .staff-detail-row td::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -150%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(
+        90deg, 
+        transparent, 
+        rgba(236, 29, 36, 0.03), /* Merah redup */
+        rgba(255, 255, 255, 0.08), 
+        rgba(236, 29, 36, 0.03), 
+        transparent
+      );
+      transform: skewX(-20deg);
+      pointer-events: none;
+      z-index: -1;
+      /* Animasi ini bikin efek seperti lampu lalu lalang halus */
+      animation: glassShine 7s infinite linear;
+    }
+
+    @keyframes glassShine {
+      0% { left: -150%; opacity: 0; }
+      10% { opacity: 1; }
+      50% { left: 150%; opacity: 1; }
+      100% { left: 150%; opacity: 0; }
+    }
+
+    /* Hover pada Baris Data */
+    .staff-detail-row:hover td {
+      background: rgba(255, 255, 255, 0.08); /* Lebih terang saat di-hover */
+      transform: scale(1.015);
+      z-index: 10;
+      border: 1px solid rgba(236, 29, 36, 0.3);
+      box-shadow: 0 5px 20px rgba(0,0,0,0.6);
+    }
+
+    .staff-detail-row td:nth-child(1) {
+      text-align: left !important;
+      padding-left: 35px !important; 
+      color: rgba(255,255,255, 0.9); 
+      font-weight: 600;
+    }
+
+    .hidden-row {
+      display: none;
+    }
+    
+    /* --- DURATION OVERLIMIT STYLE (RED ALERT) --- */
+    .duration-overlimit td {
+      background: linear-gradient(90deg, rgba(100, 0, 0, 0.4), rgba(50, 0, 0, 0.2)) !important;
+      border: 1px solid rgba(255, 0, 0, 0.3) !important;
+    }
+
+    .duration-overlimit td:nth-child(6) {
+      position: relative; 
+      overflow: visible !important;
+      color: #ff9999;
+    }
+
+    .duration-overlimit td:nth-child(6)::before {
+      content: "⚠️ DURASI LEWAT BATAS";
+      position: absolute;
+      top: -40px; 
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(236, 29, 36, 0.95);
+      color: white;
+      padding: 5px 15px;
+      border-radius: 50px;
+      font-size: 0.7rem;
+      font-weight: 800;
+      white-space: nowrap;
+      z-index: 50;
+      box-shadow: 0 5px 15px rgba(255, 0, 0, 0.5);
+      border: 1px solid rgba(255,255,255,0.4);
+      letter-spacing: 1px;
+      animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      pointer-events: none;
+    }
+    
+    @keyframes popIn {
+      from { transform: translateX(-50%) scale(0); }
+      to { transform: translateX(-50%) scale(1); }
+    }
+
+    .lewat-row td {
+      background: linear-gradient(90deg, rgba(255, 0, 0, 0.3), rgba(100, 0, 0, 0.5)) !important;
+      border: 1px solid rgba(255, 50, 50, 0.4) !important;
+      animation: pulseRedBg 2s infinite;
+    }
+
+    @keyframes pulseRedBg {
+      0%, 100% { box-shadow: inset 0 0 10px rgba(255,0,0,0.1); }
+      50% { box-shadow: inset 0 0 20px rgba(255,0,0,0.4); }
+    }
+
+    .count-badge {
+      background: rgba(255,255,255,0.1);
+      color: var(--light-text);
+      border: 1px solid rgba(255,255,255,0.2);
+      padding: 5px 10px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      font-weight: bold;
+      letter-spacing: 1px;
+    }
+
+    .warning {
+      background: rgba(30, 0, 0, 0.85);
+      backdrop-filter: blur(15px);
+      border: 1px solid var(--marvel-red);
+      color: #ffcccc;
+      padding: 20px;
+      border-radius: 15px;
+      margin-bottom: 25px;
+      text-align: center;
+      display: none;
+      animation: slideDown 0.5s ease-out;
+      width: 100%;
+      box-shadow: 0 0 40px rgba(236, 29, 36, 0.2);
+      position: relative;
+      z-index: 10;
+    }
+
+    @keyframes slideDown {
+      from { transform: translateY(-20px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    .warning h3 {
+      margin-bottom: 15px;
+      color: var(--marvel-red);
+      font-family: var(--font-comic);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      font-size: 1.5rem;
+    }
+    
+    .warning table {
+      min-width: 100%;
+      margin-top: 0;
+      background: rgba(0,0,0,0.5);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .warning th {
+      background: rgba(40, 40, 40, 0.9);
+      font-size: 0.8rem;
+      padding: 10px;
+      height: 50px;
+      border-bottom: 1px solid #333;
+    }
+    .warning-row td {
+      background: rgba(50, 10, 10, 0.4);
+      border-bottom: 1px solid rgba(255,0,0,0.1);
+      font-size: 0.9rem;
+      height: 55px;
+    }
+
+    .stopwatch {
+      font-family: 'Courier New', monospace;
+      font-weight: bold;
+      font-size: 1.2rem;
+      padding: 8px 15px;
+      border-radius: 8px;
+      display: inline-block;
+      margin: 0 5px;
+      min-width: 100px;
+      text-align: center;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      border: 1px solid rgba(255,255,255,0.1);
+      backdrop-filter: blur(5px);
+    }
+
+    .stopwatch-normal {
+      background: rgba(0, 204, 0, 0.15);
+      color: #ccffcc;
+      border-color: #00ff00;
+      box-shadow: 0 0 15px rgba(0, 255, 0, 0.2);
+    }
+
+    .stopwatch-over {
+      background: rgba(255, 0, 0, 0.2);
+      color: #ff9999;
+      border-color: #ff0000;
+      box-shadow: 0 0 15px rgba(255, 0, 0, 0.4);
+      animation: pulseRed 0.8s infinite;
+    }
+
+    @keyframes pulseRed {
+      0%, 100% { box-shadow: 0 0 10px rgba(255, 0, 0, 0.4); transform: scale(1); }
+      50% { box-shadow: 0 0 25px rgba(255, 0, 0, 0.8); transform: scale(1.05); }
+    }
+
+    .new-row {
+      animation: highlightNew 2s ease-out;
+    }
+    @keyframes highlightNew {
+      0% { background: linear-gradient(90deg, rgba(0, 121, 223, 0.5), transparent); }
+      100% { background: inherit; }
+    }
+
+    .duration-overlimit:hover td {
+        background: rgba(255, 0, 0, 0.3) !important;
+        transform: scale(1.02) !important;
+        z-index: 15 !important;
+        box-shadow: 0 10px 30px rgba(255,0,0,0.3) !important;
+    }
+
+    /* Header Info Styles */
     .header-left {
       display: flex;
       align-items: center;
       gap: 15px;
+      z-index: 2;
     }
 
     .header-info {
@@ -236,10 +484,11 @@
     }
     
     .staff-main-name {
-      font-size: 1.3rem;
+      font-size: 1.4rem;
       font-weight: 800;
       text-transform: uppercase;
       color: var(--light-text);
+      text-shadow: 0 2px 4px rgba(0,0,0,0.8);
     }
     
     .staff-sub-role {
@@ -253,6 +502,7 @@
       display: flex;
       align-items: center;
       gap: 20px;
+      z-index: 2;
     }
 
     .toggle-icon {
@@ -266,245 +516,17 @@
       color: var(--marvel-red);
     }
 
-    /* --- CHILD ROW (DETAIL HISTORY) STYLING --- */
-    .staff-detail-row {
-      background-color: rgba(255, 255, 255, 0.03);
-      font-size: 0.95rem;
-      font-weight: normal;
-      transition: background 0.2s;
-    }
-
-    /* Kolom Nama di Child Row - Agar tetap terlihat */
-    .staff-detail-row td:nth-child(1) {
-      text-align: left !important;
-      padding-left: 40px !important; /* Indentasi */
-      color: rgba(255,255,255, 0.8); /* Sedikit redup dari nama utama */
-      font-style: italic;
-    }
-
-    .staff-detail-row:hover {
-      background-color: rgba(236, 29, 36, 0.1);
-    }
-
-    /* Utility untuk Hide/Show */
-    .hidden-row {
-      display: none;
-    }
-    
-    /* --- DURATION OVERLIMIT STYLE --- */
-    .duration-overlimit {
-      animation: blinkRed 1s infinite !important;
-      background: linear-gradient(90deg, rgba(255, 0, 0, 0.15), rgba(200, 0, 0, 0.25)) !important;
-      border-left: 4px solid #ff0000 !important;
-      border-right: 4px solid #ff0000 !important;
-      position: relative;
-      z-index: 5;
-    }
-
-    /* Target kolom Durasi (kolom ke-6) sebagai titik acuan label pada child row */
-    .staff-detail-row.duration-overlimit td:nth-child(6) {
-      position: relative; 
-      overflow: visible !important;
-    }
-
-    .staff-detail-row.duration-overlimit td:nth-child(6)::before {
-      content: "⚠️ DURASI LEWAT BATAS";
-      position: absolute;
-      top: -38px; 
-      left: 50%;
-      transform: translateX(-50%);
-      background: linear-gradient(135deg, var(--marvel-red), var(--marvel-dark-red));
-      color: white;
-      padding: 5px 12px;
-      border-radius: 4px;
-      font-size: 0.7rem;
-      font-weight: bold;
-      white-space: nowrap;
-      z-index: 50;
-      animation: blinkText 1s infinite;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
-      border: 1px solid rgba(255, 255, 255, 0.3);
-      letter-spacing: 0.5px;
-      line-height: 1.3;
-      pointer-events: none;
-    }
-    
-    .duration-overlimit td:nth-child(6) {
-      color: #ff6666;
-      font-weight: bold;
-    }
-
-    @keyframes blinkRed {
-      0%, 100% { 
-        background: linear-gradient(90deg, rgba(255, 0, 0, 0.15), rgba(200, 0, 0, 0.25)) !important;
-        box-shadow: 0 0 8px rgba(255, 0, 0, 0.2);
-      }
-      50% { 
-        background: linear-gradient(90deg, rgba(255, 50, 50, 0.25), rgba(255, 0, 0, 0.35)) !important;
-        box-shadow: 0 0 15px rgba(255, 0, 0, 0.4);
-      }
-    }
-
-    @keyframes blinkText {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.8; }
-    }
-
-    .lewat-row {
-      background: linear-gradient(90deg, rgba(255, 0, 0, 0.2), rgba(100, 0, 0, 0.4)) !important;
-      color: #ffcccc !important;
-      font-weight: bold;
-      border-left: 4px solid var(--marvel-red);
-      animation: pulseWarning 2s infinite;
-    }
-
-    @keyframes pulseWarning {
-      0% { background-color: rgba(255, 0, 0, 0.1); }
-      50% { background-color: rgba(255, 0, 0, 0.25); }
-      100% { background-color: rgba(255, 0, 0, 0.1); }
-    }
-
-    .count-badge {
-      background: linear-gradient(135deg, #2c3e50, #000);
-      color: var(--cap-blue);
-      border: 1px solid var(--cap-blue);
-      padding: 6px 12px;
-      border-radius: 4px;
-      font-weight: bold;
-      font-size: 1rem;
-      display: inline-block;
-      min-width: 40px;
-      box-shadow: 0 0 10px rgba(10, 121, 223, 0.4);
-      text-transform: uppercase;
-      line-height: 1.2;
-    }
-
-    .count-high {
-      background: linear-gradient(135deg, var(--marvel-red), var(--marvel-dark-red));
-      color: white;
-      border-color: #ff9999;
-      animation: pulseCount 1.5s infinite;
-      box-shadow: 0 0 15px rgba(236, 29, 36, 0.6);
-    }
-
-    @keyframes pulseCount {
-      0%, 100% { transform: scale(1); box-shadow: 0 0 10px rgba(236, 29, 36, 0.5); }
-      50% { transform: scale(1.1); box-shadow: 0 0 20px rgba(236, 29, 36, 0.9); }
-    }
-    
-    .warning {
-      background: rgba(20, 0, 0, 0.9);
-      border: 2px solid var(--marvel-red);
-      color: #ffcccc;
-      padding: 20px;
-      border-radius: 10px;
-      margin-bottom: 25px;
-      text-align: center;
-      display: none;
-      animation: fadeIn 0.5s ease-out;
-      width: 100%;
-      box-shadow: 0 0 30px rgba(236, 29, 36, 0.3);
-      position: relative;
-    }
-
-    .warning h3 {
-      margin-bottom: 15px;
-      color: var(--marvel-red);
-      font-family: var(--font-comic);
-      text-shadow: 0 0 10px rgba(236, 29, 36, 0.8);
-      letter-spacing: 2px;
-    }
-    
-    .warning table {
-      min-width: 100%;
-      margin-top: 0;
-      background: rgba(0,0,0,0.5);
-    }
-    .warning th {
-      background: rgba(40, 40, 40, 0.9);
-      font-size: 0.8rem;
-      padding: 10px;
-      height: 50px;
-    }
-    .warning-row td {
-      background: rgba(50, 10, 10, 0.6);
-      border-bottom: 1px solid rgba(255,0,0,0.2);
-      font-size: 0.9rem;
-      height: 55px;
-    }
-
-    .stopwatch {
-      font-family: 'Courier New', monospace;
-      font-weight: bold;
-      font-size: 1.1rem;
-      padding: 8px 15px;
-      border-radius: 4px;
-      display: inline-block;
-      margin: 0 5px;
-      min-width: 100px;
-      text-align: center;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      border: 1px solid rgba(255,255,255,0.2);
-      line-height: 1.2;
-    }
-
-    .stopwatch-normal {
-      background: rgba(0, 204, 0, 0.15);
-      color: #00ff00;
-      border-color: #00ff00;
-      box-shadow: 0 0 10px rgba(0, 255, 0, 0.2);
-      animation: pulseGreen 2s infinite;
-    }
-
-    .stopwatch-over {
-      background: rgba(255, 0, 0, 0.2);
-      color: #ff3333;
-      border-color: #ff0000;
-      box-shadow: 0 0 15px rgba(255, 0, 0, 0.4);
-      animation: pulseRed 0.8s infinite;
-    }
-
-    @keyframes pulseGreen {
-      0%, 100% { box-shadow: 0 0 5px rgba(0, 255, 0, 0.2); }
-      50% { box-shadow: 0 0 15px rgba(0, 255, 0, 0.6); }
-    }
-    
-    @keyframes pulseRed {
-      0%, 100% { box-shadow: 0 0 10px rgba(255, 0, 0, 0.4); opacity: 1; }
-      50% { box-shadow: 0 0 25px rgba(255, 0, 0, 0.8); opacity: 0.9; }
-    }
-
-    .new-row {
-      animation: highlightNew 2s ease-out;
-    }
-    @keyframes highlightNew {
-      0% { background: linear-gradient(90deg, rgba(0, 121, 223, 0.5), transparent); }
-      100% { background: inherit; }
-    }
-
-    .updated-row {
-      animation: highlightUpdate 1.5s ease-out;
-    }
-    @keyframes highlightUpdate {
-      0% { background: linear-gradient(90deg, rgba(240, 19, 30, 0.5), transparent); }
-      100% { background: inherit; }
-    }
-
-    .duration-overlimit:hover {
-      transform: scale(1.008) !important;
-      box-shadow: 0 0 20px rgba(255, 0, 0, 0.5) !important;
-      z-index: 6 !important;
-    }
-
     @media (max-width: 768px) {
       .main-container {
-        padding: 15px;
+        padding: 0;
         border-radius: 0;
+      }
+      .table-wrapper {
+        padding: 15px;
       }
       th, td {
         font-size: 0.8rem;
-        padding: 10px 5px;
+        padding: 12px 5px;
       }
       .search-box input {
         width: 100%;
@@ -516,23 +538,11 @@
       }
       .duration-overlimit td:nth-child(6)::before {
         font-size: 0.6rem;
-        padding: 2px 6px;
-        top: -30px;
-        white-space: normal;
-        max-width: 80px;
-        text-align: center;
-        line-height: 1.2;
+        padding: 3px 8px;
+        top: -35px;
       }
-      .header-left {
-        gap: 10px;
-      }
-      .staff-main-name {
-        font-size: 1rem;
-      }
-      .staff-detail-row td:nth-child(1) {
-        padding-left: 25px !important;
-        font-size: 0.8rem;
-      }
+      .staff-main-name { font-size: 1.1rem; }
+      .staff-detail-row td:nth-child(1) { padding-left: 25px !important; }
     }
 
     td {
@@ -545,37 +555,39 @@
 </head>
 <body>
   <div class="main-container">
-    <h2><i class="fas fa-shield-alt" style="color:white; margin-right:10px;"></i>Linetogel<span style="color:var(--light-text)">Monitor</span></h2>
+    <div class="table-wrapper">
+      <h2><i class="fas fa-shield-alt" style="color:var(--marvel-red); margin-right:10px;"></i>Linetogel<span style="color:var(--light-text)">Monitor</span></h2>
 
-    <div class="search-box">
-      <i class="fas fa-search"></i>
-      <input
-        type="text"
-        id="searchInput"
-        placeholder="MENCARI NAMA STAFF..."
-        onkeyup="filterByName()"
-      />
+      <div class="search-box">
+        <i class="fas fa-search"></i>
+        <input
+          type="text"
+          id="searchInput"
+          placeholder="MENCARI NAMA STAFF..."
+          onkeyup="filterByName()"
+        />
+      </div>
+      
+      <div id="warningMessage" class="warning" style="display: none;"></div>
+
+      <table id="dataTable">
+        <thead>
+          <tr>
+            <th style="width: 20%"><i class="fas fa-user-secret"></i>Name Staff</th>
+            <th style="width: 15%"><i class="fas fa-mask"></i> Role</th>
+            <th style="width: 15%"><i class="fas fa-calendar-day"></i> Date</th>
+            <th style="width: 12%"><i class="fas fa-sign-out-alt"></i> Out Time</th>
+            <th style="width: 12%"><i class="fas fa-sign-in-alt"></i> In Time</th>
+            <th style="width: 13%"><i class="fas fa-stopwatch"></i> Durasi</th>
+            <th style="width: 13%"><i class="fas fa-comment-dots"></i> Status</th>
+            <th style="width: auto"><i class="fas fa-redo"></i> Keterangan</th>
+          </tr>
+        </thead>
+        <tbody id="tableBody">
+          <!-- Data will be filled by JavaScript -->
+        </tbody>
+      </table>
     </div>
-    
-    <div id="warningMessage" class="warning" style="display: none;"></div>
-
-    <table id="dataTable">
-      <thead>
-        <tr>
-          <th style="width: 20%"><i class="fas fa-user-secret"></i>Name Staff</th>
-          <th style="width: 15%"><i class="fas fa-mask"></i> Role</th>
-          <th style="width: 15%"><i class="fas fa-calendar-day"></i> Date</th>
-          <th style="width: 12%"><i class="fas fa-sign-out-alt"></i> Out Time</th>
-          <th style="width: 12%"><i class="fas fa-sign-in-alt"></i> In Time</th>
-          <th style="width: 13%"><i class="fas fa-stopwatch"></i> Durasi</th>
-          <th style="width: 13%"><i class="fas fa-comment-dots"></i> Status</th>
-          <th style="width: auto"><i class="fas fa-redo"></i> Keterangan</th>
-        </tr>
-      </thead>
-      <tbody id="tableBody">
-        <!-- Data will be filled by JavaScript -->
-      </tbody>
-    </table>
   </div>
 
   <!-- SCRIPT SECTION -->
@@ -1053,12 +1065,12 @@
                     </div>
                     <div class="header-right">
                         <div style="text-align:right;">
-                            <div style="font-size:0.8rem; color:var(--dim-text); text-transform:uppercase;">Total Keluar</div>
+                            <div style="font-size:0.7rem; color:var(--dim-text); text-transform:uppercase;">Total Keluar</div>
                             <div style="font-size:1.2rem; font-weight:bold;">${totalTrips}x</div>
                         </div>
-                        <div style="width: 1px; height: 30px; background: rgba(255,255,255,0.2);"></div>
+                        <div style="width: 1px; height: 30px; background: rgba(255,255,255,0.1);"></div>
                         ${staff.isActive ? 
-                            '<div style="color:var(--hulk-green); font-weight:bold;"><i class="fas fa-circle-notch fa-spin"></i> SEDANG KELUAR</div>' : 
+                            '<div style="color:var(--hulk-green); font-weight:bold; font-size:0.9rem;"><i class="fas fa-circle-notch fa-spin"></i> SEDANG KELUAR</div>' : 
                             '<div style="color:var(--dim-text);">SELESAI</div>'}
                     </div>
                 </div>
@@ -1098,7 +1110,7 @@
                 <td>${displayDuration}</td>
                 <td>${trip.keterangan || '-'}</td>
                 <td>
-                     <span class="count-badge" style="font-size:0.8rem; padding:4px 8px;">
+                     <span class="count-badge">
                         Detail
                     </span>
                 </td>
@@ -1111,8 +1123,8 @@
       if (sortedNames.length === 0 && incompleteEntries.length === 0) {
         tbody.innerHTML = `
           <tr>
-            <td colspan="8" style="padding: 40px; color: #7f8c8d;">
-              <i class="fas fa-shield-alt" style="font-size: 2rem; margin-bottom: 10px; display: block;"></i>
+            <td colspan="8" style="padding: 40px; color: var(--dim-text);">
+              <i class="fas fa-shield-alt" style="font-size: 2rem; margin-bottom: 10px; display: block; opacity: 0.5;"></i>
               NO DATA AVAILABLE...
             </td>
           </tr>
@@ -1152,8 +1164,8 @@
         warningDiv.style.display = 'block';
         
         let tableContent = `
-          <h3><i class="fas fa-exclamation-triangle"></i> Live</h3>
-          <table style="background: white; margin-top: 10px; border-radius: 8px; overflow: hidden; width: 100%;">
+          <h3><i class="fas fa-exclamation-triangle"></i> Live Monitoring</h3>
+          <table style="background: rgba(0,0,0,0.3); margin-top: 10px; border-radius: 8px; overflow: hidden; width: 100%;">
             <thead>
               <tr>
                 <th>Nama Staff</th>
@@ -1201,7 +1213,7 @@
           const row = document.createElement('tr');
           row.className = 'warning-row';
           row.innerHTML = `
-            <td><i class="fas fa-running" style="margin-right: 8px;"></i>${entry.namaStaff || '-'}</td>
+            <td><i class="fas fa-running" style="margin-right: 8px; color: var(--hulk-green);"></i>${entry.namaStaff || '-'}</td>
             <td>${entry.jobdesk || '-'}</td>
             <td><i class="fas fa-sign-in-alt" style="margin-right: 8px;"></i>${displayTimeOut || '-'}</td>
             <td>
@@ -1226,10 +1238,6 @@
         tableContent += `
             </tbody>
           </table>
-          <div style="margin-top: 15px; font-size: 0.9rem; opacity: 0.9;">
-            <span class="stopwatch stopwatch-normal" style="margin-right: 10px;">≤ 15:59</span>
-            <span class="stopwatch stopwatch-over" style="margin-right: 20px;">> 15:59</span>
-          </div>
         `;
         
         startStopwatchUpdates();
