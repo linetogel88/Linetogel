@@ -996,19 +996,25 @@
       
       const groupedData = {};
       
-      completeEntries.forEach(entry => {
+      // --- PERUBAHAN DISINI: Loop Complete Entries secara terbalik ---
+      // Kita loop dari belakang ke depan agar data terbaru (baris paling bawah di CSV)
+      // masuk ke array trips paling awal.
+      for (let i = completeEntries.length - 1; i >= 0; i--) {
+        const entry = completeEntries[i];
         if (!groupedData[entry.namaStaff]) {
           groupedData[entry.namaStaff] = { role: entry.jobdesk, trips: [], isActive: false };
         }
         groupedData[entry.namaStaff].trips.push(entry);
-      });
+      }
       
+      // Incomplete entries tetap di paling atas (Active status)
       incompleteEntries.forEach(entry => {
         if (!groupedData[entry.namaStaff]) {
           groupedData[entry.namaStaff] = { role: entry.jobdesk, trips: [], isActive: true };
         } else {
           groupedData[entry.namaStaff].isActive = true;
         }
+        // Unshift agar selalu di paling atas daftar history staff tersebut
         groupedData[entry.namaStaff].trips.unshift(entry);
       });
       
@@ -1374,7 +1380,3 @@
 <script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon='{"version":"2024.11.0","token":"e3c1c9af36de41759418005494a48906","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
 </body>
 </html>
-
-
-
-
