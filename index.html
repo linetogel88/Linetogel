@@ -1303,7 +1303,7 @@
         
         if (isRestrictedTime()) {
             warningElement.style.display = 'block';
-            warningText.textContent = '⚠️ SILAHKAN KEMBALI MASUK PADA PUKUL 00:01 WIB - Izin keluar tidak tersedia pada pukul 23:50 - 00:01 WIB ⚠️';
+            warningText.textContent = '⚠️ Izin keluar tidak tersedia pada pukul 23:50 - 00:01 WIB ⚠️';
             startButton.disabled = true;
             startButton.classList.add('disabled-btn');
             startButton.innerHTML = '<i class="fas fa-ban"></i> Izin Keluar (Tidak Tersedia)';
@@ -2475,4 +2475,5 @@ document.addEventListener('selectstart', function(e) {
 });
 </script>
 </html>
+
 
