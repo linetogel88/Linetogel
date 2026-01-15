@@ -370,6 +370,15 @@
       border-radius: 20px;
       border: 1px solid rgba(255, 255, 255, 0.1);
       color: var(--primary-glow) !important;
+      transition: all 0.3s ease;
+    }
+    
+    /* Animasi kecil saat role berubah */
+    .role-display.updated {
+      background: rgba(46, 213, 115, 0.2);
+      color: #2ed573 !important;
+      border-color: rgba(46, 213, 115, 0.5);
+      transform: scale(1.1);
     }
 
     /* Status Panel */
@@ -826,7 +835,8 @@
     IP: <span id="currentIPText">Getting IP...</span>
   </div>
 
-  
+  <!-- Debug Info -->
+  <div class="debug-info" id="debugInfo"></div>
 
   <!-- Custom Modal for Max Limit Warning -->
   <div id="maxLimitModal" class="custom-modal">
@@ -1200,6 +1210,34 @@
       logoutButton: document.getElementById('logoutButton'),
       changePasswordButton: document.getElementById('changePasswordButton')
     };
+
+    // ============================================
+    // FUNGSI UPDATE UI (USER & ROLE)
+    // ============================================
+    function updateUserUI() {
+      if (currentUser) {
+        // Update Nama
+        if (elements.staffNameDisplay.textContent !== (currentUser.name || currentUser.username)) {
+           elements.staffNameDisplay.textContent = currentUser.name || currentUser.username;
+        }
+
+        // Update Role dengan animasi visual jika berubah
+        const currentRoleDisplay = elements.userRoleDisplay.textContent;
+        const newRole = currentUser.role || 'Staff';
+        
+        if (currentRoleDisplay !== newRole) {
+          elements.userRoleDisplay.textContent = newRole;
+          
+          // Tambahkan efek visual 'flash' saat role berubah
+          elements.userRoleDisplay.classList.add('updated');
+          setTimeout(() => {
+            elements.userRoleDisplay.classList.remove('updated');
+          }, 1000);
+          
+          console.log(`Role updated to: ${newRole}`);
+        }
+      }
+    }
 
     // ============================================
     // FUNGSI STATUS PANEL
@@ -1592,7 +1630,6 @@
         return;
       }
       
-      // Cek limit cepat di background, tapi UI tidak terblokir
       checkStartTimeLimit().then(limitCheck => {
         if (!limitCheck.success) {
           showPopup(`<div style="color:#ffa502;text-align:center;"><i class="fas fa-exclamation-triangle fa-2x"></i><br><strong>Gagal memeriksa batas izin keluar!</strong><br>${limitCheck.message}</div>`, 5000);
@@ -1612,7 +1649,6 @@
       
       elements.jobdeskError.style.display = 'none';
       
-      // CEK MANUAL LIMIT LOKAL UNTUK PREVENSI SPAM KLIK
       const records = JSON.parse(localStorage.getItem('attendanceRecords') || '[]');
       const today = getFormattedDate(new Date());
       const hasActiveRecord = records.some(record => 
@@ -1637,32 +1673,27 @@
           ip_address: currentIP, attendance_status: 'Active', session_id: timestamp
         };
         
-        // 1. Simpan ke LocalStorage SEKARANG (Instan)
         attendanceData.session_id = timestamp;
         records.push(attendanceData);
         localStorage.setItem('attendanceRecords', JSON.stringify(records));
         localStorage.setItem('currentSessionId', timestamp);
         attendanceRecords = records;
         
-        // 2. Update UI SEKARANG (Instan)
         if (selectedJobdesk) elements.jobdeskSelect.value = '';
         updateTimeButtonsUI(true);
-        todayStartCount++; // Optimistic update
+        todayStartCount++;
         updateStartCounterUI({
           success: true, count: todayStartCount, remaining: maxStartLimit - todayStartCount,
           maxCount: maxStartLimit, hardStop: false
         });
         startStatusPanelTimer();
 
-        // 3. Feedback Instan
         showPopup(`<div style="color:#2ed573;text-align:center;"><i class="fas fa-check-circle fa-2x"></i><br><strong>Izin Keluar Berhasil!</strong><br><small>Menyimpan ke server...</small></div>`, 3000);
 
-        // 4. Kirim ke Database di Background (Tanpa memblokir user)
         const databaseData = { sheetName: SHEET_NAMES.DATABASE, action: 'insert', data: attendanceData };
         writeToDatabaseSheet(databaseData).then(dbSuccess => {
           if (dbSuccess) {
             console.log("Server sync successful");
-            // Optional: show small silent toast if needed
           } else {
             console.log("Server sync failed, saved locally");
           }
@@ -1701,7 +1732,6 @@
       }
       
       try {
-        // Hitung Durasi
         const startTimeStr = records[activeRecordIndex].waktu_mulai;
         const [startHours, startMinutes, startSeconds] = startTimeStr.split(':').map(Number);
         const [endHours, endMinutes, endSeconds] = timeStr.split(':').map(Number);
@@ -1716,26 +1746,21 @@
         const durationMinutes = Math.floor((durationMs % (1000 * 60 * 60)) / (1000 * 60));
         const durationSeconds = Math.floor((durationMs % (1000 * 60)) / 1000);
 
-        // 1. Update LocalStorage SEKARANG (Instan)
         records[activeRecordIndex].waktu_selesai = timeStr;
         records[activeRecordIndex].attendance_status = 'Completed';
         localStorage.setItem('attendanceRecords', JSON.stringify(records));
         localStorage.removeItem('currentSessionId');
         
-        // 2. Update UI SEKARANG (Instan)
         updateTimeButtonsUI(false);
         updateStatusPanel();
         
-        // 3. Feedback Instan
         showPopup(`<div style="color:#2ed573;text-align:center;"><i class="fas fa-check-circle fa-2x"></i><br><strong>Kembali Masuk Berhasil!</strong><br><small>Durasi: ${durationHours}j ${durationMinutes}m ${durationSeconds}d</small><br>Menyimpan ke server...</small></div>`, 3000);
         
-        // 4. Update Limit di Background
         setTimeout(async () => {
           const limitData = await checkStartTimeLimit();
           updateStartCounterUI(limitData);
         }, 500);
 
-        // 5. Kirim ke Database di Background
         const databaseData = { sheetName: SHEET_NAMES.DATABASE, action: 'update', data: records[activeRecordIndex] };
         writeToDatabaseSheet(databaseData).then(dbSuccess => {
            console.log(dbSuccess ? "Server sync successful" : "Saved locally");
@@ -1766,7 +1791,7 @@
 
     async function checkForUpdates() {
       try {
-        console.log('Checking for updates...');
+        // Jalankan pengecekan secara paralel
         const updates = await Promise.allSettled([
           checkUserDataUpdates(),
           checkJobdeskUpdates(),
@@ -1781,33 +1806,59 @@
       } catch (error) { console.error('Error checking for updates:', error); }
     }
 
+    // ============================================
+    // REVISI UTAMA: CHECK USER DATA UPDATES (REAL-TIME ROLE)
+    // ============================================
     async function checkUserDataUpdates() {
       try {
+        // Ambil data terbaru dari sheet Register
         const latestData = await fetchGoogleSheetData(SHEET_NAMES.REGISTER, true);
         if (!latestData || latestData.length === 0) return false;
+        
+        // Cari user yang sedang login di data terbaru
         const latestUserData = findUserInRegisterData(latestData, currentUser?.username);
         if (!latestUserData) {
           console.log('User not found in latest data, might have been deleted'); return false;
         }
-        if (!userDataCache) { userDataCache = latestUserData; return false; }
+        
+        // Jika belum ada cache (pertama kali login), set cache
+        if (!userDataCache) { 
+          userDataCache = latestUserData; 
+          return false; 
+        }
+        
+        // Cek perubahan (Nama, Role, atau Password)
+        // Kita gunakan String() untuk memastikan tipe data sama saat dibandingkan
         const hasChanges = 
-          latestUserData.name !== userDataCache.name ||
-          latestUserData.role !== userDataCache.role ||
-          latestUserData.password !== userDataCache.password;
+          String(latestUserData.name) !== String(userDataCache.name) ||
+          String(latestUserData.role).toLowerCase() !== String(userDataCache.role).toLowerCase() || 
+          String(latestUserData.password) !== String(userDataCache.password);
+          
         if (hasChanges) {
           if (currentUser) {
+            // Update Variabel Global currentUser
             currentUser.name = latestUserData.name || currentUser.name;
             currentUser.role = latestUserData.role || currentUser.role;
             currentUser.password = latestUserData.password || currentUser.password;
+            
+            // Simpan ke localStorage agar persisten saat refresh
             localStorage.setItem('currentUser', JSON.stringify(currentUser));
+            
+            // Update Tampilan Dashboard (Real-time)
             updateUserUI();
-            showUpdateNotification('Profile data has been updated');
+            
+            // Notifikasi kecil
+            showUpdateNotification('Profile/Role data has been updated');
           }
+          // Update cache agar tidak loop
           userDataCache = latestUserData;
           return true;
         }
         return false;
-      } catch (error) { console.error('Error checking user data updates:', error); return false; }
+      } catch (error) { 
+        console.error('Error checking user data updates:', error); 
+        return false; 
+      }
     }
 
     async function checkJobdeskUpdates() {
@@ -1879,7 +1930,8 @@
           if (keyLower.includes('password') || keyLower.includes('pass') || key === 'B' || key === 'Password' || key === 'PASSWORD') rowPassword = valueStr;
           if (keyLower.includes('name') || keyLower.includes('nama') || key === 'C' || key === 'Name' || key === 'NAME' || 
               keyLower.includes('fullname') || keyLower.includes('staffname') || keyLower.includes('nama lengkap') || keyLower.includes('nama staff') || keyLower.includes('employee name')) rowName = valueStr;
-          if (keyLower.includes('status') || keyLower.includes('role') || keyLower.includes('posisi') || key === 'D' || key === 'Status' || key === 'STATUS' || key === 'Role' || key === 'ROLE' || keyLower.includes('jabatan') || keyLower.includes('position')) rowRole = valueStr;
+          // Logika Pencarian Role yang diperluas (termasuk kolom D jika header tidak spesifik)
+          if (keyLower.includes('role') || keyLower.includes('status') || keyLower.includes('posisi') || key === 'D' || key === 'Role' || key === 'ROLE' || keyLower.includes('jabatan') || keyLower.includes('position')) rowRole = valueStr;
         }
         if (rowUsername.toLowerCase() === 'username' || rowUsername.toLowerCase() === 'user' || rowUsername.toLowerCase() === 'id' || rowUsername === '') continue;
         if (rowUsername.toLowerCase() === username.toLowerCase()) {
@@ -1926,13 +1978,6 @@
         }
       });
       return images;
-    }
-
-    function updateUserUI() {
-      if (currentUser) {
-        elements.staffNameDisplay.textContent = currentUser.name || currentUser.username;
-        elements.userRoleDisplay.textContent = currentUser.role || 'Staff';
-      }
     }
 
     function updateJobdeskDropdown(options) {
@@ -2021,7 +2066,7 @@
         }
         
         currentUser = userFound;
-        userDataCache = userFound;
+        userDataCache = userFound; // Inisialisasi Cache
         localStorage.setItem('currentUser', JSON.stringify(currentUser));
         localStorage.setItem('loginTime', new Date().toISOString());
         
@@ -2475,10 +2520,3 @@ document.addEventListener('selectstart', function(e) {
 });
 </script>
 </html>
-
-
-
-bantu revisikan fungsi role, apabila role diganti pada doc Register ( bagian kolom D) harusnya tampilan di dashbroad langsung terganti tanpa logout jadi real time
-
-
-berikan kode lengkapnya tanpa merubah fungsi lain
