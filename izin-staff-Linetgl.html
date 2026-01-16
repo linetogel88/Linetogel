@@ -144,196 +144,6 @@
       100% { opacity: 0.3; width: 60%; }
     }
 
-    /* --- SYSTEM INFO PANEL --- */
-    .system-panel {
-      background: rgba(0, 0, 0, 0.7);
-      backdrop-filter: blur(10px);
-      border-radius: 15px;
-      padding: 20px;
-      margin-bottom: 25px;
-      border: 1px solid rgba(236, 29, 36, 0.3);
-      box-shadow: 0 5px 15px rgba(0,0,0,0.5);
-      width: 100%;
-      max-width: 1400px;
-      z-index: 10;
-    }
-
-    .system-panel h3 {
-      color: var(--marvel-red);
-      margin-bottom: 15px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-family: var(--font-comic);
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-
-    .system-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 15px;
-    }
-
-    .system-card {
-      background: rgba(30, 30, 40, 0.8);
-      border-radius: 10px;
-      padding: 15px;
-      border-left: 4px solid var(--cap-blue);
-    }
-
-    .system-card.full {
-      border-left-color: var(--marvel-red);
-      background: rgba(50, 10, 10, 0.8);
-    }
-
-    .system-card.warning {
-      border-left-color: #FF9800;
-      background: rgba(50, 30, 0, 0.8);
-    }
-
-    .system-card h4 {
-      color: var(--dim-text);
-      font-size: 0.9rem;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      margin-bottom: 10px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .system-card .stats {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .system-card .count {
-      font-size: 1.8rem;
-      font-weight: 900;
-      color: var(--light-text);
-    }
-
-    .system-card .limit {
-      font-size: 1rem;
-      color: var(--dim-text);
-    }
-
-    .system-card .status {
-      padding: 5px 10px;
-      border-radius: 20px;
-      font-size: 0.8rem;
-      font-weight: bold;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-
-    .status-available {
-      background: rgba(120, 194, 88, 0.2);
-      color: var(--hulk-green);
-      border: 1px solid var(--hulk-green);
-    }
-
-    .status-full {
-      background: rgba(236, 29, 36, 0.2);
-      color: var(--marvel-red);
-      border: 1px solid var(--marvel-red);
-    }
-
-    .status-off {
-      background: rgba(100, 100, 100, 0.2);
-      color: var(--dim-text);
-      border: 1px solid var(--dim-text);
-    }
-
-    /* --- ACCESS SETTINGS PANEL --- */
-    .settings-panel {
-      background: rgba(0, 0, 0, 0.7);
-      backdrop-filter: blur(10px);
-      border-radius: 15px;
-      padding: 20px;
-      margin-bottom: 25px;
-      border: 1px solid rgba(10, 121, 223, 0.3);
-      box-shadow: 0 5px 15px rgba(0,0,0,0.5);
-      width: 100%;
-      max-width: 1400px;
-      z-index: 10;
-    }
-
-    .settings-panel h3 {
-      color: var(--cap-blue);
-      margin-bottom: 15px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-family: var(--font-comic);
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-
-    .settings-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 15px;
-    }
-
-    .setting-item {
-      background: rgba(30, 30, 40, 0.8);
-      border-radius: 10px;
-      padding: 15px;
-      border-left: 4px solid transparent;
-    }
-
-    .setting-item.on {
-      border-left-color: var(--hulk-green);
-    }
-
-    .setting-item.off {
-      border-left-color: var(--dim-text);
-    }
-
-    .setting-item .label {
-      color: var(--dim-text);
-      font-size: 0.9rem;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      margin-bottom: 5px;
-    }
-
-    .setting-item .value {
-      font-size: 1.2rem;
-      font-weight: bold;
-      color: var(--light-text);
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .value.on {
-      color: var(--hulk-green);
-    }
-
-    .value.off {
-      color: var(--dim-text);
-    }
-
-    .value .dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      display: inline-block;
-    }
-
-    .dot.on {
-      background-color: var(--hulk-green);
-      box-shadow: 0 0 10px var(--hulk-green);
-    }
-
-    .dot.off {
-      background-color: var(--dim-text);
-    }
-
     /* --- SEARCH BOX (GLASS PILL) --- */
     .search-box {
       text-align: center;
@@ -796,43 +606,6 @@
       color: var(--marvel-red);
     }
 
-    /* Loading Overlay */
-    .loading-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.8);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 9999;
-      flex-direction: column;
-      gap: 20px;
-      display: none;
-    }
-
-    .loading-spinner {
-      width: 50px;
-      height: 50px;
-      border: 5px solid rgba(236, 29, 36, 0.3);
-      border-radius: 50%;
-      border-top-color: var(--marvel-red);
-      animation: spin 1s linear infinite;
-    }
-
-    .loading-text {
-      color: white;
-      font-size: 1.2rem;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-    }
-
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-
     @media (max-width: 768px) {
       .main-container {
         padding: 0;
@@ -859,9 +632,6 @@
       }
       .staff-main-name { font-size: 1.1rem; }
       .staff-detail-row td:nth-child(1) { padding-left: 25px !important; }
-      .system-grid, .settings-grid {
-        grid-template-columns: 1fr;
-      }
     }
 
     td {
@@ -873,29 +643,6 @@
   </style>
 </head>
 <body>
-  <!-- Loading Overlay -->
-  <div class="loading-overlay" id="loadingOverlay">
-    <div class="loading-spinner"></div>
-    <div class="loading-text" id="loadingText">Memuat Data...</div>
-  </div>
-
-  <!-- System Settings Panel -->
-  <div class="settings-panel" id="settingsPanel" style="display: none;">
-    <h3><i class="fas fa-cog"></i> Pengaturan Sistem</h3>
-    <div class="settings-grid" id="settingsGrid">
-      <!-- Settings will be populated by JavaScript -->
-    </div>
-  </div>
-
-  <!-- Role Limits Panel -->
-  <div class="system-panel" id="systemPanel" style="display: none;">
-    <h3><i class="fas fa-users-cog"></i> Status Role & Batasan</h3>
-    <div class="system-grid" id="systemGrid">
-      <!-- System info will be populated by JavaScript -->
-    </div>
-  </div>
-
-  <!-- Main Dashboard -->
   <div class="main-container">
     <div class="table-wrapper">
       <!-- TITLE: COMPACT HORIZONTAL LAYOUT -->
@@ -945,13 +692,11 @@
   <script>
     // Konfigurasi Google Sheets
     const SPREADSHEET_ID = '1JcZW0LC1-4l0GlFS_UQEZwrCC2OrXfQKh-Kr5opOdZs';
-    const DATABASE_SHEET = 'DATABASE LINETOGEL';
-    const ACCESS_SHEET = 'Access';
+    const SHEET_NAME = 'DATABASE LINETOGEL';
     const BACKGROUND_SHEET_NAME = 'background';
     
     // URL untuk mengambil data dalam format CSV
-    const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(DATABASE_SHEET)}`;
-    const ACCESS_URL = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(ACCESS_SHEET)}`;
+    const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(SHEET_NAME)}`;
     const BACKGROUND_SHEET_URL = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(BACKGROUND_SHEET_NAME)}`;
     
     // Variabel untuk real-time tracking
@@ -961,23 +706,6 @@
     const MAX_RETRIES = 10;
     let updateInterval;
     let backgroundInterval;
-    
-    // Data pengaturan dari sheet Access
-    let accessSettings = {
-      jobdeskAccess: 'OFF',
-      startLimitAccess: 'OFF',
-      maxStartTimeCount: 4,
-      accessStatus: 'OFF',
-      roleLimits: {
-        CS: 'OFF',
-        KKS: 'OFF',
-        KS: 'OFF',
-        KHMER: 'OFF',
-        AUDIT: 'OFF',
-        CRM: 'OFF',
-        OPS: 'OFF'
-      }
-    };
     
     // Background slideshow default
     let backgroundLinks = [
@@ -1119,203 +847,6 @@
       return durationMinutes > DURATION_LIMIT_MINUTES;
     }
     
-    // ---------------------------------------------------------
-    // FUNGSI UNTUK MENGAMBIL DATA ACCESS SHEET
-    // ---------------------------------------------------------
-    async function fetchAccessSettings() {
-      try {
-        showLoading('Memuat pengaturan sistem...');
-        const response = await fetch(ACCESS_URL);
-        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-        
-        const csvText = await response.text();
-        const lines = csvText.split('\n').filter(line => line.trim() !== '');
-        
-        // Parse data dari sheet Access
-        const accessData = {};
-        
-        lines.forEach((line, index) => {
-          if (index === 0) return; // Skip header
-          
-          const values = parseCSVLine(line);
-          if (values.length >= 2) {
-            // Mapping berdasarkan baris yang diketahui
-            if (index === 1) { // Baris 2 (B2)
-              accessData.jobdeskAccess = values[1] || 'OFF';
-            }
-            if (index === 2) { // Baris 3 (B3, D3, E3)
-              accessData.startLimitAccess = values[1] || 'OFF';
-              accessData.accessStatus = values[3] || 'OFF';
-              accessData.maxStartTimeCount = parseInt(values[4]) || 4;
-            }
-            if (index === 5) { // Baris 6 (D6)
-              if (values[3]) accessData.roleLimits = accessData.roleLimits || {};
-              accessData.roleLimits.CS = values[3] || 'OFF';
-            }
-            if (index === 8) { // Baris 9 (B9, D9)
-              if (values[1]) accessData.roleLimits = accessData.roleLimits || {};
-              accessData.roleLimits.KKS = values[1] || 'OFF';
-              accessData.roleLimits.KS = values[3] || 'OFF';
-            }
-            if (index === 11) { // Baris 12 (B12, D12)
-              if (values[1]) accessData.roleLimits = accessData.roleLimits || {};
-              accessData.roleLimits.KHMER = values[1] || 'OFF';
-              accessData.roleLimits.AUDIT = values[3] || 'OFF';
-            }
-            if (index === 14) { // Baris 15 (B15, D15)
-              if (values[1]) accessData.roleLimits = accessData.roleLimits || {};
-              accessData.roleLimits.CRM = values[1] || 'OFF';
-              accessData.roleLimits.OPS = values[3] || 'OFF';
-            }
-          }
-        });
-        
-        // Update global accessSettings
-        Object.assign(accessSettings, accessData);
-        
-        console.log('Access Settings loaded:', accessSettings);
-        return accessSettings;
-        
-      } catch (error) {
-        console.error('Error fetching access settings:', error);
-        return accessSettings; // Return default settings
-      }
-    }
-    
-    function parseCSVLine(line) {
-      const values = [];
-      let current = '';
-      let inQuotes = false;
-      
-      for (let j = 0; j < line.length; j++) {
-        const char = line[j];
-        if (char === '"') { inQuotes = !inQuotes; } 
-        else if (char === ',' && !inQuotes) { values.push(current); current = ''; } 
-        else { current += char; }
-      }
-      values.push(current);
-      
-      return values.map(v => v.replace(/"/g, '').trim());
-    }
-    
-    // ---------------------------------------------------------
-    // FUNGSI UNTUK MENAMPILKAN PENGATURAN SYSTEM
-    // ---------------------------------------------------------
-    function updateSystemPanels(activeCounts = { CS:0, KKS:0, KS:0, KHMER:0, AUDIT:0, CRM:0, OPS:0 }) {
-      // Update Settings Panel
-      const settingsGrid = document.getElementById('settingsGrid');
-      if (settingsGrid) {
-        settingsGrid.innerHTML = `
-          <div class="setting-item ${accessSettings.jobdeskAccess === 'ON' ? 'on' : 'off'}">
-            <div class="label">Jobdesk Access</div>
-            <div class="value ${accessSettings.jobdeskAccess === 'ON' ? 'on' : 'off'}">
-              <span class="dot ${accessSettings.jobdeskAccess === 'ON' ? 'on' : 'off'}"></span>
-              ${accessSettings.jobdeskAccess}
-            </div>
-          </div>
-          <div class="setting-item ${accessSettings.startLimitAccess === 'ON' ? 'on' : 'off'}">
-            <div class="label">Start Limit Access</div>
-            <div class="value ${accessSettings.startLimitAccess === 'ON' ? 'on' : 'off'}">
-              <span class="dot ${accessSettings.startLimitAccess === 'ON' ? 'on' : 'off'}"></span>
-              ${accessSettings.startLimitAccess}
-            </div>
-          </div>
-          <div class="setting-item ${accessSettings.accessStatus === 'ON' ? 'on' : 'off'}">
-            <div class="label">Access Status (Max 3 Staff)</div>
-            <div class="value ${accessSettings.accessStatus === 'ON' ? 'on' : 'off'}">
-              <span class="dot ${accessSettings.accessStatus === 'ON' ? 'on' : 'off'}"></span>
-              ${accessSettings.accessStatus}
-            </div>
-          </div>
-          <div class="setting-item ${accessSettings.maxStartTimeCount > 0 ? 'on' : 'off'}">
-            <div class="label">Max Start Time</div>
-            <div class="value ${accessSettings.maxStartTimeCount > 0 ? 'on' : 'off'}">
-              <i class="fas fa-redo"></i>
-              ${accessSettings.maxStartTimeCount}x per hari
-            </div>
-          </div>
-        `;
-      }
-      
-      // Update System Panel (Role Limits)
-      const systemGrid = document.getElementById('systemGrid');
-      if (systemGrid) {
-        const roles = ['CS', 'KKS', 'KS', 'KHMER', 'AUDIT', 'CRM', 'OPS'];
-        let html = '';
-        
-        roles.forEach(role => {
-          const active = activeCounts[role] || 0;
-          const limit = accessSettings.roleLimits[role] || 'OFF';
-          const limitNum = limit === 'OFF' ? Infinity : parseInt(limit);
-          const isFull = limit !== 'OFF' && active >= limitNum;
-          const isWarning = limit !== 'OFF' && active >= limitNum * 0.8;
-          
-          let statusClass = 'status-available';
-          let statusText = 'AVAILABLE';
-          
-          if (limit === 'OFF') {
-            statusClass = 'status-off';
-            statusText = 'OFF';
-          } else if (isFull) {
-            statusClass = 'status-full';
-            statusText = 'FULL';
-          } else if (isWarning) {
-            statusClass = 'status-available';
-            statusText = 'WARNING';
-          }
-          
-          const cardClass = isFull ? 'full' : (isWarning ? 'warning' : '');
-          
-          html += `
-            <div class="system-card ${cardClass}">
-              <h4><i class="fas fa-user-tag"></i> ${role}</h4>
-              <div class="stats">
-                <div>
-                  <div class="count">${active}</div>
-                  <div class="limit">Active Staff</div>
-                </div>
-                <div>
-                  <div class="count">${limit}</div>
-                  <div class="limit">Limit</div>
-                </div>
-                <div class="status ${statusClass}">${statusText}</div>
-              </div>
-            </div>
-          `;
-        });
-        
-        systemGrid.innerHTML = html;
-      }
-      
-      // Tampilkan panel jika ada data
-      document.getElementById('settingsPanel').style.display = 'block';
-      document.getElementById('systemPanel').style.display = 'block';
-    }
-    
-    // ---------------------------------------------------------
-    // FUNGSI UNTUK MENGHITUNG ACTIVE COUNTS PER ROLE
-    // ---------------------------------------------------------
-    function calculateActiveCounts(incompleteEntries) {
-      const activeCounts = { CS:0, KKS:0, KS:0, KHMER:0, AUDIT:0, CRM:0, OPS:0 };
-      
-      incompleteEntries.forEach(entry => {
-        const role = entry.jobdesk ? entry.jobdesk.toUpperCase() : '';
-        
-        if (role.includes('CS')) activeCounts.CS++;
-        if (role.includes('KKS')) activeCounts.KKS++;
-        if (role.includes('KS')) activeCounts.KS++;
-        if (role.includes('KHMER')) activeCounts.KHMER++;
-        if (role.includes('AUDIT')) activeCounts.AUDIT++;
-        if (role.includes('CRM')) activeCounts.CRM++;
-        if (role.includes('OPS') || role.includes('STAFF')) activeCounts.OPS++;
-      });
-      
-      return activeCounts;
-    }
-    
-    // ---------------------------------------------------------
-    // FUNGSI LAINNYA (Background, Date, dll)
-    // ---------------------------------------------------------
     async function fetchBackgroundLinks() {
       try {
         const response = await fetch(BACKGROUND_SHEET_URL);
@@ -1331,7 +862,17 @@
           const line = lines[i].trim();
           if (!line) continue;
           
-          const values = parseCSVLine(line);
+          const values = [];
+          let current = '';
+          let inQuotes = false;
+          
+          for (let j = 0; j < line.length; j++) {
+            const char = line[j];
+            if (char === '"') { inQuotes = !inQuotes; } 
+            else if (char === ',' && !inQuotes) { values.push(current); current = ''; } 
+            else { current += char; }
+          }
+          values.push(current);
           
           if (values.length > 1 && values[1]) {
             const url = values[1].replace(/"/g, '').trim();
@@ -1488,12 +1029,12 @@
       
       const columnMapping = {
         namaStaff: ['Nama Staff', 'Nama', 'Name', 'Staff'],
-        jobdesk: ['Jobdesk', 'Posisi', 'Job', 'Role'],
+        jobdesk: ['Jobdesk', 'Posisi', 'Job'],
         date: ['Tanggal', 'Date'],
-        startTime: ['Jam Masuk', 'Masuk', 'Start Time', 'Out Time'],
-        endTime: ['Jam Keluar', 'Keluar', 'End Time', 'In Time'],
+        startTime: ['Jam Masuk', 'Masuk', 'Start Time'],
+        endTime: ['Jam Keluar', 'Keluar', 'End Time'],
         durasi: ['Durasi', 'Lama Kerja', 'Duration'],
-        keterangan: ['Keterangan', 'Ket', 'Note', 'Status'],
+        keterangan: ['Keterangan', 'Ket', 'Note'],
         count: ['Status', 'Count']
       };
       
@@ -1511,7 +1052,17 @@
         const line = lines[i].trim();
         if (!line) continue;
         
-        const values = parseCSVLine(line);
+        const values = [];
+        let current = '';
+        let inQuotes = false;
+        
+        for (let j = 0; j < line.length; j++) {
+          const char = line[j];
+          if (char === '"') { inQuotes = !inQuotes; } 
+          else if (char === ',' && !inQuotes) { values.push(current); current = ''; } 
+          else { current += char; }
+        }
+        values.push(current);
         
         const rowData = {};
         Object.keys(columnIndices).forEach(key => {
@@ -1556,12 +1107,6 @@
       const tbody = document.getElementById('tableBody');
       const { completeEntries, incompleteEntries } = data;
       
-      // Hitung active counts untuk panel system
-      const activeCounts = calculateActiveCounts(incompleteEntries);
-      
-      // Update system panels dengan data terbaru
-      updateSystemPanels(activeCounts);
-      
       updateWarningMessage(incompleteEntries);
       
       const groupedData = {};
@@ -1600,12 +1145,16 @@
         // --- Parent Row (Header) ---
         const parentTr = document.createElement('tr');
         
+        // PERUBAHAN DI SINI: Tidak ada 'expanded' secara default
+        // Aktif atau tidak, semuanya minimize awalnya.
         parentTr.className = staff.isActive ? 'staff-header-row active' : 'staff-header-row';
         
         parentTr.onclick = function() { toggleStaffRows(this); };
 
+        // Icon awal selalu Chevron Right (tutup) karena tidak ada expanded
         const toggleIconClass = 'fa-chevron-right';
         
+        // Parent uses COLSPAN=8 to span full width for custom layout
         parentTr.innerHTML = `
             <td colspan="8">
                 <div class="staff-header-content">
@@ -1637,6 +1186,7 @@
             const childTr = document.createElement('tr');
             childTr.className = 'staff-detail-row';
             
+            // Karena parent tidak punya class 'expanded', semua child akan otomatis hidden
             if (!parentTr.classList.contains('expanded')) {
                 childTr.classList.add('hidden-row');
             }
@@ -1648,6 +1198,7 @@
                 childTr.classList.add("lewat-row");
             }
 
+            // Memanggil formatTimeDisplay yang sudah diupdate (dengan detik)
             const displayStartTime = formatTimeDisplay(trip.startTime);
             const displayEndTime = formatTimeDisplay(trip.endTime);
             let displayDuration = formatHistoryDuration(trip.durasi);
@@ -1683,8 +1234,6 @@
           </tr>
         `;
       }
-      
-      hideLoading();
     }
 
     function toggleStaffRows(parentRow) {
@@ -1715,20 +1264,11 @@
     function updateWarningMessage(incompleteEntries) {
       const warningDiv = document.getElementById('warningMessage');
       
-      // Cek Access Status (max 3 staff)
-      const maxActiveStaff = accessSettings.accessStatus === 'ON' ? 3 : Infinity;
-      const activeStaffCount = incompleteEntries.length;
-      
-      if (activeStaffCount > 0) {
+      if (incompleteEntries.length > 0) {
         warningDiv.style.display = 'block';
         
-        let warningText = `Ada ${activeStaffCount} staff yang sedang keluar!`;
-        if (maxActiveStaff !== Infinity && activeStaffCount >= maxActiveStaff) {
-          warningText += ` ⚠️ MAX ${maxActiveStaff} STAFF!`;
-        }
-        
         let tableContent = `
-          <h3><i class="fas fa-exclamation-triangle"></i> Live Monitoring - ${warningText}</h3>
+          <h3><i class="fas fa-exclamation-triangle"></i> Live Monitoring</h3>
           <table style="background: rgba(0,0,0,0.3); margin-top: 10px; border-radius: 8px; overflow: hidden; width: 100%;">
             <thead>
               <tr>
@@ -1736,7 +1276,6 @@
                 <th>Role</th>
                 <th>JAM KELUAR</th>
                 <th>DURASI</th>
-                <th>STATUS</th>
               </tr>
             </thead>
             <tbody id="warningTableBody">
@@ -1775,39 +1314,6 @@
           
           const displayTimeOut = formatTimeDisplay(entry.startTime);
           
-          // Cek batas per role
-          const role = entry.jobdesk ? entry.jobdesk.toUpperCase() : '';
-          let roleStatus = '✅ OK';
-          let roleLimit = 'OFF';
-          
-          if (role.includes('CS')) roleLimit = accessSettings.roleLimits.CS;
-          else if (role.includes('KKS')) roleLimit = accessSettings.roleLimits.KKS;
-          else if (role.includes('KS')) roleLimit = accessSettings.roleLimits.KS;
-          else if (role.includes('KHMER')) roleLimit = accessSettings.roleLimits.KHMER;
-          else if (role.includes('AUDIT')) roleLimit = accessSettings.roleLimits.AUDIT;
-          else if (role.includes('CRM')) roleLimit = accessSettings.roleLimits.CRM;
-          else if (role.includes('OPS') || role.includes('STAFF')) roleLimit = accessSettings.roleLimits.OPS;
-          
-          if (roleLimit !== 'OFF') {
-            const limitNum = parseInt(roleLimit);
-            const activeCount = calculateActiveCounts(incompleteEntries);
-            let activeForRole = 0;
-            
-            if (role.includes('CS')) activeForRole = activeCount.CS;
-            else if (role.includes('KKS')) activeForRole = activeCount.KKS;
-            else if (role.includes('KS')) activeForRole = activeCount.KS;
-            else if (role.includes('KHMER')) activeForRole = activeCount.KHMER;
-            else if (role.includes('AUDIT')) activeForRole = activeCount.AUDIT;
-            else if (role.includes('CRM')) activeForRole = activeCount.CRM;
-            else if (role.includes('OPS') || role.includes('STAFF')) activeForRole = activeCount.OPS;
-            
-            if (activeForRole >= limitNum) {
-              roleStatus = `⛔ FULL (${activeForRole}/${limitNum})`;
-            } else {
-              roleStatus = `✅ ${activeForRole}/${limitNum}`;
-            }
-          }
-          
           const row = document.createElement('tr');
           row.className = 'warning-row';
           row.innerHTML = `
@@ -1820,7 +1326,6 @@
                 <i class="fas fa-stopwatch"></i>${timeResult.formattedTime}
               </div>
             </td>
-            <td>${roleStatus}</td>
           `;
           
           row.style.opacity = '0';
@@ -1911,6 +1416,7 @@
       if (keyword === '') {
           parentRows.forEach(parent => {
               parent.style.display = '';
+              // Saat search dikosongkan, tutup semua kembali (minimize)
               parent.classList.remove('expanded');
               const icon = parent.querySelector('.toggle-icon');
               if(icon) {
@@ -1927,28 +1433,9 @@
       }
     }
 
-    // ---------------------------------------------------------
-    // FUNGSI UTILITAS LOADING
-    // ---------------------------------------------------------
-    function showLoading(message = 'Memuat Data...') {
-      const loadingOverlay = document.getElementById('loadingOverlay');
-      const loadingText = document.getElementById('loadingText');
-      loadingText.textContent = message;
-      loadingOverlay.style.display = 'flex';
-    }
-    
-    function hideLoading() {
-      const loadingOverlay = document.getElementById('loadingOverlay');
-      loadingOverlay.style.display = 'none';
-    }
-
-    // ---------------------------------------------------------
-    // INITIALIZE
-    // ---------------------------------------------------------
     document.addEventListener('DOMContentLoaded', async function() {
-      showLoading('Menginisialisasi dashboard...');
+      startBackgroundSlideshow(backgroundLinks);
       
-      // Load background
       try {
         const fetchedBackgrounds = await fetchBackgroundLinks();
         if (fetchedBackgrounds.length > 0) {
@@ -1959,31 +1446,23 @@
         console.error('Gagal mengambil data background:', error);
       }
       
-      // Load access settings
-      await fetchAccessSettings();
-      
-      // Load initial data
-      try {
-        const data = await fetchData();
+      fetchData().then(data => {
         currentData = data;
         lastDataHash = calculateDataHash(data);
         updateTable(data);
         
-        // Start auto-update
         updateInterval = setInterval(checkForUpdates, 3000);
         
-        // Additional check after initial load
         setTimeout(() => {
           setInterval(checkForUpdates, 4500);
         }, 1500);
-        
-      } catch (error) {
+      }).catch(error => {
         console.error('Error initial load:', error);
-        hideLoading();
-        alert('Gagal memuat data. Silakan refresh halaman.');
-      }
+        setTimeout(() => {
+          document.location.reload();
+        }, 10000);
+      });
       
-      // Keyboard shortcuts
       document.addEventListener('keydown', function(e) {
         if (e.ctrlKey && e.key === 'r') {
           e.preventDefault();
@@ -1993,17 +1472,12 @@
           document.getElementById('searchInput').value = '';
           filterByName();
         }
-        if (e.key === 'F5') {
-          e.preventDefault();
-          location.reload();
-        }
       });
     });
     
     document.addEventListener('contextmenu', event => event.preventDefault());
     
     window.filterByName = filterByName;
-    window.toggleStaffRows = toggleStaffRows;
   </script>
 <script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon='{"version":"2024.11.0","token":"e3c1c9af36de41759418005494a48906","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
 </body>
@@ -2174,3 +1648,5 @@ document.addEventListener('selectstart', function(e) {
 });
 </script>
 </html>
+
+
