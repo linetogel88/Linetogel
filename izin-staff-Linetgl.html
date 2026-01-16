@@ -508,63 +508,6 @@
       height: 55px;
     }
 
-    /* --- NEW: ROLE LIMIT STYLES --- */
-    .capacity-bar {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      justify-content: center;
-      margin-bottom: 15px;
-      padding-bottom: 15px;
-      border-bottom: 1px solid rgba(255,255,255,0.1);
-    }
-
-    .cap-item {
-      background: rgba(0,0,0,0.5);
-      padding: 5px 12px;
-      border-radius: 6px;
-      font-size: 0.8rem;
-      border: 1px solid rgba(255,255,255,0.1);
-      color: var(--dim-text);
-    }
-
-    .cap-item.full {
-      border-color: var(--marvel-red);
-      color: var(--marvel-red);
-      background: rgba(236, 29, 36, 0.1);
-      font-weight: bold;
-      box-shadow: 0 0 10px rgba(236, 29, 36, 0.2);
-    }
-
-    /* Style untuk baris yang melebihi limit role */
-    .warning-row.role-overlimit {
-      border: 1px solid var(--marvel-red);
-      background: linear-gradient(90deg, rgba(236, 29, 36, 0.2), rgba(0,0,0,0.6)) !important;
-      animation: blockPulse 2s infinite;
-    }
-
-    .warning-row.role-overlimit td {
-      color: #fff;
-    }
-
-    .blocked-badge {
-      background: var(--marvel-red);
-      color: white;
-      font-size: 0.7rem;
-      padding: 2px 8px;
-      border-radius: 4px;
-      margin-left: 8px;
-      font-weight: bold;
-      text-transform: uppercase;
-      box-shadow: 0 0 10px var(--marvel-red);
-    }
-
-    @keyframes blockPulse {
-      0% { box-shadow: inset 0 0 0px var(--marvel-red); }
-      50% { box-shadow: inset 0 0 20px var(--marvel-red); }
-      100% { box-shadow: inset 0 0 0px var(--marvel-red); }
-    }
-
     .stopwatch {
       font-family: 'Courier New', monospace;
       font-weight: bold;
@@ -689,13 +632,6 @@
       }
       .staff-main-name { font-size: 1.1rem; }
       .staff-detail-row td:nth-child(1) { padding-left: 25px !important; }
-      .capacity-bar {
-        gap: 5px;
-      }
-      .cap-item {
-        font-size: 0.7rem;
-        padding: 4px 8px;
-      }
     }
 
     td {
@@ -762,15 +698,6 @@
     // URL untuk mengambil data dalam format CSV
     const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(SHEET_NAME)}`;
     const BACKGROUND_SHEET_URL = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(BACKGROUND_SHEET_NAME)}`;
-    
-    // --- KONFIGURASI BATAS IZIN / LIMIT ROLE ---
-    const ROLE_LIMITS = {
-      'CS LINE': 2,
-      'CS': 2,
-      'KS': 3,
-      'KKS': 1,
-      'KHMER': 1
-    };
     
     // Variabel untuk real-time tracking
     let lastDataHash = '';
@@ -1173,43 +1100,6 @@
       return result;
     }
     
-    // --- FUNGSI BARU: CEK KAPASITAS / LIMIT ROLE ---
-    function getRoleCapacityStatus(incompleteEntries) {
-      const counts = {};
-      const status = {}; // true/false per role
-
-      // Hitung jumlah staff keluar per role (Case Insensitive)
-      incompleteEntries.forEach(entry => {
-        const role = (entry.jobdesk || '').trim().toUpperCase();
-        if (role) {
-          counts[role] = (counts[role] || 0) + 1;
-        }
-      });
-
-      // Cek batas berdasarkan konfigurasi
-      for (const [role, limit] of Object.entries(ROLE_LIMITS)) {
-        // Cek apakah role di data cocok dengan key di config (case insensitive)
-        let currentCount = 0;
-        // Kita cari key di 'counts' yang match dengan key di 'ROLE_LIMITS' (atau sebaliknya)
-        // Simplifikasi: kita pakai key dari ROLE_LIMITS, cari di data
-        for (const dataRole in counts) {
-          if (dataRole === role.toUpperCase()) {
-            currentCount = counts[dataRole];
-            break;
-          }
-        }
-        
-        const isFull = currentCount >= limit;
-        status[role.toUpperCase()] = {
-          current: currentCount,
-          limit: limit,
-          isFull: isFull
-        };
-      }
-
-      return status;
-    }
-    
     // ---------------------------------------------------------
     // FUNGSI UTAMA: Tabel dengan Grouping (Parent/Child)
     // ---------------------------------------------------------
@@ -1217,10 +1107,7 @@
       const tbody = document.getElementById('tableBody');
       const { completeEntries, incompleteEntries } = data;
       
-      // Panggil fungsi baru untuk cek limit role
-      const roleCapacity = getRoleCapacityStatus(incompleteEntries);
-      
-      updateWarningMessage(incompleteEntries, roleCapacity);
+      updateWarningMessage(incompleteEntries);
       
       const groupedData = {};
       
@@ -1374,26 +1261,13 @@
         }
     }
     
-    function updateWarningMessage(incompleteEntries, roleCapacity) {
+    function updateWarningMessage(incompleteEntries) {
       const warningDiv = document.getElementById('warningMessage');
       
       if (incompleteEntries.length > 0) {
         warningDiv.style.display = 'block';
         
-        // 1. Generate Capacity Bar (Visualisasi Limit Role)
-        let capacityHtml = '<div class="capacity-bar">';
-        for (const [roleKey, statusObj] of Object.entries(roleCapacity)) {
-            // Tampilkan hanya role yang ada di config
-            if (ROLE_LIMITS[roleKey]) {
-                const classFull = statusObj.isFull ? 'full' : '';
-                const text = statusObj.isFull ? 'FULL' : 'OK';
-                capacityHtml += `<div class="cap-item ${classFull}">${roleKey}: ${statusObj.current}/${statusObj.limit} [${text}]</div>`;
-            }
-        }
-        capacityHtml += '</div>';
-
         let tableContent = `
-          ${capacityHtml}
           <h3><i class="fas fa-exclamation-triangle"></i> Live Monitoring</h3>
           <table style="background: rgba(0,0,0,0.3); margin-top: 10px; border-radius: 8px; overflow: hidden; width: 100%;">
             <thead>
@@ -1440,26 +1314,11 @@
           
           const displayTimeOut = formatTimeDisplay(entry.startTime);
           
-          // --- LOGIKA BLOCKING / FULL CHECK ---
-          const entryRole = (entry.jobdesk || '').trim().toUpperCase();
-          // Cek apakah role ini full (harus exact match dengan keys di roleCapacity)
-          const roleStatus = roleCapacity[entryRole] || { isFull: false };
-          const isRoleOverLimit = roleStatus.isFull;
-
           const row = document.createElement('tr');
           row.className = 'warning-row';
-          if (isRoleOverLimit) {
-              row.classList.add('role-overlimit');
-          }
-
-          let roleDisplay = entry.jobdesk || '-';
-          if (isRoleOverLimit) {
-              roleDisplay += ` <span class="blocked-badge">BLOCKED</span>`;
-          }
-
           row.innerHTML = `
             <td><i class="fas fa-running" style="margin-right: 8px; color: var(--hulk-green);"></i>${entry.namaStaff || '-'}</td>
-            <td>${roleDisplay}</td>
+            <td>${entry.jobdesk || '-'}</td>
             <td><i class="fas fa-sign-in-alt" style="margin-right: 8px;"></i>${displayTimeOut || '-'}</td>
             <td>
               <div class="stopwatch ${timeResult.isOver15Min ? 'stopwatch-over' : 'stopwatch-normal'}" 
@@ -1789,3 +1648,4 @@ document.addEventListener('selectstart', function(e) {
 });
 </script>
 </html>
+
