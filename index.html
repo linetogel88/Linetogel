@@ -768,86 +768,6 @@
     .password-save-btn { background: linear-gradient(135deg, #00d2ff, #3a7bd5); color: white; border: none; }
     .password-cancel-btn { background: rgba(255, 255, 255, 0.1); color: white; border: 1px solid rgba(255,255,255,0.1); }
 
-    /* Maintenance Mode */
-    .maintenance-modal {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
-      z-index: 99999;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      padding: 20px;
-    }
-
-    .maintenance-content {
-      background: rgba(255, 255, 255, 0.05);
-      backdrop-filter: blur(20px);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 30px;
-      padding: 60px 40px;
-      max-width: 600px;
-      width: 90%;
-      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-    }
-
-    .maintenance-icon {
-      font-size: 80px;
-      color: #ffa502;
-      margin-bottom: 20px;
-      animation: pulse 2s infinite;
-    }
-
-    @keyframes pulse {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.1); }
-    }
-
-    .maintenance-title {
-      font-size: 36px;
-      color: #fff;
-      margin-bottom: 20px;
-      font-weight: 700;
-    }
-
-    .maintenance-message {
-      font-size: 18px;
-      color: rgba(255, 255, 255, 0.8);
-      line-height: 1.6;
-      margin-bottom: 30px;
-    }
-
-    .maintenance-info {
-      background: rgba(255, 165, 2, 0.1);
-      border: 1px solid rgba(255, 165, 2, 0.3);
-      border-radius: 15px;
-      padding: 20px;
-      margin-top: 30px;
-      color: rgba(255, 255, 255, 0.9);
-    }
-
-    /* Role Limit Warnings */
-    .role-limit-alert {
-      background: rgba(255, 107, 107, 0.1);
-      border: 1px solid rgba(255, 107, 107, 0.3);
-      color: #ff6b6b;
-      padding: 15px;
-      border-radius: 12px;
-      margin: 15px 0;
-      text-align: center;
-      font-size: 14px;
-    }
-
-    .role-limit-count {
-      font-size: 12px;
-      color: rgba(255, 255, 255, 0.6);
-      margin-top: 5px;
-    }
-
     /* Utility Classes */
     .hidden {
       display: none !important;
@@ -868,8 +788,6 @@
       .time-btns, .account-actions { grid-template-columns: 1fr; }
       .clock { font-size: 2.5rem; }
       #loginForm { padding: 30px 20px; }
-      .maintenance-content { padding: 40px 20px; }
-      .maintenance-title { font-size: 28px; }
     }
   </style>
 </head>
@@ -908,29 +826,7 @@
     IP: <span id="currentIPText">Getting IP...</span>
   </div>
 
-  <!-- Maintenance Mode Modal -->
-  <div id="maintenanceModal" class="maintenance-modal">
-    <div class="maintenance-content">
-      <div class="maintenance-icon">
-        <i class="fas fa-tools"></i>
-      </div>
-      <h1 class="maintenance-title">🚧 MAINTENANCE MODE 🚧</h1>
-      <p class="maintenance-message">
-        Sistem sedang dalam perawatan dan pengembangan.<br>
-        Harap bersabar, kami akan kembali segera.
-      </p>
-      <div class="maintenance-info">
-        <i class="fas fa-info-circle"></i>
-        Sistem akan kembali aktif setelah maintenance selesai.<br>
-        Hubungi administrator untuk informasi lebih lanjut.
-      </div>
-      <div style="margin-top: 30px;">
-        <button onclick="checkMaintenanceStatus()" class="gradient-btn" style="width: auto; padding: 12px 30px;">
-          <i class="fas fa-sync-alt"></i> Refresh Status
-        </button>
-      </div>
-    </div>
-  </div>
+
 
   <!-- Custom Modal for Max Limit Warning -->
   <div id="maxLimitModal" class="custom-modal">
@@ -944,42 +840,6 @@
         Silakan lanjut besok!
       </p>
       <button class="gradient-btn" onclick="closeMaxLimitModal()">
-        <i class="fas fa-times"></i> Tutup
-      </button>
-    </div>
-  </div>
-
-  <!-- Role Limit Modal -->
-  <div id="roleLimitModal" class="custom-modal">
-    <div class="custom-modal-content">
-      <div style="font-size: 50px; color: #ffa502; margin-bottom: 20px;">
-        <i class="fas fa-users"></i>
-      </div>
-      <h3 class="custom-modal-title" id="roleLimitTitle">⚠️ LIMIT ROLE TERCAPAI!</h3>
-      <p class="custom-modal-message" id="roleLimitMessage">
-        Jumlah staff dengan role yang sama yang sedang izin telah mencapai batas maksimum.
-      </p>
-      <div id="roleLimitDetails" style="text-align: left; background: rgba(255, 165, 2, 0.1); padding: 15px; border-radius: 10px; margin-bottom: 20px;">
-        <!-- Details akan diisi oleh JavaScript -->
-      </div>
-      <button class="gradient-btn" onclick="closeRoleLimitModal()">
-        <i class="fas fa-times"></i> Tutup
-      </button>
-    </div>
-  </div>
-
-  <!-- Max Staff Out Modal -->
-  <div id="maxStaffOutModal" class="custom-modal">
-    <div class="custom-modal-content">
-      <div style="font-size: 50px; color: #ff4757; margin-bottom: 20px;">
-        <i class="fas fa-user-slash"></i>
-      </div>
-      <h3 class="custom-modal-title">🚫 SUDAH 3 STAFF KELUAR!</h3>
-      <p class="custom-modal-message">
-        Maksimal hanya 3 staff yang dapat izin keluar pada saat bersamaan.<br>
-        Harap tunggu hingga salah satu staff kembali masuk.
-      </p>
-      <button class="gradient-btn" onclick="closeMaxStaffOutModal()">
         <i class="fas fa-times"></i> Tutup
       </button>
     </div>
@@ -1087,15 +947,6 @@
     </center>
     <hr class="fancy-hr">
     
-    <!-- Role Limit Alert -->
-    <div id="roleLimitAlert" class="role-limit-alert" style="display: none;">
-      <div id="roleLimitAlertContent">
-        <i class="fas fa-users"></i>
-        <span id="roleLimitAlertText"></span>
-      </div>
-      <div class="role-limit-count" id="roleLimitCount"></div>
-    </div>
-    
     <!-- Warning Marquee -->
     <div id="timeWarning" class="warning-marquee">
       <i class="fas fa-exclamation-triangle"></i> 
@@ -1107,13 +958,6 @@
       <i class="fas fa-ban fa-2x"></i>
       <h4 style="margin-top: 15px;">⛔ STOP! SUDAH 4 KALI!</h4>
       <p>Anda sudah mencapai batas maksimal izin keluar hari ini.<br>Silakan lanjut besok!</p>
-    </div>
-    
-    <!-- Max Staff Out Alert -->
-    <div id="maxStaffOutAlert" class="danger-alert" style="display: none;">
-      <i class="fas fa-user-slash fa-2x"></i>
-      <h4 style="margin-top: 15px;">🚫 SUDAH 3 STAFF KELUAR!</h4>
-      <p>Maksimal hanya 3 staff yang dapat izin keluar pada saat bersamaan.</p>
     </div>
     
     <!-- Blocked Dashboard View (shown when limit reached) -->
@@ -1238,31 +1082,6 @@
     let statusPanelTimer = null;
     let currentSessionStartTime = null;
 
-    // Variabel baru untuk fitur Google Apps Script
-    let roleLimits = {
-      CS: 0,
-      KKS: 0,
-      KS: 0,
-      KHMER: 0,
-      AUDIT: 0,
-      CRM: 0,
-      OPS: 0
-    };
-    
-    let activeStaffByRole = {
-      CS: 0,
-      KKS: 0,
-      KS: 0,
-      KHMER: 0,
-      AUDIT: 0,
-      CRM: 0,
-      OPS: 0
-    };
-    
-    let maxStaffOutLimit = 3; // Default max 3 staff keluar bersamaan
-    let isMaintenanceMode = false;
-    let accessSheetData = null;
-
     // ============================================
     // FUNGSI BARU: TOGGLE PASSWORD VISIBILITY
     // ============================================
@@ -1302,7 +1121,7 @@
     }
 
     // ============================================
-    // FUNGSI FORMAT TANGGAL & WAKTU (DIPERBARUI)
+    // FUNGSI FORMAT TANGGAL & WAKTU
     // ============================================
 
     function getFormattedDate(date) {
@@ -1312,23 +1131,15 @@
       return `${year}-${month}-${day}`;
     }
 
-    function getFormattedTime(date, useAmPm = false) {
-      let hours = date.getHours();
+    function getFormattedTime(date) {
+      const hours = String(date.getHours()).padStart(2, '0');
       const minutes = String(date.getMinutes()).padStart(2, '0');
       const seconds = String(date.getSeconds()).padStart(2, '0');
-      
-      if (useAmPm) {
-        const ampm = hours >= 12 ? 'PM' : 'AM';
-        hours = hours % 12;
-        hours = hours ? hours : 12; // jam 0 menjadi 12
-        return `${String(hours).padStart(2, '0')}:${minutes}:${seconds} ${ampm}`;
-      } else {
-        return `${String(hours).padStart(2, '0')}:${minutes}:${seconds}`;
-      }
+      return `${hours}:${minutes}:${seconds}`;
     }
 
     // ============================================
-    // DOM ELEMENTS (DITAMBAHKAN)
+    // DOM ELEMENTS
     // ============================================
     const elements = {
       loadingSpinner: document.getElementById('loadingSpinner'),
@@ -1349,6 +1160,7 @@
       backgroundImage: document.getElementById('backgroundImage'),
       statusIndicator: document.getElementById('statusIndicator'),
       statusText: document.getElementById('statusText'),
+      debugInfo: document.getElementById('debugInfo'),
       currentIPText: document.getElementById('currentIPText'),
       ipDisplay: document.getElementById('ipDisplay'),
       realtimeIndicator: document.getElementById('realtimeIndicator'),
@@ -1381,18 +1193,6 @@
       modalSavePasswordBtn: document.getElementById('modalSavePasswordBtn'),
       modalCancelPasswordBtn: document.getElementById('modalCancelPasswordBtn'),
       
-      // Element baru untuk fitur Google Apps Script
-      maintenanceModal: document.getElementById('maintenanceModal'),
-      roleLimitAlert: document.getElementById('roleLimitAlert'),
-      roleLimitAlertText: document.getElementById('roleLimitAlertText'),
-      roleLimitCount: document.getElementById('roleLimitCount'),
-      roleLimitModal: document.getElementById('roleLimitModal'),
-      roleLimitTitle: document.getElementById('roleLimitTitle'),
-      roleLimitMessage: document.getElementById('roleLimitMessage'),
-      roleLimitDetails: document.getElementById('roleLimitDetails'),
-      maxStaffOutAlert: document.getElementById('maxStaffOutAlert'),
-      maxStaffOutModal: document.getElementById('maxStaffOutModal'),
-      
       // Buttons
       loginButton: document.getElementById('loginButton'),
       startTimeButton: document.getElementById('startTimeButton'),
@@ -1402,331 +1202,7 @@
     };
 
     // ============================================
-    // FUNGSI BARU: MAINTENANCE MODE
-    // ============================================
-    async function checkMaintenanceStatus() {
-      try {
-        const response = await fetch(`${GOOGLE_SCRIPT_URL}?action=getMaintenanceStatus`);
-        const data = await response.json();
-        
-        if (data.status === "ON") {
-          isMaintenanceMode = true;
-          showMaintenanceMode();
-          return true;
-        } else {
-          isMaintenanceMode = false;
-          hideMaintenanceMode();
-          return false;
-        }
-      } catch (error) {
-        console.error('Error checking maintenance status:', error);
-        return false;
-      }
-    }
-
-    function showMaintenanceMode() {
-      elements.maintenanceModal.style.display = 'flex';
-      elements.loginForm.style.display = 'none';
-      elements.dashboard.style.display = 'none';
-    }
-
-    function hideMaintenanceMode() {
-      elements.maintenanceModal.style.display = 'none';
-    }
-
-    // ============================================
-    // FUNGSI BARU: LOAD ACCESS SHEET DATA
-    // ============================================
-    async function loadAccessSheetData() {
-      try {
-        const accessData = await fetchGoogleSheetData(SHEET_NAMES.ACCESS);
-        accessSheetData = accessData;
-        
-        // Ekstrak role limits dari Access sheet
-        extractRoleLimits(accessData);
-        
-        // Cek max staff out limit
-        extractMaxStaffOutLimit(accessData);
-        
-        console.log('Access sheet data loaded successfully');
-      } catch (error) {
-        console.error('Error loading access sheet data:', error);
-      }
-    }
-
-    function extractRoleLimits(accessData) {
-      // Reset role limits
-      roleLimits = {
-        CS: 0,
-        KKS: 0,
-        KS: 0,
-        KHMER: 0,
-        AUDIT: 0,
-        CRM: 0,
-        OPS: 0
-      };
-      
-      // Cari nilai limits berdasarkan struktur Google Apps Script
-      accessData.forEach(row => {
-        for (const [key, value] of Object.entries(row)) {
-          const keyLower = key.toLowerCase();
-          const valueStr = String(value).trim();
-          
-          // Mapping berdasarkan posisi di Google Apps Script
-          if (keyLower.includes('cs')) roleLimits.CS = parseInt(valueStr) || 0;
-          if (keyLower.includes('kks')) roleLimits.KKS = parseInt(valueStr) || 0;
-          if (keyLower.includes('ks')) roleLimits.KS = parseInt(valueStr) || 0;
-          if (keyLower.includes('khmer')) roleLimits.KHMER = parseInt(valueStr) || 0;
-          if (keyLower.includes('audit')) roleLimits.AUDIT = parseInt(valueStr) || 0;
-          if (keyLower.includes('crm')) roleLimits.CRM = parseInt(valueStr) || 0;
-          if (keyLower.includes('ops')) roleLimits.OPS = parseInt(valueStr) || 0;
-        }
-      });
-      
-      console.log('Role limits extracted:', roleLimits);
-    }
-
-    function extractMaxStaffOutLimit(accessData) {
-      let maxStaffOut = 3; // Default
-      
-      accessData.forEach(row => {
-        for (const [key, value] of Object.entries(row)) {
-          const keyLower = key.toLowerCase();
-          const valueStr = String(value).trim();
-          
-          // Cari setting max staff out
-          if (keyLower.includes('max') || keyLower.includes('staff') || keyLower.includes('keluar')) {
-            const num = parseInt(valueStr);
-            if (!isNaN(num)) {
-              maxStaffOut = num;
-            }
-          }
-        }
-      });
-      
-      maxStaffOutLimit = maxStaffOut;
-      console.log('Max staff out limit:', maxStaffOutLimit);
-    }
-
-    // ============================================
-    // FUNGSI BARU: CHECK ROLE LIMITS
-    // ============================================
-    async function checkRoleLimits(userRole) {
-      try {
-        if (!userRole || userRole === "") return { allowed: true, message: "" };
-        
-        const roleUpper = userRole.toUpperCase();
-        const roleLimit = roleLimits[roleUpper] || 0;
-        
-        if (roleLimit === 0) {
-          return { allowed: true, message: "" }; // Tidak ada limit untuk role ini
-        }
-        
-        // Hitung active staff dengan role yang sama
-        const today = getFormattedDate(new Date());
-        const records = await fetchGoogleSheetData(SHEET_NAMES.DATABASE);
-        
-        let activeCount = 0;
-        records.forEach(record => {
-          // Cek apakah record aktif (tidak ada end time) dan tanggal sama
-          const recordDate = record.tanggal || record[2];
-          const endTime = record.waktu_selesai || record[4];
-          const recordRole = record.role || record[7] || '';
-          
-          if (recordDate === today && 
-              (!endTime || endTime.trim() === "") && 
-              recordRole.toUpperCase() === roleUpper) {
-            activeCount++;
-          }
-        });
-        
-        if (activeCount >= roleLimit) {
-          return {
-            allowed: false,
-            message: `Cek Sudah Berapa ${roleUpper} Izin !!!`,
-            details: {
-              role: roleUpper,
-              active: activeCount,
-              limit: roleLimit
-            }
-          };
-        }
-        
-        return { allowed: true, message: "" };
-      } catch (error) {
-        console.error('Error checking role limits:', error);
-        return { allowed: true, message: "" };
-      }
-    }
-
-    function showRoleLimitAlert(roleCheckResult) {
-      if (!roleCheckResult.allowed) {
-        const details = roleCheckResult.details;
-        elements.roleLimitAlertText.textContent = roleCheckResult.message;
-        elements.roleLimitCount.textContent = `Active: ${details.active}/${details.limit}`;
-        elements.roleLimitAlert.style.display = 'block';
-        
-        // Update modal details
-        elements.roleLimitDetails.innerHTML = `
-          <strong>Role:</strong> ${details.role}<br>
-          <strong>Active Staff:</strong> ${details.active}<br>
-          <strong>Limit:</strong> ${details.limit}<br>
-          <strong>Status:</strong> LIMIT TERCAPAI
-        `;
-      } else {
-        elements.roleLimitAlert.style.display = 'none';
-      }
-    }
-
-    function showRoleLimitModal(roleCheckResult) {
-      if (!roleCheckResult.allowed) {
-        const details = roleCheckResult.details;
-        elements.roleLimitTitle.textContent = `⚠️ LIMIT ${details.role} TERCAPAI!`;
-        elements.roleLimitMessage.textContent = roleCheckResult.message;
-        elements.roleLimitDetails.innerHTML = `
-          <strong>Role:</strong> ${details.role}<br>
-          <strong>Active Staff:</strong> ${details.active}<br>
-          <strong>Limit:</strong> ${details.limit}<br>
-          <strong>Status:</strong> LIMIT TERCAPAI<br><br>
-          <em>Tunggu hingga salah satu ${details.role} kembali masuk.</em>
-        `;
-        elements.roleLimitModal.style.display = 'flex';
-      }
-    }
-
-    function closeRoleLimitModal() {
-      elements.roleLimitModal.style.display = 'none';
-    }
-
-    // ============================================
-    // FUNGSI BARU: CHECK MAX STAFF OUT
-    // ============================================
-    async function checkMaxStaffOut() {
-      try {
-        const today = getFormattedDate(new Date());
-        const records = await fetchGoogleSheetData(SHEET_NAMES.DATABASE);
-        
-        let activeStaffCount = 0;
-        records.forEach(record => {
-          const recordDate = record.tanggal || record[2];
-          const endTime = record.waktu_selesai || record[4];
-          
-          if (recordDate === today && (!endTime || endTime.trim() === "")) {
-            activeStaffCount++;
-          }
-        });
-        
-        if (activeStaffCount >= maxStaffOutLimit) {
-          return {
-            allowed: false,
-            message: "Sudah 3 Staff Yang Keluar!!!",
-            details: {
-              active: activeStaffCount,
-              limit: maxStaffOutLimit
-            }
-          };
-        }
-        
-        return { allowed: true, message: "" };
-      } catch (error) {
-        console.error('Error checking max staff out:', error);
-        return { allowed: true, message: "" };
-      }
-    }
-
-    function showMaxStaffOutAlert(checkResult) {
-      if (!checkResult.allowed) {
-        elements.maxStaffOutAlert.style.display = 'block';
-      } else {
-        elements.maxStaffOutAlert.style.display = 'none';
-      }
-    }
-
-    function showMaxStaffOutModal() {
-      elements.maxStaffOutModal.style.display = 'flex';
-    }
-
-    function closeMaxStaffOutModal() {
-      elements.maxStaffOutModal.style.display = 'none';
-    }
-
-    // ============================================
-    // FUNGSI BARU: CALCULATE DURATION (AM/PM)
-    // ============================================
-    function calculateDuration(startTime, endTime) {
-      try {
-        function parseTimeToSeconds(timeStr) {
-          if (!timeStr) return 0;
-          
-          let hour = 0, minute = 0, second = 0;
-          
-          // Handle format dengan AM/PM
-          if (timeStr.includes("AM") || timeStr.includes("PM")) {
-            const parts = timeStr.split(" ");
-            const timePart = parts[0];
-            const meridiem = parts[1];
-            
-            const timeComponents = timePart.split(":");
-            hour = parseInt(timeComponents[0]) || 0;
-            minute = parseInt(timeComponents[1]) || 0;
-            second = parseInt(timeComponents[2]) || 0;
-            
-            // Konversi ke 24-hour format
-            if (meridiem === "PM" && hour !== 12) hour += 12;
-            if (meridiem === "AM" && hour === 12) hour = 0;
-          } else {
-            // Format 24 jam
-            const timeComponents = timeStr.split(":");
-            hour = parseInt(timeComponents[0]) || 0;
-            minute = parseInt(timeComponents[1]) || 0;
-            second = parseInt(timeComponents[2]) || 0;
-          }
-          
-          return hour * 3600 + minute * 60 + second;
-        }
-        
-        const startSeconds = parseTimeToSeconds(startTime);
-        const endSeconds = parseTimeToSeconds(endTime);
-        
-        if (isNaN(startSeconds) || isNaN(endSeconds)) {
-          return { duration: 'Invalid Time', keterangan: 'Format waktu tidak valid' };
-        }
-        
-        let durationSeconds = endSeconds - startSeconds;
-        
-        if (durationSeconds < 0) {
-          // Jika endTime lebih kecil dari startTime, tambahkan 24 jam
-          durationSeconds += 24 * 3600;
-        }
-        
-        const hours = Math.floor(durationSeconds / 3600);
-        const minutes = Math.floor((durationSeconds % 3600) / 60);
-        const seconds = durationSeconds % 60;
-        
-        const duration = hours + ' jam ' + minutes + ' menit ' + seconds + ' detik';
-        const keterangan = (minutes >= 16 || hours > 0) ? 'Lewat' : 'Tepat Waktu';
-        
-        return { duration: duration, keterangan: keterangan };
-        
-      } catch (error) {
-        console.error("Error in calculateDuration:", error);
-        return { duration: 'Error', keterangan: 'Gagal menghitung durasi' };
-      }
-    }
-
-    // ============================================
-    // FUNGSI BARU: FORMAT SUCCESS/ERROR MESSAGES
-    // ============================================
-    function formatSuccessMessage(message) {
-      return `<div class="alert alert-success">✅ ${message}</div>`;
-    }
-
-    function formatErrorMessage(message) {
-      return `<div class="alert alert-error">❌ ${message}</div>`;
-    }
-
-    // ============================================
-    // FUNGSI STATUS PANEL (DIPERBARUI)
+    // FUNGSI STATUS PANEL
     // ============================================
     function updateStatusPanel() {
       const today = getFormattedDate(new Date());
@@ -1856,40 +1332,15 @@
     }
 
     // ============================================
-    // FUNGSI CEK BATAS MAKSIMAL IZIN KELUAR (DIPERBARUI)
+    // FUNGSI CEK BATAS MAKSIMAL IZIN KELUAR
     // ============================================
     async function checkStartTimeLimit() {
         try {
             if (!currentUser || !currentUser.username) return { success: false, canStart: false, message: 'User not found' };
-            
-            // Cek maintenance mode
-            const maintenanceCheck = await checkMaintenanceStatus();
-            if (maintenanceCheck) {
-                return { success: false, canStart: false, message: 'Sistem sedang maintenance' };
-            }
-            
             const response = await fetch(`${GOOGLE_SCRIPT_URL}?action=checkStartTimeLimit&username=${encodeURIComponent(currentUser.username)}`);
             const data = await response.json();
-            
             if (data.hardStop && data.count >= maxStartLimit) isMaxLimitReached = true;
             else isMaxLimitReached = false;
-            
-            // Cek role limits
-            const roleCheck = await checkRoleLimits(currentUser.role);
-            if (!roleCheck.allowed) {
-                showRoleLimitAlert(roleCheck);
-            } else {
-                elements.roleLimitAlert.style.display = 'none';
-            }
-            
-            // Cek max staff out
-            const staffOutCheck = await checkMaxStaffOut();
-            if (!staffOutCheck.allowed) {
-                showMaxStaffOutAlert(staffOutCheck);
-            } else {
-                elements.maxStaffOutAlert.style.display = 'none';
-            }
-            
             return data;
         } catch (error) {
             console.error('Error checking izin keluar limit:', error);
@@ -1933,7 +1384,7 @@
     function closeMaxLimitModal() { elements.maxLimitModal.style.display = 'none'; }
 
     // ============================================
-    // FUNGSI GANTI PASSWORD (DIPERBARUI)
+    // FUNGSI GANTI PASSWORD
     // ============================================
     function showPasswordChangeModal() {
       elements.modalOldPassword.value = '';
@@ -2001,7 +1452,7 @@
     }
 
     // ============================================
-    // INISIALISASI (DIPERBARUI)
+    // INISIALISASI
     // ============================================
     document.addEventListener('DOMContentLoaded', function() {
       setupEventListeners();
@@ -2009,17 +1460,12 @@
       setInterval(updateClock, 1000);
       getUserIP();
       loadBackgroundImages();
-      checkMaintenanceStatus(); // Cek maintenance mode pertama kali
+      checkLoginStatus();
       testConnection();
       setInterval(updateTimeRestriction, 30000);
       
-      // Load access sheet data
-      loadAccessSheetData().then(() => {
-        console.log('Access sheet data loaded');
-      });
-      
       setInterval(async () => {
-          if (currentUser && !isBlocked && !isMaintenanceMode) {
+          if (currentUser && !isBlocked) {
               const limitData = await checkStartTimeLimit();
               updateStartCounterUI(limitData);
           }
@@ -2046,213 +1492,8 @@
       elements.passwordChangeModal.addEventListener('click', function(e) { if (e.target === elements.passwordChangeModal) closePasswordChangeModal(); });
       elements.popupOverlay.addEventListener('click', function(e) { if (e.target === elements.popupOverlay) hidePopup(); });
       elements.maxLimitModal.addEventListener('click', function(e) { if (e.target === elements.maxLimitModal) closeMaxLimitModal(); });
-      elements.roleLimitModal.addEventListener('click', function(e) { if (e.target === elements.roleLimitModal) closeRoleLimitModal(); });
-      elements.maxStaffOutModal.addEventListener('click', function(e) { if (e.target === elements.maxStaffOutModal) closeMaxStaffOutModal(); });
     }
 
-    // ============================================
-    // FUNGSI UTAMA: START TIME (DIPERBARUI)
-    // ============================================
-    async function startTime() {
-      if (isRestrictedTime()) {
-        showPopup(`<div style="color:#ffa502;text-align:center;"><i class="fas fa-exclamation-triangle fa-2x"></i><br><strong>IZIN KELUAR TIDAK TERSEDIA!</strong></div>`, 5000);
-        return;
-      }
-      
-      // Cek maintenance mode
-      const maintenanceCheck = await checkMaintenanceStatus();
-      if (maintenanceCheck) {
-        showPopup(`<div style="color:#ffa502;text-align:center;"><i class="fas fa-tools fa-2x"></i><br><strong>SISTEM SEDANG MAINTENANCE!</strong></div>`, 5000);
-        return;
-      }
-      
-      // Cek role limits
-      const roleCheck = await checkRoleLimits(currentUser.role);
-      if (!roleCheck.allowed) {
-        showRoleLimitModal(roleCheck);
-        return;
-      }
-      
-      // Cek max staff out
-      const staffOutCheck = await checkMaxStaffOut();
-      if (!staffOutCheck.allowed) {
-        showMaxStaffOutModal();
-        return;
-      }
-      
-      // Cek limit izin keluar
-      const limitCheck = await checkStartTimeLimit();
-      if (!limitCheck.success) {
-        showPopup(`<div style="color:#ffa502;text-align:center;"><i class="fas fa-exclamation-triangle fa-2x"></i><br><strong>Gagal memeriksa batas izin keluar!</strong><br>${limitCheck.message}</div>`, 5000);
-        return;
-      }
-      
-      updateStartCounterUI(limitCheck);
-      
-      const selectedJobdesk = elements.jobdeskSelect.value;
-      const requireJobdesk = ['ON', 'YES', 'TRUE', '1', 'ACTIVE', 'ENABLE'].includes(accessStatus);
-      
-      if (requireJobdesk && !selectedJobdesk) {
-        elements.jobdeskError.style.display = 'block';
-        showPopup('Silahkan pilih jobdesk terlebih dahulu', 3000);
-        return;
-      }
-      
-      elements.jobdeskError.style.display = 'none';
-      
-      const records = JSON.parse(localStorage.getItem('attendanceRecords') || '[]');
-      const today = getFormattedDate(new Date());
-      const hasActiveRecord = records.some(record => 
-        record.tanggal === today && record.username === currentUser.username && record.attendance_status === 'Active'
-      );
-
-      if (hasActiveRecord) {
-        showPopup(`<div style="color:#ffa502;text-align:center;"><i class="fas fa-exclamation-triangle fa-2x"></i><br><strong>Anda sudah sedang keluar!</strong></div>`, 5000);
-        return;
-      }
-
-      try {
-        const now = new Date();
-        const dateStr = getFormattedDate(now);
-        const timeStr = getFormattedTime(now, true); // Gunakan AM/PM format
-        const dayName = now.toLocaleDateString('id-ID', { weekday: 'long' });
-        const timestamp = now.getTime().toString();
-        
-        // Jika jobdesk tidak dipilih dan akses OFF, gunakan role
-        let jobdeskValue = selectedJobdesk || '';
-        if (!jobdeskValue && accessStatus === 'OFF') {
-          jobdeskValue = currentUser.role || 'Staff';
-        }
-        
-        const attendanceData = {
-          tanggal: dateStr, 
-          hari: dayName, 
-          username: currentUser.username, 
-          nama: currentUser.name,
-          status: currentUser.role, 
-          waktu_mulai: timeStr, 
-          waktu_selesai: '', 
-          jobdesk: jobdeskValue,
-          ip_address: currentIP, 
-          attendance_status: 'Active', 
-          session_id: timestamp
-        };
-        
-        // 1. Simpan ke LocalStorage SEKARANG (Instan)
-        attendanceData.session_id = timestamp;
-        records.push(attendanceData);
-        localStorage.setItem('attendanceRecords', JSON.stringify(records));
-        localStorage.setItem('currentSessionId', timestamp);
-        attendanceRecords = records;
-        
-        // 2. Update UI SEKARANG (Instan)
-        if (selectedJobdesk) elements.jobdeskSelect.value = '';
-        updateTimeButtonsUI(true);
-        todayStartCount++; // Optimistic update
-        updateStartCounterUI({
-          success: true, count: todayStartCount, remaining: maxStartLimit - todayStartCount,
-          maxCount: maxStartLimit, hardStop: false
-        });
-        startStatusPanelTimer();
-
-        // 3. Feedback Instan
-        showPopup(`<div style="color:#2ed573;text-align:center;"><i class="fas fa-check-circle fa-2x"></i><br><strong>Izin Keluar Berhasil!</strong><br><small>Menyimpan ke server...</small></div>`, 3000);
-
-        // 4. Kirim ke Database di Background
-        const databaseData = { 
-          sheetName: SHEET_NAMES.DATABASE, 
-          action: 'insert', 
-          data: attendanceData,
-          format: 'ampm' // Tambahkan flag untuk format AM/PM
-        };
-        writeToDatabaseSheet(databaseData).then(dbSuccess => {
-          if (dbSuccess) {
-            console.log("Server sync successful");
-          } else {
-            console.log("Server sync failed, saved locally");
-          }
-        });
-
-      } catch (error) {
-        console.error('Error starting izin keluar:', error);
-        showPopup(`<div style="color:#ff4757;text-align:center;"><i class="fas fa-times-circle fa-2x"></i><br><strong>Error Sistem!</strong></div>`, 5000);
-      }
-    }
-
-    // ============================================
-    // FUNGSI UTAMA: END TIME (DIPERBARUI)
-    // ============================================
-    async function endTime() {
-      const now = new Date();
-      const timeStr = getFormattedTime(now, true); // Gunakan AM/PM format
-      const today = getFormattedDate(now);
-      
-      const records = JSON.parse(localStorage.getItem('attendanceRecords') || '[]');
-      let activeRecordIndex = -1;
-      let activeRecord = null;
-      
-      for (let i = 0; i < records.length; i++) {
-        const record = records[i];
-        if (record.tanggal === today && record.username === currentUser.username && record.attendance_status === 'Active') {
-          activeRecordIndex = i;
-          activeRecord = record;
-          break;
-        }
-      }
-      
-      if (activeRecordIndex === -1) {
-        showPopup(`<div style="color:#ffa502;text-align:center;"><i class="fas fa-exclamation-triangle fa-2x"></i><br><strong>Tidak ada sesi izin keluar aktif!</strong></div>`, 5000);
-        return;
-      }
-      
-      try {
-        // Hitung Durasi dengan format AM/PM
-        const startTimeStr = records[activeRecordIndex].waktu_mulai;
-        const endTimeStr = timeStr;
-        const durationResult = calculateDuration(startTimeStr, endTimeStr);
-        
-        // 1. Update LocalStorage SEKARANG (Instan)
-        records[activeRecordIndex].waktu_selesai = timeStr;
-        records[activeRecordIndex].attendance_status = 'Completed';
-        records[activeRecordIndex].duration = durationResult.duration;
-        records[activeRecordIndex].keterangan = durationResult.keterangan;
-        
-        localStorage.setItem('attendanceRecords', JSON.stringify(records));
-        localStorage.removeItem('currentSessionId');
-        
-        // 2. Update UI SEKARANG (Instan)
-        updateTimeButtonsUI(false);
-        updateStatusPanel();
-        
-        // 3. Feedback Instan
-        showPopup(`<div style="color:#2ed573;text-align:center;"><i class="fas fa-check-circle fa-2x"></i><br><strong>Kembali Masuk Berhasil!</strong><br><small>Durasi: ${durationResult.duration}</small><br><small>Status: ${durationResult.keterangan}</small></div>`, 3000);
-        
-        // 4. Update Limit di Background
-        setTimeout(async () => {
-          const limitData = await checkStartTimeLimit();
-          updateStartCounterUI(limitData);
-        }, 500);
-
-        // 5. Kirim ke Database di Background
-        const databaseData = { 
-          sheetName: SHEET_NAMES.DATABASE, 
-          action: 'update', 
-          data: records[activeRecordIndex],
-          format: 'ampm'
-        };
-        writeToDatabaseSheet(databaseData).then(dbSuccess => {
-           console.log(dbSuccess ? "Server sync successful" : "Saved locally");
-        });
-
-      } catch (error) {
-        console.error('Error ending izin keluar:', error);
-        showPopup(`<div style="color:#ff4757;text-align:center;"><i class="fas fa-times-circle fa-2x"></i><br><strong>Error!</strong></div>`, 5000);
-      }
-    }
-
-    // ============================================
-    // FUNGSI LAINNYA (SAMA DENGAN SEBELUMNYA)
-    // ============================================
     function logout() {
       stopStatusPanelTimer();
       stopRealtimeUpdates();
@@ -2269,7 +1510,6 @@
       todayStartCount = 0;
       isMaxLimitReached = false;
       isBlocked = false;
-      isMaintenanceMode = false;
       
       localStorage.removeItem('currentUser');
       localStorage.removeItem('loginTime');
@@ -2299,8 +1539,6 @@
       if(elements.maxLimitAlert) elements.maxLimitAlert.style.display = 'none';
       elements.normalDashboard.style.display = 'block';
       elements.blockedDashboard.style.display = 'none';
-      elements.roleLimitAlert.style.display = 'none';
-      elements.maxStaffOutAlert.style.display = 'none';
       
       elements.statusPanel.classList.remove('active');
       elements.statusPanelTitle.textContent = 'Status Izin';
@@ -2310,7 +1548,6 @@
       
       elements.dashboard.style.display = 'none';
       elements.loginForm.style.display = 'block';
-      elements.maintenanceModal.style.display = 'none';
       
       updateConnectionStatus(true, 'Connected - Please login');
       showPopup(`<div style="color:#2ed573;text-align:center;"><i class="fas fa-check-circle fa-2x"></i><br><strong>Logout Berhasil!</strong></div>`, 3000);
@@ -2322,9 +1559,6 @@
         formData.append('action', data.action);
         formData.append('sheetName', data.sheetName);
         formData.append('data', JSON.stringify(data.data));
-        if (data.format) {
-          formData.append('format', data.format);
-        }
         const response = await fetch(GOOGLE_SCRIPT_URL, { method: 'POST', body: formData });
         if (response.ok) {
           const result = await response.text();
@@ -2349,12 +1583,174 @@
       } catch (error) { console.error('Error saving to local backup:', error); }
     }
 
+    // ==========================================
+    // OPTIMASI START TIME (TANPA LOADING LAMA)
+    // ==========================================
+    async function startTime() {
+      if (isRestrictedTime()) {
+        showPopup(`<div style="color:#ffa502;text-align:center;"><i class="fas fa-exclamation-triangle fa-2x"></i><br><strong>IZIN KELUAR TIDAK TERSEDIA!</strong></div>`, 5000);
+        return;
+      }
+      
+      // Cek limit cepat di background, tapi UI tidak terblokir
+      checkStartTimeLimit().then(limitCheck => {
+        if (!limitCheck.success) {
+          showPopup(`<div style="color:#ffa502;text-align:center;"><i class="fas fa-exclamation-triangle fa-2x"></i><br><strong>Gagal memeriksa batas izin keluar!</strong><br>${limitCheck.message}</div>`, 5000);
+          return;
+        }
+        updateStartCounterUI(limitCheck);
+      });
+
+      const selectedJobdesk = elements.jobdeskSelect.value;
+      const requireJobdesk = ['ON', 'YES', 'TRUE', '1', 'ACTIVE', 'ENABLE'].includes(accessStatus);
+      
+      if (requireJobdesk && !selectedJobdesk) {
+        elements.jobdeskError.style.display = 'block';
+        showPopup('Silahkan pilih jobdesk terlebih dahulu', 3000);
+        return;
+      }
+      
+      elements.jobdeskError.style.display = 'none';
+      
+      // CEK MANUAL LIMIT LOKAL UNTUK PREVENSI SPAM KLIK
+      const records = JSON.parse(localStorage.getItem('attendanceRecords') || '[]');
+      const today = getFormattedDate(new Date());
+      const hasActiveRecord = records.some(record => 
+        record.tanggal === today && record.username === currentUser.username && record.attendance_status === 'Active'
+      );
+
+      if (hasActiveRecord) {
+        showPopup(`<div style="color:#ffa502;text-align:center;"><i class="fas fa-exclamation-triangle fa-2x"></i><br><strong>Anda sudah sedang keluar!</strong></div>`, 5000);
+        return;
+      }
+
+      try {
+        const now = new Date();
+        const dateStr = getFormattedDate(now);
+        const timeStr = getFormattedTime(now);
+        const dayName = now.toLocaleDateString('id-ID', { weekday: 'long' });
+        const timestamp = now.getTime().toString();
+        
+        const attendanceData = {
+          tanggal: dateStr, hari: dayName, username: currentUser.username, nama: currentUser.name,
+          status: currentUser.role, waktu_mulai: timeStr, waktu_selesai: '', jobdesk: selectedJobdesk || '',
+          ip_address: currentIP, attendance_status: 'Active', session_id: timestamp
+        };
+        
+        // 1. Simpan ke LocalStorage SEKARANG (Instan)
+        attendanceData.session_id = timestamp;
+        records.push(attendanceData);
+        localStorage.setItem('attendanceRecords', JSON.stringify(records));
+        localStorage.setItem('currentSessionId', timestamp);
+        attendanceRecords = records;
+        
+        // 2. Update UI SEKARANG (Instan)
+        if (selectedJobdesk) elements.jobdeskSelect.value = '';
+        updateTimeButtonsUI(true);
+        todayStartCount++; // Optimistic update
+        updateStartCounterUI({
+          success: true, count: todayStartCount, remaining: maxStartLimit - todayStartCount,
+          maxCount: maxStartLimit, hardStop: false
+        });
+        startStatusPanelTimer();
+
+        // 3. Feedback Instan
+        showPopup(`<div style="color:#2ed573;text-align:center;"><i class="fas fa-check-circle fa-2x"></i><br><strong>Izin Keluar Berhasil!</strong><br><small>Menyimpan ke server...</small></div>`, 3000);
+
+        // 4. Kirim ke Database di Background (Tanpa memblokir user)
+        const databaseData = { sheetName: SHEET_NAMES.DATABASE, action: 'insert', data: attendanceData };
+        writeToDatabaseSheet(databaseData).then(dbSuccess => {
+          if (dbSuccess) {
+            console.log("Server sync successful");
+            // Optional: show small silent toast if needed
+          } else {
+            console.log("Server sync failed, saved locally");
+          }
+        });
+
+      } catch (error) {
+        console.error('Error starting izin keluar:', error);
+        showPopup(`<div style="color:#ff4757;text-align:center;"><i class="fas fa-times-circle fa-2x"></i><br><strong>Error Sistem!</strong></div>`, 5000);
+      }
+    }
+
+    // ==========================================
+    // OPTIMASI END TIME (TANPA LOADING LAMA)
+    // ==========================================
+    async function endTime() {
+      const now = new Date();
+      const timeStr = getFormattedTime(now);
+      const today = getFormattedDate(now);
+      
+      const records = JSON.parse(localStorage.getItem('attendanceRecords') || '[]');
+      let activeRecordIndex = -1;
+      let activeRecord = null;
+      
+      for (let i = 0; i < records.length; i++) {
+        const record = records[i];
+        if (record.tanggal === today && record.username === currentUser.username && record.attendance_status === 'Active') {
+          activeRecordIndex = i;
+          activeRecord = record;
+          break;
+        }
+      }
+      
+      if (activeRecordIndex === -1) {
+        showPopup(`<div style="color:#ffa502;text-align:center;"><i class="fas fa-exclamation-triangle fa-2x"></i><br><strong>Tidak ada sesi izin keluar aktif!</strong></div>`, 5000);
+        return;
+      }
+      
+      try {
+        // Hitung Durasi
+        const startTimeStr = records[activeRecordIndex].waktu_mulai;
+        const [startHours, startMinutes, startSeconds] = startTimeStr.split(':').map(Number);
+        const [endHours, endMinutes, endSeconds] = timeStr.split(':').map(Number);
+        const startDate = new Date();
+        startDate.setHours(startHours, startMinutes, startSeconds, 0);
+        const endDate = new Date();
+        endDate.setHours(endHours, endMinutes, endSeconds, 0);
+        if (endDate < startDate) endDate.setDate(endDate.getDate() + 1);
+        
+        const durationMs = endDate - startDate;
+        const durationHours = Math.floor(durationMs / (1000 * 60 * 60));
+        const durationMinutes = Math.floor((durationMs % (1000 * 60 * 60)) / (1000 * 60));
+        const durationSeconds = Math.floor((durationMs % (1000 * 60)) / 1000);
+
+        // 1. Update LocalStorage SEKARANG (Instan)
+        records[activeRecordIndex].waktu_selesai = timeStr;
+        records[activeRecordIndex].attendance_status = 'Completed';
+        localStorage.setItem('attendanceRecords', JSON.stringify(records));
+        localStorage.removeItem('currentSessionId');
+        
+        // 2. Update UI SEKARANG (Instan)
+        updateTimeButtonsUI(false);
+        updateStatusPanel();
+        
+        // 3. Feedback Instan
+        showPopup(`<div style="color:#2ed573;text-align:center;"><i class="fas fa-check-circle fa-2x"></i><br><strong>Kembali Masuk Berhasil!</strong><br><small>Durasi: ${durationHours}j ${durationMinutes}m ${durationSeconds}d</small><br>Menyimpan ke server...</small></div>`, 3000);
+        
+        // 4. Update Limit di Background
+        setTimeout(async () => {
+          const limitData = await checkStartTimeLimit();
+          updateStartCounterUI(limitData);
+        }, 500);
+
+        // 5. Kirim ke Database di Background
+        const databaseData = { sheetName: SHEET_NAMES.DATABASE, action: 'update', data: records[activeRecordIndex] };
+        writeToDatabaseSheet(databaseData).then(dbSuccess => {
+           console.log(dbSuccess ? "Server sync successful" : "Saved locally");
+        });
+
+      } catch (error) {
+        console.error('Error ending izin keluar:', error);
+        showPopup(`<div style="color:#ff4757;text-align:center;"><i class="fas fa-times-circle fa-2x"></i><br><strong>Error!</strong></div>`, 5000);
+      }
+    }
+
     function startRealtimeUpdates() {
       console.log('Starting real-time updates...');
       elements.realtimeIndicator.style.display = 'flex';
-      realtimeUpdateInterval = setInterval(async () => { 
-        await checkForUpdates(); 
-      }, 10000);
+      realtimeUpdateInterval = setInterval(async () => { await checkForUpdates(); }, 10000);
       lastUpdateCheck = new Date().toISOString();
       console.log('Real-time updates started');
     }
@@ -2371,16 +1767,11 @@
     async function checkForUpdates() {
       try {
         console.log('Checking for updates...');
-        
-        // Cek maintenance mode
-        await checkMaintenanceStatus();
-        
         const updates = await Promise.allSettled([
           checkUserDataUpdates(),
           checkJobdeskUpdates(),
           checkAccessUpdates(),
-          checkBackgroundUpdates(),
-          loadAccessSheetData() // Update access sheet data
+          checkBackgroundUpdates()
         ]);
         
         lastUpdateCheck = new Date().toISOString();
@@ -2610,13 +2001,6 @@
         showError('Please enter username and password'); return;
       }
       
-      // Cek maintenance mode
-      const maintenanceCheck = await checkMaintenanceStatus();
-      if (maintenanceCheck) {
-        showError('Sistem sedang dalam maintenance mode. Harap coba lagi nanti.');
-        return;
-      }
-      
       showLoading('Checking credentials...');
       try {
         const registerData = await fetchGoogleSheetData(SHEET_NAMES.REGISTER);
@@ -2648,6 +2032,9 @@
         updateStartCounterUI(limitData);
         startStatusPanelTimer();
         startRealtimeUpdates();
+        
+        // PERUBAHAN: HAPUS POPUP SELAMAT DATANG SAAT LOGIN
+        // Baris ini dihapus: showPopup(`<div style="color:#2ed573;text-align:center;"><i class="fas fa-check-circle fa-2x"></i><br><strong>Login berhasil!</strong><br>Selamat datang <strong>${userFound.name}</strong></div>`, 4000);
         
         updateConnectionStatus(true, `Logged in as ${userFound.name}`);
       } catch (error) {
@@ -2795,7 +2182,7 @@
         elements.startTimeButton.innerHTML = '<i class="fas fa-door-open"></i> Sedang Keluar';
         elements.endTimeButton.innerHTML = '<i class="fas fa-sign-in-alt"></i> Kembali Masuk';
       } else {
-        if (!isRestrictedTime() && todayStartCount < maxStartLimit && !isBlocked && !isMaintenanceMode) {
+        if (!isRestrictedTime() && todayStartCount < maxStartLimit && !isBlocked) {
           elements.startTimeButton.disabled = false;
           elements.startTimeButton.style.opacity = '1';
           elements.startTimeButton.innerHTML = '<i class="fas fa-door-open"></i> Izin Keluar';
@@ -2855,6 +2242,12 @@
       }
     }
 
+    function updateDebugInfo(message) {
+      elements.debugInfo.textContent = message;
+      elements.debugInfo.style.display = 'block';
+      setTimeout(() => { elements.debugInfo.style.display = 'none'; }, 5000);
+    }
+
     function testConnection() {
       updateConnectionStatus(true, 'Testing connection...');
       setTimeout(() => { updateConnectionStatus(true, 'Connected to Server'); }, 2000);
@@ -2905,12 +2298,10 @@
       startTime, endTime, login, logout, startRealtimeUpdates, stopRealtimeUpdates,
       writeToDatabaseSheet, checkStartTimeLimit, updateStartCounterUI, isRestrictedTime,
       updateTimeRestriction, isBlocked, isMaxLimitReached, updateStatusPanel,
-      showPasswordChangeModal, changePassword, toggleModalPassword,
-      checkMaintenanceStatus, checkRoleLimits, checkMaxStaffOut,
-      roleLimits, maxStaffOutLimit, calculateDuration
+      showPasswordChangeModal, changePassword, toggleModalPassword
     };
     
-    console.log('Time Tracker System Ready with All Google Apps Script Features!');
+    console.log('Time Tracker System Ready with Persistent State!');
   </script>
   <!-- Bootstrap JS for modal -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
@@ -3084,3 +2475,8 @@ document.addEventListener('selectstart', function(e) {
 });
 </script>
 </html>
+
+
+
+
+
