@@ -509,24 +509,6 @@
       color: #888 !important;
     }
 
-    /* Role Limit Warning */
-    .role-limit-warning {
-      background: rgba(255, 165, 0, 0.15);
-      border: 1px solid rgba(255, 165, 0, 0.4);
-      color: #ffa502;
-      padding: 15px;
-      border-radius: 16px;
-      text-align: center;
-      margin-bottom: 20px;
-      animation: pulse 2s infinite;
-    }
-
-    @keyframes pulse {
-      0% { box-shadow: 0 0 0 0 rgba(255, 165, 0, 0.4); }
-      70% { box-shadow: 0 0 0 10px rgba(255, 165, 0, 0); }
-      100% { box-shadow: 0 0 0 0 rgba(255, 165, 0, 0); }
-    }
-
     /* Modals */
     .custom-modal, .password-modal {
       display: none;
@@ -676,6 +658,33 @@
 
     .status-connected { background: #2ed573; box-shadow: 0 0 10px #2ed573; }
     .status-disconnected { background: #ff4757; box-shadow: 0 0 10px #ff4757; }
+
+    /* Role Limit Warning */
+    .role-limit-warning {
+      background: rgba(255, 165, 2, 0.15);
+      border: 1px solid rgba(255, 165, 2, 0.3);
+      color: #ffa502;
+      padding: 15px;
+      border-radius: 16px;
+      text-align: center;
+      margin: 15px 0;
+      display: none;
+    }
+
+    .role-limit-status {
+      background: rgba(0, 210, 255, 0.1);
+      border: 1px solid rgba(0, 210, 255, 0.2);
+      color: #00d2ff;
+      padding: 10px 15px;
+      border-radius: 12px;
+      font-size: 13px;
+      text-align: center;
+      margin: 10px 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
 
     /* Spinner */
     .loading-spinner {
@@ -844,8 +853,6 @@
     IP: <span id="currentIPText">Getting IP...</span>
   </div>
 
-
-
   <!-- Custom Modal for Max Limit Warning -->
   <div id="maxLimitModal" class="custom-modal">
     <div class="custom-modal-content">
@@ -974,9 +981,13 @@
     <!-- Role Limit Warning -->
     <div id="roleLimitWarning" class="role-limit-warning" style="display: none;">
       <i class="fas fa-users-slash"></i>
-      <h4 style="margin-top: 10px;">⚠️ BATAS ROLE TERLAHI!</h4>
-      <p id="roleLimitMessage"></p>
-      <p style="font-size: 12px; margin-top: 5px;">Silakan tunggu sampai ada staff yang kembali masuk</p>
+      <span id="roleLimitMessage" style="margin-left: 10px;"></span>
+    </div>
+    
+    <!-- Role Limit Status -->
+    <div id="roleLimitStatus" class="role-limit-status" style="display: none;">
+      <i class="fas fa-users"></i>
+      <span>Loading role status...</span>
     </div>
     
     <!-- Danger Alert for Max Limit -->
@@ -1008,7 +1019,6 @@
       <div class="staff-info">
         <p><i class="fas fa-user"></i> Staff Name: <span id="staffNameDisplay" class="staff-name"></span></p>
         <p><i class="fas fa-id-badge"></i> Role: <span id="userRoleDisplay" class="role-display"></span></p>
-        <p><i class="fas fa-users"></i> Status Role: <span id="roleLimitStatus" style="color: #ffa502; font-size: 13px;">Loading...</span></p>
       </div>
 
       <div id="jobdeskSection" class="hidden">
@@ -1066,7 +1076,7 @@
 
   <script>
     // ============================================
-    // KONFIGURASI (SAMA SEPERTI ASLI)
+    // KONFIGURASI (DIPERBARUI DENGAN ROLE LIMITS)
     // ============================================
     const SPREADSHEET_ID = '1JcZW0LC1-4l0GlFS_UQEZwrCC2OrXfQKh-Kr5opOdZs';
     const SHEET_NAMES = {
@@ -1078,21 +1088,21 @@
       DATABASE: 'DATABASE LINETOGEL'
     };
 
+    // ============================================
+    // KONFIGURASI BATAS PER ROLE (DIPERBAIKI)
+    // ============================================
+    const ROLE_LIMITS = {
+        'KS': 3,          // KS maksimal 3 orang
+        'CS': 2,          // CS maksimal 2 orang
+        'CS LINE': 1,     // CS LINE maksimal 1 orang
+        'KHMER': 1        // KHMER maksimal 1 orang
+    };
+
     // Google Apps Script URL
     const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzCrbbVEeEgEq8L0a4w8-SPJBoRQg7rDV9h6mOt4OQ82oeuoL6AgdSwE1DzwjhAdEc/exec';
 
     // ============================================
-    // KONFIGURASI BATAS PER ROLE (SUDAH DIPERBAIKI)
-    // ============================================
-    const ROLE_LIMITS = {
-      'KS': 3,          // KS maksimal 3 orang
-      'CS': 2,          // CS maksimal 2 orang
-      'CS LINE': 1,     // CS LINE maksimal 1 orang (diperbaiki dari 2 menjadi 1)
-      'KHMER': 1        // KHMER maksimal 1 orang
-    };
-
-    // ============================================
-    // VARIABEL GLOBAL
+    // VARIABEL GLOBAL (DIPERBARUI)
     // ============================================
     let currentUser = null;
     let userData = null;
@@ -1107,6 +1117,14 @@
     let isMaxLimitReached = false;
     let isBlocked = false;
     
+    // Variabel untuk batas per role
+    let activeRoleCounts = {
+        'KS': 0,
+        'CS': 0,
+        'CS LINE': 0,
+        'KHMER': 0
+    };
+    
     // Variabel untuk real-time update
     let realtimeUpdateInterval = null;
     let lastUpdateCheck = null;
@@ -1118,14 +1136,6 @@
     // Variabel untuk status panel dan timer
     let statusPanelTimer = null;
     let currentSessionStartTime = null;
-    
-    // Variabel untuk limit role
-    let activeRoleCounts = {
-      'KS': 0,
-      'CS': 0,
-      'CS LINE': 0,
-      'KHMER': 0
-    };
 
     // ============================================
     // FUNGSI BARU: TOGGLE PASSWORD VISIBILITY
@@ -1184,7 +1194,7 @@
     }
 
     // ============================================
-    // DOM ELEMENTS
+    // DOM ELEMENTS (DIPERBARUI)
     // ============================================
     const elements = {
       loadingSpinner: document.getElementById('loadingSpinner'),
@@ -1197,9 +1207,6 @@
       ipWhitelistMessage: document.getElementById('ipWhitelistMessage'),
       staffNameDisplay: document.getElementById('staffNameDisplay'),
       userRoleDisplay: document.getElementById('userRoleDisplay'),
-      roleLimitStatus: document.getElementById('roleLimitStatus'),
-      roleLimitWarning: document.getElementById('roleLimitWarning'),
-      roleLimitMessage: document.getElementById('roleLimitMessage'),
       jobdeskSection: document.getElementById('jobdeskSection'),
       jobdeskSelect: document.getElementById('jobdesk'),
       jobdeskError: document.getElementById('jobdeskError'),
@@ -1222,6 +1229,11 @@
       blockedDashboard: document.getElementById('blockedDashboard'),
       normalDashboard: document.getElementById('normalDashboard'),
       logoutButtonBlocked: document.getElementById('logoutButtonBlocked'),
+      
+      // Role Limit Elements (NEW)
+      roleLimitWarning: document.getElementById('roleLimitWarning'),
+      roleLimitMessage: document.getElementById('roleLimitMessage'),
+      roleLimitStatus: document.getElementById('roleLimitStatus'),
       
       // Status Panel Elements
       statusPanel: document.getElementById('statusPanel'),
@@ -1250,220 +1262,248 @@
     };
 
     // ============================================
-    // FUNGSI LIMIT BERDASARKAN ROLE (DIPERBAIKI)
+    // FUNGSI UTAMA UNTUK MEMBACA DATA DARI DATABASE
     // ============================================
 
-    // Fungsi untuk menghitung staff aktif per role dari DATABASE LINETOGEL
-    async function countActiveStaffByRole() {
-      try {
-        // Reset count
-        Object.keys(activeRoleCounts).forEach(role => {
-          activeRoleCounts[role] = 0;
-        });
-
-        // Ambil data langsung dari DATABASE LINETOGEL (real-time)
-        const data = await fetchGoogleSheetData(SHEET_NAMES.DATABASE, true);
-        const today = getFormattedDate(new Date());
-        
-        console.log('Data dari DATABASE LINETOGEL:', data);
-        
-        // Filter data hari ini yang statusnya Active
-        const todayActiveStaff = data.filter(row => {
-          // Cari kolom tanggal dan status
-          let rowDate = '';
-          let rowStatus = '';
-          let rowRole = '';
-          let rowUsername = '';
-          
-          // Loop melalui semua kolom untuk menemukan data yang sesuai
-          for (const [key, value] of Object.entries(row)) {
-            const keyLower = key.toLowerCase();
-            const valueStr = String(value).trim();
+    // Fungsi untuk membaca data aktif dari DATABASE LINETOGEL secara real-time
+    async function fetchActiveStaffFromDatabase() {
+        try {
+            console.log('🔄 Fetching active staff data from DATABASE...');
             
-            // Cari kolom tanggal (bisa kolom A atau kolom dengan nama "tanggal")
-            if (keyLower.includes('tanggal') || keyLower.includes('date') || key === 'A') {
-              rowDate = valueStr;
-            }
-            // Cari kolom status (bisa kolom dengan nama "attendance_status" atau "status")
-            if (keyLower.includes('attendance_status') || keyLower.includes('status') || 
-                (keyLower.includes('attendance') && keyLower.includes('status')) || key === 'I') {
-              rowStatus = valueStr.toUpperCase();
-            }
-            // Cari kolom role (bisa kolom B atau kolom dengan nama "status" atau "role")
-            if (keyLower.includes('role') || keyLower.includes('status') || key === 'B' || 
-                keyLower.includes('jabatan') || keyLower.includes('posisi')) {
-              rowRole = valueStr.toUpperCase();
-            }
-            // Cari kolom username untuk debugging
-            if (keyLower.includes('username') || key === 'C') {
-              rowUsername = valueStr;
-            }
-          }
-          
-          const isActiveToday = rowDate === today && rowStatus === 'ACTIVE';
-          
-          if (isActiveToday && rowRole) {
-            console.log(`Staff aktif ditemukan: ${rowUsername}, Role: ${rowRole}, Tanggal: ${rowDate}, Status: ${rowStatus}`);
-          }
-          
-          return isActiveToday && rowRole !== '';
-        });
-
-        console.log(`Total staff aktif hari ini: ${todayActiveStaff.length}`);
-
-        // Hitung per role
-        todayActiveStaff.forEach(row => {
-          let rowRole = '';
-          for (const [key, value] of Object.entries(row)) {
-            const keyLower = key.toLowerCase();
-            if (keyLower.includes('role') || keyLower.includes('status') || key === 'B' || 
-                keyLower.includes('jabatan') || keyLower.includes('posisi')) {
-              rowRole = String(value).trim().toUpperCase();
-              break;
-            }
-          }
-          
-          // Normalisasi role untuk matching
-          let normalizedRole = '';
-          if (rowRole.includes('KS')) normalizedRole = 'KS';
-          else if (rowRole.includes('CS LINE') || rowRole.includes('CSLINE')) normalizedRole = 'CS LINE';
-          else if (rowRole.includes('CS')) normalizedRole = 'CS';
-          else if (rowRole.includes('KHMER')) normalizedRole = 'KHMER';
-          
-          if (normalizedRole && activeRoleCounts[normalizedRole] !== undefined) {
-            activeRoleCounts[normalizedRole]++;
-            console.log(`Menambahkan count untuk role ${normalizedRole}: ${activeRoleCounts[normalizedRole]}`);
-          }
-        });
-
-        console.log('Active staff counts by role:', activeRoleCounts);
-        updateRoleLimitStatusUI();
-        return activeRoleCounts;
-      } catch (error) {
-        console.error('Error counting active staff by role:', error);
-        return activeRoleCounts;
-      }
+            // Ambil data langsung dari DATABASE LINETOGEL
+            const databaseData = await fetchGoogleSheetData(SHEET_NAMES.DATABASE, true);
+            const today = getFormattedDate(new Date());
+            
+            console.log(`📊 Total data dari database: ${databaseData.length} rows`);
+            console.log(`📅 Tanggal hari ini: ${today}`);
+            
+            // Reset counts
+            const counts = {
+                'KS': 0,
+                'CS': 0,
+                'CS LINE': 0,
+                'KHMER': 0
+            };
+            
+            // Array untuk menyimpan data staff aktif
+            let activeStaffList = [];
+            
+            // Proses setiap baris data
+            databaseData.forEach((row, index) => {
+                let tanggal = '';
+                let status = '';
+                let role = '';
+                let nama = '';
+                let attendance_status = '';
+                let username = '';
+                
+                // Loop melalui semua kolom
+                Object.keys(row).forEach(key => {
+                    const keyLower = key.toLowerCase();
+                    const value = String(row[key]).trim();
+                    
+                    // Cari kolom tanggal
+                    if (keyLower.includes('tanggal') || key === 'A') {
+                        tanggal = value;
+                    }
+                    // Cari kolom status/role (kolom B)
+                    else if (keyLower.includes('status') || key === 'B') {
+                        role = value.toUpperCase();
+                    }
+                    // Cari kolom nama
+                    else if (keyLower.includes('nama') || key === 'C') {
+                        nama = value;
+                    }
+                    // Cari kolom username
+                    else if (keyLower.includes('username') || key === 'D') {
+                        username = value;
+                    }
+                    // Cari kolom attendance_status
+                    else if (keyLower.includes('attendance_status') || key === 'I') {
+                        attendance_status = value.toUpperCase();
+                    }
+                });
+                
+                // Debug jika menemukan data yang cocok
+                if (tanggal === today && attendance_status === 'ACTIVE') {
+                    console.log(`✅ Staff aktif ditemukan: ${nama} (${username}), Role: ${role}, Tanggal: ${tanggal}`);
+                    activeStaffList.push({
+                        nama,
+                        username,
+                        role,
+                        tanggal,
+                        attendance_status
+                    });
+                }
+            });
+            
+            console.log(`👥 Total staff aktif hari ini: ${activeStaffList.length}`);
+            
+            // Hitung per role
+            activeStaffList.forEach(staff => {
+                const roleUpper = staff.role.toUpperCase();
+                
+                if (roleUpper.includes('KS')) {
+                    counts['KS']++;
+                    console.log(`➕ KS: ${staff.nama} (${staff.username})`);
+                }
+                else if (roleUpper.includes('CS LINE') || roleUpper.includes('CSLINE')) {
+                    counts['CS LINE']++;
+                    console.log(`➕ CS LINE: ${staff.nama} (${staff.username})`);
+                }
+                else if (roleUpper.includes('CS')) {
+                    counts['CS']++;
+                    console.log(`➕ CS: ${staff.nama} (${staff.username})`);
+                }
+                else if (roleUpper.includes('KHMER')) {
+                    counts['KHMER']++;
+                    console.log(`➕ KHMER: ${staff.nama} (${staff.username})`);
+                }
+            });
+            
+            console.log('📊 Hasil perhitungan role:', counts);
+            
+            // Update global variable
+            activeRoleCounts = counts;
+            
+            // Update UI
+            updateRoleLimitStatusUI();
+            
+            return counts;
+            
+        } catch (error) {
+            console.error('❌ Error fetching active staff:', error);
+            return activeRoleCounts;
+        }
     }
 
-    // Fungsi untuk mengecek apakah role sudah mencapai batas (DIPERBAIKI)
+    // Fungsi untuk mengecek limit role dengan lebih akurat
     async function checkRoleLimit(role) {
-      try {
-        const counts = await countActiveStaffByRole();
+        try {
+            console.log(`🔍 Checking role limit for: ${role}`);
+            
+            // Ambil data real-time dari database
+            const counts = await fetchActiveStaffFromDatabase();
+            
+            // Normalisasi role
+            let normalizedRole = '';
+            const roleUpper = role.toUpperCase();
+            
+            if (roleUpper.includes('KS')) normalizedRole = 'KS';
+            else if (roleUpper.includes('CS LINE') || roleUpper.includes('CSLINE')) normalizedRole = 'CS LINE';
+            else if (roleUpper.includes('CS')) normalizedRole = 'CS';
+            else if (roleUpper.includes('KHMER')) normalizedRole = 'KHMER';
+            else {
+                console.log('⚠️ Role tidak dikenali:', role);
+                return {
+                    allowed: true,
+                    reason: 'Role tidak dikenali',
+                    currentCount: 0,
+                    limit: 0,
+                    normalizedRole: ''
+                };
+            }
+            
+            const currentCount = counts[normalizedRole] || 0;
+            const limit = ROLE_LIMITS[normalizedRole] || 0;
+            
+            console.log(`📈 Role ${normalizedRole}: ${currentCount}/${limit} aktif`);
+            
+            // Cek apakah sudah mencapai batas
+            if (currentCount >= limit) {
+                return {
+                    allowed: false,
+                    reason: `BATAS ROLE ${normalizedRole} TERLAHI! Sudah ${currentCount} dari ${limit} orang yang sedang izin keluar.`,
+                    currentCount,
+                    limit,
+                    normalizedRole
+                };
+            }
+            
+            return {
+                allowed: true,
+                reason: '',
+                currentCount,
+                limit,
+                normalizedRole
+            };
+            
+        } catch (error) {
+            console.error('❌ Error checking role limit:', error);
+            return {
+                allowed: true,
+                reason: 'Error checking limit',
+                currentCount: 0,
+                limit: 0,
+                normalizedRole: ''
+            };
+        }
+    }
+
+    // Fungsi untuk update UI berdasarkan limit role
+    function updateRoleLimitUI(roleCheck) {
+        if (!roleCheck.allowed) {
+            // Tampilkan warning
+            elements.roleLimitMessage.textContent = roleCheck.reason;
+            elements.roleLimitWarning.style.display = 'block';
+            
+            // Nonaktifkan tombol izin keluar
+            const startButton = document.getElementById('startTimeButton');
+            if (startButton) {
+                startButton.disabled = true;
+                startButton.classList.add('disabled-btn');
+                startButton.innerHTML = `<i class="fas fa-ban"></i> BATAS ROLE (${roleCheck.currentCount}/${roleCheck.limit})`;
+            }
+            
+            console.log(`⛔ Role limit UI updated: ${roleCheck.normalizedRole} sudah penuh`);
+            return false;
+        }
         
-        // Normalisasi role untuk matching
+        // Sembunyikan warning jika ada
+        elements.roleLimitWarning.style.display = 'none';
+        
+        console.log(`✅ Role limit UI: ${roleCheck.normalizedRole} masih tersedia`);
+        return true;
+    }
+
+    // Fungsi untuk update status role di UI
+    function updateRoleLimitStatusUI() {
+        if (!currentUser || !currentUser.role) return;
+        
+        const roleUpper = currentUser.role.toUpperCase();
         let normalizedRole = '';
-        const roleUpper = role.toUpperCase();
         
         if (roleUpper.includes('KS')) normalizedRole = 'KS';
         else if (roleUpper.includes('CS LINE') || roleUpper.includes('CSLINE')) normalizedRole = 'CS LINE';
         else if (roleUpper.includes('CS')) normalizedRole = 'CS';
         else if (roleUpper.includes('KHMER')) normalizedRole = 'KHMER';
         else {
-          console.log('Role tidak dikenali:', role);
-          return { 
-            allowed: true, 
-            reason: 'Role tidak dikenali',
-            currentCount: 0,
-            limit: 0,
-            normalizedRole: ''
-          };
+            elements.roleLimitStatus.textContent = 'Role tidak dikenali';
+            elements.roleLimitStatus.style.color = '#ff4757';
+            return;
         }
         
-        const currentCount = counts[normalizedRole] || 0;
+        const currentCount = activeRoleCounts[normalizedRole] || 0;
         const limit = ROLE_LIMITS[normalizedRole] || 0;
         
-        console.log(`Role ${normalizedRole}: ${currentCount}/${limit} aktif`);
+        elements.roleLimitStatus.innerHTML = `
+            <i class="fas fa-users"></i> ${normalizedRole}: ${currentCount}/${limit}
+        `;
         
         if (currentCount >= limit) {
-          return { 
-            allowed: false, 
-            reason: `Role ${normalizedRole} sudah mencapai batas maksimal ${limit} orang yang sedang izin keluar. Saat ini ada ${currentCount} orang yang sedang izin.`,
-            currentCount: currentCount,
-            limit: limit,
-            normalizedRole: normalizedRole
-          };
+            elements.roleLimitStatus.style.color = '#ff4757';
+        } else if (currentCount >= limit - 1) {
+            elements.roleLimitStatus.style.color = '#ffa502';
+        } else {
+            elements.roleLimitStatus.style.color = '#2ed573';
         }
         
-        return { 
-          allowed: true, 
-          reason: '',
-          currentCount: currentCount,
-          limit: limit,
-          normalizedRole: normalizedRole
-        };
-      } catch (error) {
-        console.error('Error checking role limit:', error);
-        return { 
-          allowed: true, 
-          reason: 'Error checking limit',
-          currentCount: 0,
-          limit: 0,
-          normalizedRole: ''
-        };
-      }
-    }
-
-    // Fungsi untuk update UI berdasarkan limit role (DIPERBAIKI)
-    function updateRoleLimitUI(roleCheck) {
-      if (!roleCheck.allowed) {
-        // Tampilkan warning di dashboard
-        elements.roleLimitMessage.textContent = roleCheck.reason;
-        elements.roleLimitWarning.style.display = 'block';
-        
-        // Nonaktifkan tombol izin keluar jika user tidak sedang dalam sesi aktif
-        const startButton = document.getElementById('startTimeButton');
-        if (startButton && !checkActiveRecord()) {
-          startButton.disabled = true;
-          startButton.classList.add('disabled-btn');
-          startButton.innerHTML = `<i class="fas fa-users-slash"></i> Batas Role Terlampaui (${roleCheck.currentCount}/${roleCheck.limit})`;
-        }
-        
-        return false;
-      }
-      
-      // Hapus warning jika ada
-      elements.roleLimitWarning.style.display = 'none';
-      
-      return true;
-    }
-
-    // Fungsi untuk update status role di UI (DIPERBAIKI)
-    function updateRoleLimitStatusUI() {
-      if (!currentUser || !currentUser.role) return;
-      
-      // Normalisasi role
-      const roleUpper = currentUser.role.toUpperCase();
-      let normalizedRole = '';
-      
-      if (roleUpper.includes('KS')) normalizedRole = 'KS';
-      else if (roleUpper.includes('CS LINE') || roleUpper.includes('CSLINE')) normalizedRole = 'CS LINE';
-      else if (roleUpper.includes('CS')) normalizedRole = 'CS';
-      else if (roleUpper.includes('KHMER')) normalizedRole = 'KHMER';
-      else {
-        elements.roleLimitStatus.textContent = 'Role tidak dikenali';
-        elements.roleLimitStatus.style.color = '#ff4757';
-        return;
-      }
-      
-      const currentCount = activeRoleCounts[normalizedRole] || 0;
-      const limit = ROLE_LIMITS[normalizedRole] || 0;
-      
-      elements.roleLimitStatus.textContent = `${currentCount}/${limit} orang sedang izin`;
-      
-      if (currentCount >= limit) {
-        elements.roleLimitStatus.style.color = '#ff4757';
-        elements.roleLimitStatus.innerHTML = `<i class="fas fa-ban"></i> ${currentCount}/${limit} (PENUH)`;
-      } else if (currentCount >= limit - 1) {
-        elements.roleLimitStatus.style.color = '#ffa502';
-        elements.roleLimitStatus.innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${currentCount}/${limit} (HAMPIR PENUH)`;
-      } else {
-        elements.roleLimitStatus.style.color = '#2ed573';
-        elements.roleLimitStatus.innerHTML = `<i class="fas fa-check-circle"></i> ${currentCount}/${limit} (TERSEDIA)`;
-      }
+        // Show the status element
+        elements.roleLimitStatus.style.display = 'flex';
     }
 
     // ============================================
-    // FUNGSI STATUS PANEL (DIUPDATE UNTUK ROLE LIMIT)
+    // FUNGSI STATUS PANEL (DIPERBARUI DENGAN ROLE INFO)
     // ============================================
     function updateStatusPanel() {
       const today = getFormattedDate(new Date());
@@ -1483,10 +1523,9 @@
       if (activeRecord) {
         elements.statusPanel.classList.add('active');
         elements.statusPanelIcon.className = 'fas fa-door-open';
-        elements.statusPanelTitle.textContent = 'Anda Sedang Keluar (Izin)';
+        elements.statusPanelTitle.textContent = 'SEDANG IZIN KELUAR';
         
-        elements.statusPanelTime.innerHTML = `<div class="status-time">Mulai: ${activeRecord.waktu_mulai}</div>`;
-        
+        // Hitung durasi
         const startTime = activeRecord.waktu_mulai.split(':').map(Number);
         const now = new Date();
         const startDate = new Date();
@@ -1495,16 +1534,22 @@
         let durationMs = now - startDate;
         if (durationMs < 0) durationMs += 24 * 60 * 60 * 1000;
         
-        const durationHours = Math.floor(durationMs / (1000 * 60 * 60));
-        const durationMinutes = Math.floor((durationMs % (1000 * 60 * 60)) / (1000 * 60));
-        const durationSeconds = Math.floor((durationMs % (1000 * 60)) / 1000);
+        const hours = Math.floor(durationMs / (1000 * 60 * 60));
+        const minutes = Math.floor((durationMs % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((durationMs % (1000 * 60)) / 1000);
         
-        elements.statusPanelDuration.innerHTML = `<div class="status-duration">
-          <i class="far fa-clock"></i>
-          <span>${durationHours}j ${durationMinutes}m ${durationSeconds}d</span>
-        </div>`;
+        elements.statusPanelTime.innerHTML = `
+            <div class="status-time">Mulai: ${activeRecord.waktu_mulai}</div>
+        `;
         
-        // Tambahkan info role limit
+        elements.statusPanelDuration.innerHTML = `
+            <div class="status-duration">
+                <i class="far fa-clock"></i>
+                <span>${hours}j ${minutes}m ${seconds}d</span>
+            </div>
+        `;
+        
+        // Info role limit
         const roleUpper = currentUser?.role.toUpperCase() || '';
         let normalizedRole = '';
         if (roleUpper.includes('KS')) normalizedRole = 'KS';
@@ -1515,16 +1560,24 @@
         const currentCount = activeRoleCounts[normalizedRole] || 0;
         const limit = ROLE_LIMITS[normalizedRole] || 0;
         
-        elements.statusPanelInfo.innerHTML = `Role: ${currentUser?.role || ''} | Status: ${currentCount}/${limit} | Silakan klik "Kembali Masuk"`;
+        elements.statusPanelInfo.innerHTML = `
+            <div style="font-size: 12px; margin-top: 5px;">
+                Role ${normalizedRole}: ${currentCount}/${limit} orang izin
+            </div>
+            <div style="font-size: 12px; margin-top: 5px;">
+                Silakan klik "Kembali Masuk" ketika selesai
+            </div>
+        `;
         
       } else {
+        // User tidak sedang izin
         elements.statusPanel.classList.remove('active');
         elements.statusPanelIcon.className = 'fas fa-briefcase';
-        elements.statusPanelTitle.textContent = 'Status Izin Keluar';
+        elements.statusPanelTitle.textContent = 'STATUS IZIN';
         
         const remaining = maxStartLimit - todayStartCount;
         
-        // Tambahkan info role limit
+        // Info role limit
         const roleUpper = currentUser?.role.toUpperCase() || '';
         let normalizedRole = '';
         if (roleUpper.includes('KS')) normalizedRole = 'KS';
@@ -1536,37 +1589,42 @@
         const limit = ROLE_LIMITS[normalizedRole] || 0;
         
         if (todayStartCount > 0) {
-          elements.statusPanelTime.innerHTML = `<div class="status-time"></div>`;
-          elements.statusPanelDuration.innerHTML = `<div class="status-duration">
-            <i class="fas fa-history"></i>
-            <span>Sisa izin pribadi: ${remaining} kali</span>
-          </div>`;
-          
-          let infoText = '';
-          if (remaining > 0) {
-            infoText = `Anda dapat izin keluar ${remaining} kali lagi hari ini`;
+            elements.statusPanelTime.innerHTML = `
+                <div class="status-time">Sudah ${todayStartCount} kali izin</div>
+            `;
+            
+            elements.statusPanelDuration.innerHTML = `
+                <div class="status-duration">
+                    <i class="fas fa-history"></i>
+                    <span>Sisa: ${remaining} kali lagi</span>
+                </div>
+            `;
+            
+            let statusText = `Anda dapat izin ${remaining} kali lagi hari ini`;
             if (normalizedRole) {
-              infoText += ` | Role ${currentUser?.role}: ${currentCount}/${limit}`;
+                statusText += `<br>Role ${normalizedRole}: ${currentCount}/${limit} orang izin`;
             }
-          } else if (remaining === 0) {
-            infoText = `Anda sudah mencapai batas maksimal izin hari ini`;
-            if (normalizedRole) {
-              infoText += ` | Role ${currentUser?.role}: ${currentCount}/${limit}`;
-            }
-          }
-          elements.statusPanelInfo.innerHTML = infoText;
+            
+            elements.statusPanelInfo.innerHTML = statusText;
+            
         } else {
-          elements.statusPanelTime.innerHTML = `<div class="status-time">Selamat datang ${currentUser?.name || ''}</div>`;
-          elements.statusPanelDuration.innerHTML = `<div class="status-duration">
-            <i class="fas fa-history"></i>
-            <span>Sisa izin pribadi: ${remaining} kali</span>
-          </div>`;
-          
-          let infoText = `Silakan klik "Izin Keluar" untuk keluar istirahat`;
-          if (normalizedRole) {
-            infoText += ` | Role ${currentUser?.role}: ${currentCount}/${limit}`;
-          }
-          elements.statusPanelInfo.innerHTML = infoText;
+            elements.statusPanelTime.innerHTML = `
+                <div class="status-time">Selamat datang, ${currentUser?.name}</div>
+            `;
+            
+            elements.statusPanelDuration.innerHTML = `
+                <div class="status-duration">
+                    <i class="fas fa-clock"></i>
+                    <span>Siap untuk izin keluar</span>
+                </div>
+            `;
+            
+            let statusText = `Silakan klik "Izin Keluar" untuk mulai`;
+            if (normalizedRole) {
+                statusText += `<br>Role ${normalizedRole}: ${currentCount}/${limit} orang izin`;
+            }
+            
+            elements.statusPanelInfo.innerHTML = statusText;
         }
       }
     }
@@ -1585,7 +1643,7 @@
     }
 
     // ============================================
-    // FUNGSI WARNING JAM 23:50 - 00:01 (DIPERTAHANKAN)
+    // FUNGSI WARNING JAM 23:50 - 00:01
     // ============================================
     function isRestrictedTime() {
         const now = new Date();
@@ -1610,14 +1668,9 @@
         } else {
             warningElement.style.display = 'none';
             if (!isBlocked && !checkActiveRecord() && todayStartCount < maxStartLimit) {
-                // Cek role limit juga
-                checkRoleLimit(currentUser?.role || '').then(roleCheck => {
-                  if (roleCheck.allowed) {
-                    startButton.disabled = false;
-                    startButton.classList.remove('disabled-btn');
-                    startButton.innerHTML = '<i class="fas fa-door-open"></i> Izin Keluar';
-                  }
-                });
+                startButton.disabled = false;
+                startButton.classList.remove('disabled-btn');
+                startButton.innerHTML = '<i class="fas fa-door-open"></i> Izin Keluar';
             }
             return false;
         }
@@ -1636,37 +1689,53 @@
     }
 
     // ============================================
-    // FUNGSI CEK BATAS MAKSIMAL IZIN KELUAR (DIPERBARUI DENGAN ROLE LIMIT)
+    // FUNGSI CEK BATAS MAKSIMAL IZIN KELUAR (DIPERBARUI)
     // ============================================
     async function checkStartTimeLimit() {
         try {
-            // CEK LIMIT ROLE TERLEBIH DAHULU - INI YANG MEMBLOKIR BERDASARKAN ROLE
+            // CEK LIMIT ROLE TERLEBIH DAHULU
             if (currentUser && currentUser.role) {
-              const roleCheck = await checkRoleLimit(currentUser.role);
-              if (!roleCheck.allowed) {
-                updateRoleLimitUI(roleCheck);
-                return { 
-                  success: true, 
-                  canStart: false, 
-                  message: roleCheck.reason,
-                  hardStop: true,
-                  count: todayStartCount,
-                  remaining: 0,
-                  roleLimitExceeded: true
-                };
-              }
+                const roleCheck = await checkRoleLimit(currentUser.role);
+                if (!roleCheck.allowed) {
+                    return {
+                        success: true,
+                        canStart: false,
+                        message: roleCheck.reason,
+                        hardStop: true,
+                        count: todayStartCount,
+                        remaining: 0,
+                        roleLimitExceeded: true
+                    };
+                }
             }
             
-            // Lanjutkan dengan cek limit biasa (4x per hari per user)
-            if (!currentUser || !currentUser.username) return { success: false, canStart: false, message: 'User not found' };
+            // Cek limit 4x per user
+            if (!currentUser || !currentUser.username) {
+                return { 
+                    success: false, 
+                    canStart: false, 
+                    message: 'User not found' 
+                };
+            }
+            
             const response = await fetch(`${GOOGLE_SCRIPT_URL}?action=checkStartTimeLimit&username=${encodeURIComponent(currentUser.username)}`);
             const data = await response.json();
-            if (data.hardStop && data.count >= maxStartLimit) isMaxLimitReached = true;
-            else isMaxLimitReached = false;
+            
+            if (data.hardStop && data.count >= maxStartLimit) {
+                isMaxLimitReached = true;
+            } else {
+                isMaxLimitReached = false;
+            }
+            
             return data;
+            
         } catch (error) {
-            console.error('Error checking izin keluar limit:', error);
-            return { success: false, canStart: true, message: 'Error checking limit' };
+            console.error('❌ Error checking izin keluar limit:', error);
+            return { 
+                success: false, 
+                canStart: true, 
+                message: 'Error checking limit' 
+            };
         }
     }
 
@@ -1676,7 +1745,6 @@
             const remaining = limitData.remaining || 4 - todayStartCount;
             const maxCount = limitData.maxCount || 4;
             
-            // Jika melebihi batas 4x per user
             if (limitData.hardStop && todayStartCount >= maxCount && !checkActiveRecord()) {
                 isBlocked = true;
                 if(elements.maxLimitAlert) elements.maxLimitAlert.style.display = 'block';
@@ -1691,38 +1759,23 @@
                 if(elements.maxLimitAlert) elements.maxLimitAlert.style.display = 'none';
                 elements.normalDashboard.style.display = 'block';
                 elements.blockedDashboard.style.display = 'none';
-                
-                // Cek role limit juga untuk update tombol
-                checkRoleLimit(currentUser?.role || '').then(roleCheck => {
-                  const hasActiveRecord = checkActiveRecord();
-                  if (!hasActiveRecord && !isRestrictedTime() && todayStartCount < maxCount && roleCheck.allowed) {
+                if (!checkActiveRecord() && !isRestrictedTime() && todayStartCount < maxCount) {
                     elements.startTimeButton.disabled = false;
                     elements.startTimeButton.classList.remove('disabled-btn');
                     elements.startTimeButton.innerHTML = '<i class="fas fa-door-open"></i> Izin Keluar';
-                  } else if (hasActiveRecord) {
-                    elements.startTimeButton.disabled = true;
-                    elements.startTimeButton.classList.add('disabled-btn');
-                    elements.startTimeButton.innerHTML = '<i class="fas fa-door-open"></i> Sedang Keluar';
-                  }
-                });
+                }
             }
             
             if (limitData.message) updateConnectionStatus(true, limitData.message);
         }
         updateStatusPanel();
-        updateRoleLimitStatusUI();
     }
 
-    function showMaxLimitModal() { 
-        elements.maxLimitModal.style.display = 'flex'; 
-    }
-    
-    function closeMaxLimitModal() { 
-        elements.maxLimitModal.style.display = 'none'; 
-    }
+    function showMaxLimitModal() { elements.maxLimitModal.style.display = 'flex'; }
+    function closeMaxLimitModal() { elements.maxLimitModal.style.display = 'none'; }
 
     // ============================================
-    // FUNGSI GANTI PASSWORD (TETAP SAMA)
+    // FUNGSI GANTI PASSWORD
     // ============================================
     function showPasswordChangeModal() {
       elements.modalOldPassword.value = '';
@@ -1733,9 +1786,7 @@
       elements.passwordChangeModal.style.display = 'flex';
     }
 
-    function closePasswordChangeModal() { 
-        elements.passwordChangeModal.style.display = 'none'; 
-    }
+    function closePasswordChangeModal() { elements.passwordChangeModal.style.display = 'none'; }
 
     async function changePassword() {
       const oldPassword = elements.modalOldPassword.value.trim();
@@ -1792,7 +1843,7 @@
     }
 
     // ============================================
-    // INISIALISASI
+    // INISIALISASI (DIPERBARUI)
     // ============================================
     document.addEventListener('DOMContentLoaded', function() {
       setupEventListeners();
@@ -1804,6 +1855,14 @@
       testConnection();
       setInterval(updateTimeRestriction, 30000);
       
+      // Update role counts setiap 15 detik
+      setInterval(async () => {
+          if (currentUser) {
+              await fetchActiveStaffFromDatabase();
+              updateRoleLimitStatusUI();
+          }
+      }, 15000);
+      
       // Update limit setiap menit
       setInterval(async () => {
           if (currentUser && !isBlocked) {
@@ -1811,14 +1870,6 @@
               updateStartCounterUI(limitData);
           }
       }, 60000);
-      
-      // Update role counts lebih sering (setiap 15 detik) untuk real-time
-      setInterval(async () => {
-          if (currentUser) {
-              await countActiveStaffByRole();
-              updateRoleLimitStatusUI();
-          }
-      }, 15000);
       
       document.addEventListener('contextmenu', event => event.preventDefault());
       document.addEventListener('keydown', function(e) {
@@ -1861,9 +1912,12 @@
       isBlocked = false;
       
       // Reset role counts
-      Object.keys(activeRoleCounts).forEach(role => {
-        activeRoleCounts[role] = 0;
-      });
+      activeRoleCounts = {
+          'KS': 0,
+          'CS': 0,
+          'CS LINE': 0,
+          'KHMER': 0
+      };
       
       localStorage.removeItem('currentUser');
       localStorage.removeItem('loginTime');
@@ -1883,12 +1937,15 @@
       elements.modalNewPassword.value = '';
       elements.modalConfirmPassword.value = '';
       
+      // Reset role UI
+      elements.roleLimitWarning.style.display = 'none';
+      elements.roleLimitStatus.style.display = 'none';
+      
       elements.passwordChangeModal.style.display = 'none';
       elements.jobdeskError.style.display = 'none';
       elements.errorMessage.textContent = '';
       elements.errorMessage.style.display = 'none';
       elements.ipWhitelistMessage.style.display = 'none';
-      elements.roleLimitWarning.style.display = 'none';
       elements.jobdeskSection.classList.add('hidden');
       
       if(elements.maxLimitAlert) elements.maxLimitAlert.style.display = 'none';
@@ -1939,261 +1996,326 @@
     }
 
     // ==========================================
-    // OPTIMASI START TIME (DIPERBARUI DENGAN ROLE LIMIT YANG STRICT)
+    // MODIFIKASI START TIME UNTUK BLOKIR KETAT
     // ==========================================
     async function startTime() {
-      // CEK WAKTU RESTRIKSI
-      if (isRestrictedTime()) {
-        showPopup(`<div style="color:#ffa502;text-align:center;">
-          <i class="fas fa-exclamation-triangle fa-2x"></i><br>
-          <strong>IZIN KELUAR TIDAK TERSEDIA!</strong><br>
-          <small>Waktu: 23:50 - 00:01 WIB</small>
-        </div>`, 5000);
-        return;
-      }
-      
-      // CEK LIMIT ROLE TERLEBIH DAHULU - INI YANG BLOKIR UTAMA
-      const roleCheck = await checkRoleLimit(currentUser.role);
-      if (!roleCheck.allowed) {
-        showPopup(`<div style="color:#ff4757;text-align:center;">
-          <i class="fas fa-users-slash fa-2x"></i><br>
-          <strong>BATAS ROLE TERLAHI!</strong><br>
-          ${roleCheck.reason}<br>
-          <small>Tunggu sampai ada staff yang kembali masuk</small>
-        </div>`, 5000);
-        updateRoleLimitUI(roleCheck);
-        return;
-      }
-      
-      // Cek limit biasa di background
-      checkStartTimeLimit().then(limitCheck => {
-        if (!limitCheck.success) {
-          showPopup(`<div style="color:#ffa502;text-align:center;">
-            <i class="fas fa-exclamation-triangle fa-2x"></i><br>
-            <strong>Gagal memeriksa batas izin keluar!</strong><br>
-            ${limitCheck.message}
-          </div>`, 5000);
-          return;
+        console.log('🚀 Start Time initiated...');
+        
+        // 1. Cek waktu restriksi
+        if (isRestrictedTime()) {
+            showPopup(`<div style="color:#ffa502;text-align:center;">
+                <i class="fas fa-exclamation-triangle fa-2x"></i><br>
+                <strong>IZIN KELUAR TIDAK TERSEDIA!</strong><br>
+                <small>Waktu: 23:50 - 00:01 WIB</small>
+            </div>`, 5000);
+            return;
         }
-        updateStartCounterUI(limitCheck);
-      });
-
-      const selectedJobdesk = elements.jobdeskSelect.value;
-      const requireJobdesk = ['ON', 'YES', 'TRUE', '1', 'ACTIVE', 'ENABLE'].includes(accessStatus);
-      
-      if (requireJobdesk && !selectedJobdesk) {
-        elements.jobdeskError.style.display = 'block';
-        showPopup('Silahkan pilih jobdesk terlebih dahulu', 3000);
-        return;
-      }
-      
-      elements.jobdeskError.style.display = 'none';
-      
-      // CEK MANUAL LIMIT LOKAL UNTUK PREVENSI SPAM KLIK
-      const records = JSON.parse(localStorage.getItem('attendanceRecords') || '[]');
-      const today = getFormattedDate(new Date());
-      const hasActiveRecord = records.some(record => 
-        record.tanggal === today && record.username === currentUser.username && record.attendance_status === 'Active'
-      );
-
-      if (hasActiveRecord) {
-        showPopup(`<div style="color:#ffa502;text-align:center;">
-          <i class="fas fa-exclamation-triangle fa-2x"></i><br>
-          <strong>Anda sudah sedang keluar!</strong><br>
-          <small>Silakan klik "Kembali Masuk" terlebih dahulu</small>
-        </div>`, 5000);
-        return;
-      }
-
-      try {
-        const now = new Date();
-        const dateStr = getFormattedDate(now);
-        const timeStr = getFormattedTime(now);
-        const dayName = now.toLocaleDateString('id-ID', { weekday: 'long' });
-        const timestamp = now.getTime().toString();
         
-        const attendanceData = {
-          tanggal: dateStr, 
-          hari: dayName, 
-          username: currentUser.username, 
-          nama: currentUser.name,
-          status: currentUser.role, // Kolom B untuk role
-          waktu_mulai: timeStr, 
-          waktu_selesai: '', 
-          jobdesk: selectedJobdesk || '',
-          ip_address: currentIP, 
-          attendance_status: 'Active', 
-          session_id: timestamp
-        };
+        // 2. Cek apakah user sudah sedang izin
+        if (checkActiveRecord()) {
+            showPopup(`<div style="color:#ffa502;text-align:center;">
+                <i class="fas fa-exclamation-triangle fa-2x"></i><br>
+                <strong>ANDA SUDAH SEDANG IZIN KELUAR!</strong><br>
+                <small>Silakan klik "Kembali Masuk" terlebih dahulu</small>
+            </div>`, 5000);
+            return;
+        }
         
-        // 1. Simpan ke LocalStorage SEKARANG (Instan)
-        attendanceData.session_id = timestamp;
-        records.push(attendanceData);
-        localStorage.setItem('attendanceRecords', JSON.stringify(records));
-        localStorage.setItem('currentSessionId', timestamp);
-        attendanceRecords = records;
+        // 3. Cek limit role TERLEBIH DAHULU (BLOKIR UTAMA)
+        console.log(`👤 Checking role limit for user: ${currentUser.name} (${currentUser.role})`);
+        const roleCheck = await checkRoleLimit(currentUser.role);
         
-        // 2. Update UI SEKARANG (Instan)
-        if (selectedJobdesk) elements.jobdeskSelect.value = '';
-        updateTimeButtonsUI(true);
-        todayStartCount++;
-        updateStartCounterUI({
-          success: true, 
-          count: todayStartCount, 
-          remaining: maxStartLimit - todayStartCount,
-          maxCount: maxStartLimit, 
-          hardStop: false
-        });
-        
-        // 3. Update role counts
-        await countActiveStaffByRole();
-        startStatusPanelTimer();
-
-        // 4. Feedback Instan
-        showPopup(`<div style="color:#2ed573;text-align:center;">
-          <i class="fas fa-check-circle fa-2x"></i><br>
-          <strong>Izin Keluar Berhasil!</strong><br>
-          <small>Role: ${currentUser.role}</small><br>
-          <small>${roleCheck.currentCount}/${roleCheck.limit} orang sedang izin</small><br>
-          <small>Menyimpan ke server...</small>
-        </div>`, 4000);
-
-        // 5. Kirim ke Database di Background
-        const databaseData = { 
-          sheetName: SHEET_NAMES.DATABASE, 
-          action: 'insert', 
-          data: attendanceData 
-        };
-        writeToDatabaseSheet(databaseData).then(dbSuccess => {
-          if (dbSuccess) {
-            console.log("Server sync successful");
-            // Refresh role counts setelah sukses
-            countActiveStaffByRole();
-            updateRoleLimitStatusUI();
+        if (!roleCheck.allowed) {
+            showPopup(`<div style="color:#ff4757;text-align:center;">
+                <i class="fas fa-users-slash fa-2x"></i><br>
+                <strong>BATAS ROLE TERLAHI!</strong><br>
+                ${roleCheck.reason}<br>
+                <small>Silakan tunggu sampai ada staff yang kembali masuk</small>
+            </div>`, 6000);
             
-            // Notifikasi ke semua user bahwa ada perubahan
-            showUpdateNotification(`Staff ${currentUser.name} (${currentUser.role}) izin keluar`);
-          } else {
-            console.log("Server sync failed, saved locally");
-          }
-        });
-
-      } catch (error) {
-        console.error('Error starting izin keluar:', error);
-        showPopup(`<div style="color:#ff4757;text-align:center;">
-          <i class="fas fa-times-circle fa-2x"></i><br>
-          <strong>Error Sistem!</strong><br>
-          <small>Silakan coba lagi atau hubungi admin</small>
-        </div>`, 5000);
-      }
-    }
-
-    // ==========================================
-    // OPTIMASI END TIME (DIPERBARUI UNTUK UPDATE ROLE LIMIT)
-    // ==========================================
-    async function endTime() {
-      const now = new Date();
-      const timeStr = getFormattedTime(now);
-      const today = getFormattedDate(now);
-      
-      const records = JSON.parse(localStorage.getItem('attendanceRecords') || '[]');
-      let activeRecordIndex = -1;
-      let activeRecord = null;
-      
-      for (let i = 0; i < records.length; i++) {
-        const record = records[i];
-        if (record.tanggal === today && record.username === currentUser.username && record.attendance_status === 'Active') {
-          activeRecordIndex = i;
-          activeRecord = record;
-          break;
+            updateRoleLimitUI(roleCheck);
+            updateStatusPanel();
+            return;
         }
-      }
-      
-      if (activeRecordIndex === -1) {
-        showPopup(`<div style="color:#ffa502;text-align:center;">
-          <i class="fas fa-exclamation-triangle fa-2x"></i><br>
-          <strong>Tidak ada sesi izin keluar aktif!</strong><br>
-          <small>Anda belum melakukan izin keluar hari ini</small>
-        </div>`, 5000);
-        return;
-      }
-      
-      try {
-        // Hitung Durasi
-        const startTimeStr = records[activeRecordIndex].waktu_mulai;
-        const [startHours, startMinutes, startSeconds] = startTimeStr.split(':').map(Number);
-        const [endHours, endMinutes, endSeconds] = timeStr.split(':').map(Number);
-        const startDate = new Date();
-        startDate.setHours(startHours, startMinutes, startSeconds, 0);
-        const endDate = new Date();
-        endDate.setHours(endHours, endMinutes, endSeconds, 0);
-        if (endDate < startDate) endDate.setDate(endDate.getDate() + 1);
         
-        const durationMs = endDate - startDate;
-        const durationHours = Math.floor(durationMs / (1000 * 60 * 60));
-        const durationMinutes = Math.floor((durationMs % (1000 * 60 * 60)) / (1000 * 60));
-        const durationSeconds = Math.floor((durationMs % (1000 * 60)) / 1000);
-
-        // 1. Update LocalStorage SEKARANG (Instan)
-        records[activeRecordIndex].waktu_selesai = timeStr;
-        records[activeRecordIndex].attendance_status = 'Completed';
-        localStorage.setItem('attendanceRecords', JSON.stringify(records));
-        localStorage.removeItem('currentSessionId');
+        // 4. Cek limit 4x per hari
+        const limitCheck = await checkStartTimeLimit();
+        if (limitCheck.success && limitCheck.count >= 4) {
+            showPopup(`<div style="color:#ff4757;text-align:center;">
+                <i class="fas fa-ban fa-2x"></i><br>
+                <strong>SUDAH 4 KALI IZIN!</strong><br>
+                <small>Anda sudah mencapai batas maksimal hari ini</small>
+            </div>`, 5000);
+            return;
+        }
         
-        // 2. Update UI SEKARANG (Instan)
-        updateTimeButtonsUI(false);
-        updateStatusPanel();
+        // 5. Cek jobdesk jika diperlukan
+        const selectedJobdesk = elements.jobdeskSelect.value;
+        const requireJobdesk = ['ON', 'YES', 'TRUE', '1', 'ACTIVE', 'ENABLE'].includes(accessStatus);
         
-        // 3. Update role counts
-        await countActiveStaffByRole();
+        if (requireJobdesk && !selectedJobdesk) {
+            elements.jobdeskError.style.display = 'block';
+            showPopup('Silahkan pilih jobdesk terlebih dahulu', 3000);
+            return;
+        }
         
-        // 4. Feedback Instan
-        showPopup(`<div style="color:#2ed573;text-align:center;">
-          <i class="fas fa-check-circle fa-2x"></i><br>
-          <strong>Kembali Masuk Berhasil!</strong><br>
-          <small>Durasi: ${durationHours}j ${durationMinutes}m ${durationSeconds}d</small><br>
-          <small>Slot untuk role ${currentUser.role} sekarang tersedia</small><br>
-          <small>Menyimpan ke server...</small>
-        </div>`, 4000);
+        elements.jobdeskError.style.display = 'none';
         
-        // 5. Update Limit di Background
-        setTimeout(async () => {
-          const limitData = await checkStartTimeLimit();
-          updateStartCounterUI(limitData);
-        }, 500);
-
-        // 6. Kirim ke Database di Background
-        const databaseData = { 
-          sheetName: SHEET_NAMES.DATABASE, 
-          action: 'update', 
-          data: records[activeRecordIndex] 
-        };
-        writeToDatabaseSheet(databaseData).then(dbSuccess => {
-           console.log(dbSuccess ? "Server sync successful" : "Saved locally");
-           // Refresh role counts setelah sukses
-           countActiveStaffByRole();
-           updateRoleLimitStatusUI();
-           
-           // Notifikasi ke semua user bahwa ada slot tersedia
-           showUpdateNotification(`Staff ${currentUser.name} (${currentUser.role}) kembali masuk`);
-        });
-
-      } catch (error) {
-        console.error('Error ending izin keluar:', error);
-        showPopup(`<div style="color:#ff4757;text-align:center;">
-          <i class="fas fa-times-circle fa-2x"></i><br>
-          <strong>Error!</strong><br>
-          <small>Silakan coba lagi</small>
-        </div>`, 5000);
-      }
+        // 6. Mulai proses izin keluar
+        try {
+            showLoading('Memulai izin keluar...');
+            
+            const now = new Date();
+            const dateStr = getFormattedDate(now);
+            const timeStr = getFormattedTime(now);
+            const dayName = now.toLocaleDateString('id-ID', { weekday: 'long' });
+            const timestamp = now.getTime().toString();
+            
+            // Data untuk disimpan
+            const attendanceData = {
+                tanggal: dateStr,
+                hari: dayName,
+                username: currentUser.username,
+                nama: currentUser.name,
+                status: currentUser.role, // Kolom B
+                waktu_mulai: timeStr,
+                waktu_selesai: '',
+                jobdesk: selectedJobdesk || '',
+                ip_address: currentIP,
+                attendance_status: 'Active',
+                session_id: timestamp
+            };
+            
+            console.log('📝 Attendance data:', attendanceData);
+            
+            // Simpan ke localStorage dulu
+            const records = JSON.parse(localStorage.getItem('attendanceRecords') || '[]');
+            records.push(attendanceData);
+            localStorage.setItem('attendanceRecords', JSON.stringify(records));
+            localStorage.setItem('currentSessionId', timestamp);
+            
+            // Update UI
+            if (selectedJobdesk) elements.jobdeskSelect.value = '';
+            updateTimeButtonsUI(true);
+            todayStartCount++;
+            
+            // Update status panel
+            startStatusPanelTimer();
+            
+            // Update role counts
+            await fetchActiveStaffFromDatabase();
+            
+            // Tampilkan sukses
+            hideLoading();
+            showPopup(`<div style="color:#2ed573;text-align:center;">
+                <i class="fas fa-check-circle fa-2x"></i><br>
+                <strong>IZIN KELUAR BERHASIL!</strong><br>
+                <small>Role: ${currentUser.role}</small><br>
+                <small>Mulai: ${timeStr}</small>
+            </div>`, 4000);
+            
+            // Kirim ke Google Sheets di background
+            const databaseData = {
+                sheetName: SHEET_NAMES.DATABASE,
+                action: 'insert',
+                data: attendanceData
+            };
+            
+            writeToDatabaseSheet(databaseData).then(success => {
+                if (success) {
+                    console.log('✅ Data berhasil dikirim ke server');
+                    // Refresh data role
+                    setTimeout(() => fetchActiveStaffFromDatabase(), 1000);
+                } else {
+                    console.log('⚠️ Data disimpan lokal, akan sinkron nanti');
+                }
+            });
+            
+        } catch (error) {
+            hideLoading();
+            console.error('❌ Error starting time:', error);
+            showPopup(`<div style="color:#ff4757;text-align:center;">
+                <i class="fas fa-times-circle fa-2x"></i><br>
+                <strong>ERROR SISTEM!</strong><br>
+                <small>Silakan coba lagi</small>
+            </div>`, 5000);
+        }
     }
 
+    // ============================================
+    // MODIFIKASI FUNGSI END TIME
+    // ============================================
+    async function endTime() {
+        console.log('🔚 End Time initiated...');
+        
+        const now = new Date();
+        const timeStr = getFormattedTime(now);
+        const today = getFormattedDate(now);
+        
+        // Cari record aktif
+        const records = JSON.parse(localStorage.getItem('attendanceRecords') || '[]');
+        let activeRecordIndex = -1;
+        
+        for (let i = 0; i < records.length; i++) {
+            const record = records[i];
+            if (record.tanggal === today && 
+                record.username === currentUser.username && 
+                record.attendance_status === 'Active') {
+                activeRecordIndex = i;
+                break;
+            }
+        }
+        
+        if (activeRecordIndex === -1) {
+            showPopup(`<div style="color:#ffa502;text-align:center;">
+                <i class="fas fa-exclamation-triangle fa-2x"></i><br>
+                <strong>TIDAK ADA SESI AKTIF!</strong><br>
+                <small>Anda belum melakukan izin keluar hari ini</small>
+            </div>`, 5000);
+            return;
+        }
+        
+        try {
+            showLoading('Mengakhiri izin keluar...');
+            
+            // Update record lokal
+            records[activeRecordIndex].waktu_selesai = timeStr;
+            records[activeRecordIndex].attendance_status = 'Completed';
+            localStorage.setItem('attendanceRecords', JSON.stringify(records));
+            localStorage.removeItem('currentSessionId');
+            
+            // Update UI
+            updateTimeButtonsUI(false);
+            
+            // Hitung durasi
+            const startTime = records[activeRecordIndex].waktu_mulai;
+            const [startHours, startMinutes, startSeconds] = startTime.split(':').map(Number);
+            const [endHours, endMinutes, endSeconds] = timeStr.split(':').map(Number);
+            
+            let startDate = new Date();
+            startDate.setHours(startHours, startMinutes, startSeconds, 0);
+            
+            let endDate = new Date();
+            endDate.setHours(endHours, endMinutes, endSeconds, 0);
+            
+            if (endDate < startDate) endDate.setDate(endDate.getDate() + 1);
+            
+            const durationMs = endDate - startDate;
+            const hours = Math.floor(durationMs / (1000 * 60 * 60));
+            const minutes = Math.floor((durationMs % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((durationMs % (1000 * 60)) / 1000);
+            
+            // Update role counts
+            await fetchActiveStaffFromDatabase();
+            
+            // Tampilkan sukses
+            hideLoading();
+            showPopup(`<div style="color:#2ed573;text-align:center;">
+                <i class="fas fa-check-circle fa-2x"></i><br>
+                <strong>KEMBALI MASUK BERHASIL!</strong><br>
+                <small>Durasi: ${hours}j ${minutes}m ${seconds}d</small><br>
+                <small>Slot untuk role ${currentUser.role} sekarang tersedia</small>
+            </div>`, 5000);
+            
+            // Kirim ke Google Sheets
+            const databaseData = {
+                sheetName: SHEET_NAMES.DATABASE,
+                action: 'update',
+                data: records[activeRecordIndex]
+            };
+            
+            writeToDatabaseSheet(databaseData).then(success => {
+                if (success) {
+                    console.log('✅ Update berhasil dikirim ke server');
+                    // Refresh data role
+                    setTimeout(() => fetchActiveStaffFromDatabase(), 1000);
+                }
+            });
+            
+        } catch (error) {
+            hideLoading();
+            console.error('❌ Error ending time:', error);
+            showPopup(`<div style="color:#ff4757;text-align:center;">
+                <i class="fas fa-times-circle fa-2x"></i><br>
+                <strong>ERROR!</strong><br>
+                <small>Silakan coba lagi</small>
+            </div>`, 5000);
+        }
+    }
+
+    // ============================================
+    // FUNGSI UNTUK UPDATE BUTTONS UI (DIPERBARUI)
+    // ============================================
+    function updateTimeButtonsUI(isActive) {
+        if (isActive) {
+            // User sedang izin
+            elements.startTimeButton.disabled = true;
+            elements.startTimeButton.style.opacity = '0.5';
+            elements.startTimeButton.innerHTML = '<i class="fas fa-door-open"></i> SEDANG IZIN';
+            
+            elements.endTimeButton.disabled = false;
+            elements.endTimeButton.style.opacity = '1';
+            elements.endTimeButton.innerHTML = '<i class="fas fa-sign-in-alt"></i> KEMBALI MASUK';
+            
+        } else {
+            // User tidak sedang izin
+            elements.endTimeButton.disabled = true;
+            elements.endTimeButton.style.opacity = '0.5';
+            elements.endTimeButton.innerHTML = '<i class="fas fa-sign-in-alt"></i> TIDAK AKTIF';
+            
+            // Cek apakah bisa izin
+            checkRoleLimit(currentUser?.role || '').then(roleCheck => {
+                if (!isRestrictedTime() && 
+                    !isBlocked && 
+                    todayStartCount < maxStartLimit && 
+                    roleCheck.allowed) {
+                    
+                    elements.startTimeButton.disabled = false;
+                    elements.startTimeButton.style.opacity = '1';
+                    elements.startTimeButton.innerHTML = '<i class="fas fa-door-open"></i> IZIN KELUAR';
+                    
+                } else {
+                    elements.startTimeButton.disabled = true;
+                    elements.startTimeButton.style.opacity = '0.5';
+                    
+                    if (isRestrictedTime()) {
+                        elements.startTimeButton.innerHTML = '<i class="fas fa-ban"></i> WAKTU TERLARANG';
+                    } else if (isBlocked) {
+                        elements.startTimeButton.innerHTML = '<i class="fas fa-ban"></i> SUDAH 4 KALI';
+                    } else if (!roleCheck.allowed) {
+                        elements.startTimeButton.innerHTML = `<i class="fas fa-users-slash"></i> BATAS ROLE`;
+                    }
+                }
+            });
+        }
+    }
+
+    // ============================================
+    // MODIFIKASI FUNGSI REAL-TIME UPDATES
+    // ============================================
     function startRealtimeUpdates() {
-      console.log('Starting real-time updates...');
-      elements.realtimeIndicator.style.display = 'flex';
-      realtimeUpdateInterval = setInterval(async () => { await checkForUpdates(); }, 10000);
-      lastUpdateCheck = new Date().toISOString();
-      console.log('Real-time updates started');
+        console.log('🔄 Starting real-time updates...');
+        elements.realtimeIndicator.style.display = 'flex';
+        
+        // Update lebih sering untuk role limits
+        realtimeUpdateInterval = setInterval(async () => {
+            console.log('🔄 Real-time update check...');
+            
+            // Update role counts setiap 10 detik
+            await fetchActiveStaffFromDatabase();
+            
+            // Cek role limit untuk user saat ini
+            if (currentUser && currentUser.role) {
+                const roleCheck = await checkRoleLimit(currentUser.role);
+                updateRoleLimitUI(roleCheck);
+                updateStatusPanel();
+            }
+            
+            lastUpdateCheck = new Date().toISOString();
+            
+        }, 10000); // Update setiap 10 detik
+        
+        console.log('✅ Real-time updates started');
     }
 
     function stopRealtimeUpdates() {
@@ -2212,25 +2334,14 @@
           checkUserDataUpdates(),
           checkJobdeskUpdates(),
           checkAccessUpdates(),
-          checkBackgroundUpdates(),
-          countActiveStaffByRole() // TAMBAHKAN ROLE COUNTS UPDATE
+          checkBackgroundUpdates()
         ]);
         
         lastUpdateCheck = new Date().toISOString();
-        
-        // Cek role limit setelah update
-        if (currentUser) {
-          const roleCheck = await checkRoleLimit(currentUser.role);
-          updateRoleLimitUI(roleCheck);
-          updateStatusPanel();
-        }
-        
         updates.forEach((result, index) => {
           if (result.status === 'fulfilled' && result.value) console.log(`Update ${index} applied successfully`);
         });
-      } catch (error) { 
-        console.error('Error checking for updates:', error); 
-      }
+      } catch (error) { console.error('Error checking for updates:', error); }
     }
 
     async function checkUserDataUpdates() {
@@ -2405,8 +2516,8 @@
 
     function showUpdateNotification(message) {
       elements.updateMessage.textContent = message;
-      elements.updateNotification.style.display = 'flex';
-      setTimeout(() => { elements.updateNotification.style.display = 'none'; }, 3000);
+      elements.updateNotification.classList.add('show');
+      setTimeout(() => { elements.updateNotification.classList.remove('show'); }, 3000);
     }
 
     async function fetchGoogleSheetData(sheetName, background = false) {
@@ -2445,75 +2556,110 @@
       if (seconds === '00') updateTimeRestriction();
     }
 
+    // ============================================
+    // MODIFIKASI FUNGSI LOGIN UNTUK LOAD ROLE DATA
+    // ============================================
     async function login() {
       const username = elements.username.value.trim();
       const password = elements.password.value.trim();
       
       if (!username || !password) {
-        showError('Please enter username and password'); return;
+        showError('Please enter username and password');
+        return;
       }
       
       showLoading('Checking credentials...');
+      
       try {
         const registerData = await fetchGoogleSheetData(SHEET_NAMES.REGISTER);
+        
         if (registerData.length === 0) {
-          showError('No user data found in system'); hideLoading(); return;
+          showError('No user data found in system');
+          hideLoading();
+          return;
         }
         
         const userFound = findUserInRegisterData(registerData, username);
+        
         if (!userFound || userFound.password !== password) {
-          showError('❌ Username atau Password salah!'); hideLoading(); return;
+          showError('❌ Username atau Password salah!');
+          hideLoading();
+          return;
         }
         
+        // Cek IP whitelist
         const isWhitelisted = await checkIPWhitelist();
         if (!isWhitelisted) {
           elements.ipWhitelistMessage.style.display = 'block';
-          elements.ipWhitelistMessage.innerHTML = `<i class="fas fa-shield-alt"></i> IP Anda (${currentIP}) belum di-whitelist.<br>Silahkan hubungi administrator untuk meng-whitelist IP Anda.`;
-          hideLoading(); return;
+          elements.ipWhitelistMessage.innerHTML = `
+                <i class="fas fa-shield-alt"></i> 
+                IP Anda (${currentIP}) belum di-whitelist.<br>
+                Silahkan hubungi administrator.
+            `;
+          hideLoading();
+          return;
         }
         
+        // Set user data
         currentUser = userFound;
-        userDataCache = userFound;
         localStorage.setItem('currentUser', JSON.stringify(currentUser));
         localStorage.setItem('loginTime', new Date().toISOString());
         
+        // Initialize caches
         await initializeCaches();
+        
+        // Load dashboard
         await loadDashboard();
         
+        // Check limits
         const limitData = await checkStartTimeLimit();
         updateStartCounterUI(limitData);
+        
+        // Start timers
         startStatusPanelTimer();
         startRealtimeUpdates();
         
-        // HAPUS POPUP SELAMAT DATANG SAAT LOGIN
-        // showPopup(`<div style="color:#2ed573;text-align:center;"><i class="fas fa-check-circle fa-2x"></i><br><strong>Login berhasil!</strong><br>Selamat datang <strong>${userFound.name}</strong></div>`, 4000);
-        
+        // Update connection status
         updateConnectionStatus(true, `Logged in as ${userFound.name} (${userFound.role})`);
+        
+        console.log(`✅ Login successful: ${userFound.name} (${userFound.role})`);
+        
       } catch (error) {
-        console.error('Login error:', error);
+        console.error('❌ Login error:', error);
         showError(`Login failed: ${error.message}`);
       }
+      
       hideLoading();
     }
 
+    // ============================================
+    // FUNGSI UNTUK INISIALISASI CACHE (DIPERBARUI)
+    // ============================================
     async function initializeCaches() {
-      try {
-        const [registerData, jobdeskData, accessData, backgroundData] = await Promise.all([
-          fetchGoogleSheetData(SHEET_NAMES.REGISTER, true),
-          fetchGoogleSheetData(SHEET_NAMES.JOBDESK, true),
-          fetchGoogleSheetData(SHEET_NAMES.ACCESS, true),
-          fetchGoogleSheetData(SHEET_NAMES.BACKGROUND, true)
-        ]);
-        if (currentUser) userDataCache = findUserInRegisterData(registerData, currentUser.username);
-        jobdeskCache = extractJobdeskOptions(jobdeskData);
-        accessCache = extractAccessStatus(accessData);
-        backgroundCache = extractBackgroundImages(backgroundData);
-        
-        // Initialize role counts
-        await countActiveStaffByRole();
-        
-        console.log('Caches initialized successfully');
-      } catch (error) { console.error('Error initializing caches:', error); }
+        try {
+            const [registerData, jobdeskData, accessData, backgroundData] = await Promise.all([
+                fetchGoogleSheetData(SHEET_NAMES.REGISTER, true),
+                fetchGoogleSheetData(SHEET_NAMES.JOBDESK, true),
+                fetchGoogleSheetData(SHEET_NAMES.ACCESS, true),
+                fetchGoogleSheetData(SHEET_NAMES.BACKGROUND, true)
+            ]);
+            
+            if (currentUser) {
+                userDataCache = findUserInRegisterData(registerData, currentUser.username);
+            }
+            
+            jobdeskCache = extractJobdeskOptions(jobdeskData);
+            accessCache = extractAccessStatus(accessData);
+            backgroundCache = extractBackgroundImages(backgroundData);
+            
+            // Initialize role counts
+            await fetchActiveStaffFromDatabase();
+            
+            console.log('✅ Caches initialized successfully');
+            
+        } catch (error) {
+            console.error('❌ Error initializing caches:', error);
+        }
     }
 
     async function checkIPWhitelist() {
@@ -2540,38 +2686,55 @@
       }
     }
 
+    // ============================================
+    // MODIFIKASI FUNGSI LOAD DASHBOARD
+    // ============================================
     async function loadDashboard() {
-      try {
-        elements.loginForm.style.display = "none";
-        elements.dashboard.style.display = "block";
-        elements.dashboard.classList.remove("hidden");
-        updateUserUI();
-        await loadAccessSettings();
-        await loadJobdeskOptions();
-        updateTimeRestriction();
-        
-        // INISIALISASI ROLE COUNTS
-        await countActiveStaffByRole();
-        const roleCheck = await checkRoleLimit(currentUser.role);
-        updateRoleLimitUI(roleCheck);
-        
-        elements.errorMessage.textContent = '';
-        elements.ipWhitelistMessage.style.display = 'none';
-        elements.jobdeskError.style.display = 'none';
-        elements.modalOldPassword.value = '';
-        elements.modalNewPassword.value = '';
-        elements.modalConfirmPassword.value = '';
-        setTimeout(() => { elements.dashboard.scrollIntoView({ behavior: 'smooth' }); }, 100);
-        console.log('Dashboard loaded successfully for staff:', currentUser.name);
-        updateClock();
-        updateStatusPanel();
-      } catch (error) {
-        console.error('Error loading dashboard:', error);
-        elements.loginForm.style.display = "none";
-        elements.dashboard.style.display = "block";
-        elements.dashboard.classList.remove("hidden");
-        updateTimeRestriction();
-      }
+        try {
+            elements.loginForm.style.display = "none";
+            elements.dashboard.style.display = "block";
+            elements.dashboard.classList.remove("hidden");
+            
+            // Update user info
+            updateUserUI();
+            
+            // Load settings
+            await loadAccessSettings();
+            await loadJobdeskOptions();
+            
+            // Update time restriction
+            updateTimeRestriction();
+            
+            // Load dan update role counts
+            console.log('🔄 Loading role counts on dashboard...');
+            await fetchActiveStaffFromDatabase();
+            
+            // Cek role limit untuk user ini
+            if (currentUser && currentUser.role) {
+                const roleCheck = await checkRoleLimit(currentUser.role);
+                updateRoleLimitUI(roleCheck);
+            }
+            
+            // Reset UI
+            elements.errorMessage.textContent = '';
+            elements.ipWhitelistMessage.style.display = 'none';
+            elements.jobdeskError.style.display = 'none';
+            
+            // Scroll ke dashboard
+            setTimeout(() => { 
+                elements.dashboard.scrollIntoView({ behavior: 'smooth' }); 
+            }, 100);
+            
+            console.log('✅ Dashboard loaded successfully');
+            updateClock();
+            updateStatusPanel();
+            
+        } catch (error) {
+            console.error('❌ Error loading dashboard:', error);
+            elements.loginForm.style.display = "none";
+            elements.dashboard.style.display = "block";
+            elements.dashboard.classList.remove("hidden");
+        }
     }
 
     async function loadAccessSettings() {
@@ -2633,31 +2796,6 @@
           setTimeout(() => { elements.backgroundImage.classList.add('active'); }, 100);
         }, 1000);
       }, 10000);
-    }
-
-    function updateTimeButtonsUI(isActive) {
-      if (isActive) {
-        elements.startTimeButton.disabled = true;
-        elements.startTimeButton.style.opacity = '0.5';
-        elements.endTimeButton.disabled = false;
-        elements.endTimeButton.style.opacity = '1';
-        elements.startTimeButton.innerHTML = '<i class="fas fa-door-open"></i> Sedang Keluar';
-        elements.endTimeButton.innerHTML = '<i class="fas fa-sign-in-alt"></i> Kembali Masuk';
-      } else {
-        if (!isRestrictedTime() && todayStartCount < maxStartLimit && !isBlocked) {
-          // Cek role limit juga
-          checkRoleLimit(currentUser?.role || '').then(roleCheck => {
-            if (roleCheck.allowed && !checkActiveRecord()) {
-              elements.startTimeButton.disabled = false;
-              elements.startTimeButton.style.opacity = '1';
-              elements.startTimeButton.innerHTML = '<i class="fas fa-door-open"></i> Izin Keluar';
-            }
-          });
-        }
-        elements.endTimeButton.disabled = true;
-        elements.endTimeButton.style.opacity = '0.5';
-        elements.endTimeButton.innerHTML = '<i class="fas fa-sign-in-alt"></i> Tidak Aktif';
-      }
     }
 
     function updateConnectionStatus(isConnected, message) {
@@ -2738,14 +2876,10 @@
             else updateTimeButtonsUI(false);
             startStatusPanelTimer();
             startRealtimeUpdates();
-            
-            // Initialize role counts
             setTimeout(async () => {
-              await countActiveStaffByRole();
               const limitData = await checkStartTimeLimit();
               updateStartCounterUI(limitData);
             }, 500);
-            
             console.log('Auto login successful with state restoration');
             return true;
           } else {
@@ -2762,40 +2896,29 @@
     }
 
     // ============================================
-    // EXPORT UNTUK DEBUGGING
+    // EKSPORT FUNGSI UNTUK DEBUG
     // ============================================
     window.app = {
-      currentUser, 
-      testConnection, 
-      checkForUpdates, 
-      checkIPWhitelist, 
-      showPopup, 
-      hidePopup,
-      startTime, 
-      endTime, 
-      login, 
-      logout, 
-      startRealtimeUpdates, 
-      stopRealtimeUpdates,
-      writeToDatabaseSheet, 
-      checkStartTimeLimit, 
-      updateStartCounterUI, 
-      isRestrictedTime,
-      updateTimeRestriction, 
-      isBlocked, 
-      isMaxLimitReached, 
-      updateStatusPanel,
-      showPasswordChangeModal, 
-      changePassword, 
-      toggleModalPassword,
-      countActiveStaffByRole,
+      currentUser,
+      fetchActiveStaffFromDatabase,
       checkRoleLimit,
       activeRoleCounts,
-      ROLE_LIMITS
+      ROLE_LIMITS,
+      startTime,
+      endTime,
+      login,
+      logout,
+      updateRoleLimitUI,
+      updateStatusPanel,
+      testConnection, checkForUpdates, checkIPWhitelist, showPopup, hidePopup,
+      startRealtimeUpdates, stopRealtimeUpdates,
+      writeToDatabaseSheet, checkStartTimeLimit, updateStartCounterUI, isRestrictedTime,
+      updateTimeRestriction, isBlocked, isMaxLimitReached,
+      showPasswordChangeModal, changePassword, toggleModalPassword
     };
     
-    console.log('Time Tracker System Ready with STRICT Role-Based Limits!');
-    console.log('Role Limits Configuration:', ROLE_LIMITS);
+    console.log('✅ Time Tracker System with Role Limits READY!');
+    console.log('📊 Role Limits:', ROLE_LIMITS);
   </script>
   <!-- Bootstrap JS for modal -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
