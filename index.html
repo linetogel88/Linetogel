@@ -6,54 +6,79 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Izin Keluar Linetgl</title>
   
-  <!-- FAVICON BARU -->
+  <!-- FAVICON -->
   <link rel="shortcut icon" href="https://cdn-icons-png.flaticon.com/512/190/190411.png" type="image/x-icon">
 
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
   <!-- Bootstrap CSS for modal -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
   
-  <!-- Google Fonts for Modern Look -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <!-- Google Fonts: Orbitron (Futuristik) & Poppins (Modern) -->
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
   
   <style>
     /* ============================================
-       MODERN DESIGN STYLES (CSS BARU)
+       QUANTUM GLOW DESIGN (PADA UKURAN ASLI)
     ============================================ */
     :root {
-      --bg-gradient: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+      --neon-blue: #00f3ff;
+      --neon-purple: #bc13fe;
+      --bg-void: #050505;
       --glass-bg: rgba(255, 255, 255, 0.05);
-      --glass-border: rgba(255, 255, 255, 0.1);
-      --primary-glow: #00d2ff;
-      --secondary-glow: #3a7bd5;
-      --text-main: #ffffff;
-      --text-muted: rgba(255, 255, 255, 0.6);
-      --danger: #ff4757;
-      --success: #2ed573;
-      --warning: #ffa502;
+      --text-glow: #ffffff;
     }
 
     body {
       font-family: 'Poppins', sans-serif;
-      background: var(--bg-gradient);
-      background-size: 400% 400%;
-      animation: gradientBG 15s ease infinite;
-      margin: 0;
+      background-color: var(--bg-void);
+      color: var(--text-glow);
+      min-height: 100vh;
+      overflow-x: hidden;
       display: flex;
       justify-content: center;
       align-items: center;
-      min-height: 100vh;
-      overflow-x: hidden;
-      color: var(--text-main);
+      margin: 0;
     }
 
-    @keyframes gradientBG {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
+    /* Background Effects */
+    .space-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: 
+        linear-gradient(rgba(0, 243, 255, 0.1) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 243, 255, 0.1) 1px, transparent 1px);
+      background-size: 50px 50px;
+      z-index: -3;
+      opacity: 0.3;
     }
 
-    /* Background Image Logic */
+    .vignette {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle, transparent 40%, #000 100%);
+      z-index: -1;
+    }
+
+    .scanlines {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+      background-size: 100% 2px, 3px 100%;
+      pointer-events: none;
+      z-index: 100;
+      opacity: 0.4;
+    }
+
+    /* BACKGROUND IMAGE LOGIC */
     .background-image {
       position: fixed;
       top: 0;
@@ -65,62 +90,54 @@
       opacity: 0;
       transition: opacity 1.5s ease-in-out;
     }
-
     .background-image.active {
-      opacity: 0.2; /* Lebih gelap agar teks terbaca */
+      opacity: 0.2;
       filter: blur(5px);
     }
 
     /* ============================================
-       MODERN LOGIN DESIGN
+       LOGIN FORM (ASLI: 420px)
     ============================================ */
     #loginForm {
       position: relative;
       width: 100%;
-      max-width: 420px;
+      max-width: 420px; /* UKURAN ASLI DIPERTAHANKAN */
       padding: 40px;
       background: var(--glass-bg);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border: 1px solid var(--glass-border);
-      border-radius: 30px;
-      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-      animation: slideUpFade 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+      backdrop-filter: blur(15px);
+      border: 1px solid rgba(0, 243, 255, 0.2);
+      border-radius: 4px; /* Bentuk sesuai asli/tech */
+      box-shadow: 0 0 30px rgba(0, 243, 255, 0.15);
+      animation: cardFloat 6s ease-in-out infinite;
+      z-index: 10;
     }
 
-    @keyframes slideUpFade {
-      0% { opacity: 0; transform: translateY(30px) scale(0.95); }
-      100% { opacity: 1; transform: translateY(0) scale(1); }
-    }
-
-    /* Logo Area */
     #loginForm .login-logo-wrapper {
       text-align: center;
       margin-bottom: 35px;
     }
 
-    #loginForm .login-logo-wrapper img {
+    #loginForm img {
       width: 90px;
       height: auto;
       margin-bottom: 15px;
-      filter: drop-shadow(0 0 15px rgba(0, 210, 255, 0.4));
+      filter: drop-shadow(0 0 15px rgba(0, 243, 255, 0.5));
     }
 
     #loginForm h2 {
       text-align: center;
       color: #ffffff;
+      font-family: 'Orbitron', sans-serif; /* Font Canggih */
       font-weight: 700;
       font-size: 26px;
       letter-spacing: 1px;
       margin: 0 0 8px 0;
-      background: linear-gradient(to right, #fff, #a1c4fd);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      text-shadow: 0 0 10px rgba(0, 243, 255, 0.8);
     }
 
     #loginForm .subtitle {
       text-align: center;
-      color: var(--text-muted);
+      color: rgba(255, 255, 255, 0.6);
       font-size: 14px;
       margin-bottom: 35px;
       font-weight: 300;
@@ -137,17 +154,17 @@
       left: 18px;
       top: 50%;
       transform: translateY(-50%);
-      color: var(--text-muted);
+      color: rgba(255, 255, 255, 0.6);
       font-size: 16px;
       transition: all 0.3s ease;
     }
 
     .modern-input-group input {
       width: 100%;
-      background: rgba(0, 0, 0, 0.3);
-      border: 1px solid var(--glass-border);
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.2);
       padding: 16px 50px 16px 50px; 
-      border-radius: 16px;
+      border-radius: 16px; /* Bentuk sesuai asli */
       color: #fff;
       font-size: 15px;
       font-family: 'Poppins', sans-serif;
@@ -161,33 +178,31 @@
 
     .modern-input-group input:focus {
       outline: none;
-      background: rgba(0, 0, 0, 0.5);
-      border-color: var(--primary-glow);
-      box-shadow: 0 0 20px rgba(0, 210, 255, 0.15);
+      background: rgba(0, 0, 0, 0.7);
+      border-color: var(--neon-blue);
+      box-shadow: 0 0 20px rgba(0, 243, 255, 0.3);
     }
 
     .modern-input-group input:focus + i.icon-left {
-      color: var(--primary-glow);
-      text-shadow: 0 0 10px var(--primary-glow);
+      color: var(--neon-blue);
+      text-shadow: 0 0 10px var(--neon-blue);
     }
 
-    /* Password Toggle Generic */
     .modern-input-group i.toggle-password, .modern-input-group i.toggle-pwd-icon {
       position: absolute;
       right: 18px;
       top: 50%;
       transform: translateY(-50%);
-      color: var(--text-muted);
+      color: rgba(255, 255, 255, 0.5);
       cursor: pointer;
       font-size: 16px;
       transition: color 0.3s;
     }
-
     .modern-input-group i.toggle-password:hover, .modern-input-group i.toggle-pwd-icon:hover {
       color: #fff;
     }
 
-    /* Error & IP Message */
+    /* Error Message */
     #error-message, #ipWhitelistMessage {
       font-size: 13px;
       text-align: center;
@@ -202,6 +217,7 @@
       color: #ff6b6b;
       background: rgba(255, 71, 87, 0.1);
       border: 1px solid rgba(255, 71, 87, 0.2);
+      box-shadow: 0 0 10px rgba(255, 71, 87, 0.2);
     }
     
     #ipWhitelistMessage {
@@ -210,11 +226,11 @@
       border: 1px solid rgba(255, 211, 42, 0.2);
     }
 
-    /* Modern Login Button */
+    /* Login Button */
     #loginButton {
       width: 100%;
       padding: 16px;
-      background: linear-gradient(135deg, #00d2ff 0%, #3a7bd5 100%);
+      background: linear-gradient(135deg, var(--neon-blue) 0%, var(--neon-purple) 100%);
       border: none;
       border-radius: 16px;
       color: white;
@@ -223,18 +239,19 @@
       letter-spacing: 0.5px;
       cursor: pointer;
       transition: all 0.3s ease;
-      box-shadow: 0 10px 20px rgba(0, 210, 255, 0.2);
+      box-shadow: 0 10px 20px rgba(0, 243, 255, 0.3);
       margin-top: 10px;
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 10px;
+      font-family: 'Orbitron', sans-serif; /* Font Canggih */
+      text-transform: uppercase;
     }
 
     #loginButton:hover {
       transform: translateY(-2px);
-      box-shadow: 0 15px 30px rgba(0, 210, 255, 0.4);
-      background: linear-gradient(135deg, #3a7bd5 0%, #00d2ff 100%);
+      box-shadow: 0 15px 30px rgba(0, 243, 255, 0.5);
     }
 
     #loginButton:active {
@@ -242,38 +259,44 @@
     }
 
     /* ============================================
-       DASHBOARD CONTAINERS
+       DASHBOARD (ASLI: 600px)
     ============================================ */
     .container {
       width: 100%;
-      max-width: 600px;
+      max-width: 600px; /* UKURAN ASLI DIPERTAHANKAN */
       margin: 20px auto;
       padding: 30px;
-      border-radius: 30px;
+      border-radius: 30px; /* Bentuk sesuai asli */
       box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-      background: rgba(15, 15, 20, 0.6); /* Semi-transparent black */
+      background: var(--glass-bg);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
-      border: 1px solid var(--glass-border);
+      border: 1px solid rgba(255, 255, 255, 0.1);
       position: relative;
       animation: fadeIn 0.5s ease-out;
+    }
+    
+    /* Tambahkan Glow pada Dashboard Container */
+    .container {
+       box-shadow: 0 0 40px rgba(0, 243, 255, 0.1);
+       border: 1px solid rgba(0, 243, 255, 0.2);
     }
 
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(20px); }
       to { opacity: 1; transform: translateY(0); }
     }
+    @keyframes cardFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
 
-    /* Account Actions Container */
+    /* Dashboard Elements Styling */
     .account-actions-container {
       margin-top: 25px;
       padding: 20px;
       background: rgba(255, 255, 255, 0.03);
       border-radius: 20px;
-      border: 1px solid var(--glass-border);
+      border: 1px solid rgba(255, 255, 255, 0.05);
     }
 
-    /* Buttons General Style */
     button {
       width: 100%;
       padding: 14px 20px;
@@ -290,7 +313,6 @@
       font-family: 'Poppins', sans-serif;
     }
 
-    /* Dashboard Header */
     #dashboard h2 {
       font-size: 22px;
       color: #fff;
@@ -299,34 +321,31 @@
       text-transform: uppercase;
       letter-spacing: 1px;
       text-align: center;
-      background: linear-gradient(to right, #a1c4fd, #c2e9fb);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      font-family: 'Orbitron', sans-serif;
+      text-shadow: 0 0 15px rgba(0, 243, 255, 0.6);
     }
     
     #dashboard img.logo {
       width: 80px;
       margin-bottom: 15px;
-      filter: drop-shadow(0 0 10px rgba(255,255,255,0.3));
+      filter: drop-shadow(0 0 10px rgba(255,255,255,0.5));
     }
 
-    /* Clock */
     .clock {
       font-family: 'Digital dream Fat', monospace;
       font-size: 3.2rem;
       font-weight: bold;
-      color: #00f2ff;
+      color: var(--neon-blue);
       text-align: center;
       margin: 20px 0;
-      text-shadow: 0 0 10px rgba(0, 242, 255, 0.5), 0 0 20px rgba(0, 242, 255, 0.3);
+      text-shadow: 0 0 20px rgba(0, 243, 255, 0.8);
       letter-spacing: 2px;
     }
 
-    /* Fancy HR */
     .fancy-hr {
       border: 0;
       height: 1px;
-      background: linear-gradient(to right, transparent, rgba(255,255,255,0.2), transparent);
+      background: linear-gradient(to right, transparent, rgba(0, 243, 255, 0.5), transparent);
       margin: 25px 0;
     }
 
@@ -352,15 +371,16 @@
     }
 
     .staff-info i {
-      color: var(--primary-glow);
+      color: var(--neon-blue);
       width: 20px;
+      text-shadow: 0 0 10px var(--neon-blue);
     }
     
     .staff-name {
       font-size: 20px !important;
       font-weight: 700 !important;
       color: #fff !important;
-      text-shadow: 0 0 10px rgba(255,255,255,0.3);
+      text-shadow: 0 0 10px rgba(255,255,255,0.5);
     }
     
     .role-display {
@@ -369,13 +389,14 @@
       padding: 4px 12px;
       border-radius: 20px;
       border: 1px solid rgba(255, 255, 255, 0.1);
-      color: var(--primary-glow) !important;
+      color: var(--neon-blue) !important;
+      text-shadow: 0 0 5px var(--neon-blue);
     }
 
     /* Status Panel */
     .status-panel {
       background: rgba(0, 0, 0, 0.3);
-      border: 1px solid var(--glass-border);
+      border: 1px solid rgba(255, 255, 255, 0.1);
       padding: 20px;
       border-radius: 20px;
       margin: 20px 0;
@@ -386,8 +407,8 @@
     }
     
     .status-panel.active {
-      border-color: var(--success);
-      box-shadow: 0 0 20px rgba(46, 213, 115, 0.15);
+      border-color: #2ed573;
+      box-shadow: 0 0 30px rgba(46, 213, 115, 0.2);
       background: linear-gradient(135deg, rgba(46, 213, 115, 0.05), rgba(0, 0, 0, 0.3));
     }
 
@@ -395,7 +416,7 @@
       font-size: 16px;
       font-weight: 600;
       margin-bottom: 10px;
-      color: var(--text-muted);
+      color: rgba(255,255,255,0.7);
       text-transform: uppercase;
       letter-spacing: 1px;
     }
@@ -405,12 +426,12 @@
       font-weight: 700;
       color: #fff;
       margin: 5px 0;
-      text-shadow: 0 0 15px rgba(255,255,255,0.2);
+      text-shadow: 0 0 15px rgba(255,255,255,0.3);
     }
 
     .status-duration {
       font-size: 15px;
-      color: var(--warning);
+      color: #ffa502;
       display: inline-flex;
       align-items: center;
       gap: 6px;
@@ -429,7 +450,7 @@
       width: 100%;
       padding: 14px 20px;
       border-radius: 16px;
-      border: 1px solid var(--glass-border);
+      border: 1px solid rgba(255, 255, 255, 0.1);
       background: rgba(0, 0, 0, 0.3);
       color: white;
       font-size: 15px;
@@ -444,7 +465,8 @@
 
     #jobdeskSection select:focus {
       outline: none;
-      border-color: var(--primary-glow);
+      border-color: var(--neon-blue);
+      box-shadow: 0 0 15px rgba(0, 243, 255, 0.2);
     }
 
     /* Action Buttons Layout */
@@ -531,7 +553,7 @@
       max-width: 400px;
       width: 90%;
       text-align: center;
-      border: 1px solid var(--glass-border);
+      border: 1px solid rgba(0, 243, 255, 0.2);
       box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
       animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
@@ -545,6 +567,7 @@
       font-size: 24px;
       margin-bottom: 15px;
       color: #fff;
+      font-family: 'Orbitron', sans-serif;
     }
 
     .custom-modal-message, .password-message {
@@ -577,7 +600,6 @@
       margin-bottom: 20px;
     }
 
-    /* Blocked Dashboard */
     .blocked-dashboard {
       text-align: center;
       padding: 40px 20px;
@@ -680,7 +702,7 @@
       height: 50px;
       border: 3px solid rgba(255,255,255,0.1);
       border-radius: 50%;
-      border-top-color: var(--primary-glow);
+      border-top-color: var(--neon-blue);
       animation: spin 1s ease-in-out infinite;
     }
 
@@ -702,7 +724,7 @@
       z-index: 10001;
       display: none;
       text-align: center;
-      border: 1px solid var(--glass-border);
+      border: 1px solid rgba(255,255,255,0.1);
       animation: popIn 0.3s forwards;
       width: 80%;
       max-width: 400px;
@@ -727,7 +749,7 @@
       padding: 30px;
       border-radius: 24px;
       text-align: center;
-      border: 1px solid var(--glass-border);
+      border: 1px solid rgba(255,255,255,0.1);
       box-shadow: 0 20px 50px rgba(0,0,0,0.5);
       max-width: 90%;
       width: 400px;
@@ -743,13 +765,13 @@
       width: 100%;
       padding: 12px 50px 12px 45px; /* Adjust padding for icon */
       background: rgba(0,0,0,0.3);
-      border: 1px solid var(--glass-border);
+      border: 1px solid rgba(255,255,255,0.1);
       border-radius: 12px;
       color: white;
       box-sizing: border-box;
       transition: 0.3s;
     }
-    .password-form-group input:focus { border-color: var(--primary-glow); outline: none; }
+    .password-form-group input:focus { border-color: var(--neon-blue); outline: none; box-shadow: 0 0 10px rgba(0, 243, 255, 0.2); }
     
     /* Icon left positioning for modal inputs */
     .password-form-group .modal-icon-left {
@@ -757,7 +779,7 @@
       left: 15px;
       top: 50%;
       transform: translateY(-50%);
-      color: var(--text-muted);
+      color: rgba(255,255,255,0.5);
     }
 
     .password-message { padding: 10px; border-radius: 10px; font-size: 14px; margin-bottom: 15px; display: none; }
@@ -765,7 +787,7 @@
     .password-message.error { background: rgba(255, 71, 87, 0.1); color: #ff4757; border: 1px solid rgba(255, 71, 87, 0.2); }
 
     .password-modal-buttons { display: flex; gap: 10px; margin-top: 10px; }
-    .password-save-btn { background: linear-gradient(135deg, #00d2ff, #3a7bd5); color: white; border: none; }
+    .password-save-btn { background: linear-gradient(135deg, var(--neon-blue), var(--neon-purple)); color: white; border: none; box-shadow: 0 4px 15px rgba(0, 243, 255, 0.3); }
     .password-cancel-btn { background: rgba(255, 255, 255, 0.1); color: white; border: 1px solid rgba(255,255,255,0.1); }
 
     /* Utility Classes */
@@ -796,6 +818,11 @@
 
   <!-- Background Image -->
   <img id="backgroundImage" class="background-image" src="" alt="Background">
+  
+  <!-- Background Effects -->
+  <div class="scanlines"></div>
+  <div class="vignette"></div>
+  <div class="space-bg"></div>
 
   <!-- Loading Spinner Notification -->
   <div id="loadingSpinner" class="loading-spinner">
@@ -849,7 +876,7 @@
   <div id="passwordChangeModal" class="password-modal">
     <div class="password-modal-content">
       <div class="password-modal-title">
-        <i class="fas fa-key" style="margin-right: 10px; color: var(--primary-glow);"></i>
+        <i class="fas fa-key" style="margin-right: 10px; color: var(--neon-blue);"></i>
         <span>Ganti Password</span>
       </div>
       
@@ -894,7 +921,7 @@
   </div>
 
   <!-- ============================================
-       NEW LOGIN FORM DESIGN
+       NEW LOGIN FORM DESIGN (HTML ASLI DARI USER)
   ============================================ -->
   <div id="loginForm">
     <div class="login-logo-wrapper">
@@ -938,7 +965,7 @@
   </div>
   <!-- ============================================ -->
 
-  <!-- Dashboard -->
+  <!-- Dashboard (HTML ASLI DARI USER) -->
   <div id="dashboard" class="container hidden">
     <center><img src="https://cdn.areabermain.club/assets/cdn/az4/2025/04/23/20250423/a82bdc6fb564d0dff3671aeb9a4d1da5/logo.png" alt="Logo" class="logo"></center>
     <h2><i class="fas fa-clock"></i>IZIN STAFF LINETOGEL 2026 </h2>
@@ -1093,7 +1120,7 @@
         passwordInput.type = "text";
         toggleIcon.classList.remove("fa-eye");
         toggleIcon.classList.add("fa-eye-slash");
-        toggleIcon.style.color = "#00d2ff";
+        toggleIcon.style.color = "#00f3ff";
       } else {
         passwordInput.type = "password";
         toggleIcon.classList.remove("fa-eye-slash");
@@ -1111,7 +1138,7 @@
         input.type = "text";
         icon.classList.remove("fa-eye");
         icon.classList.add("fa-eye-slash");
-        icon.style.color = "#00d2ff";
+        icon.style.color = "#00f3ff";
       } else {
         input.type = "password";
         icon.classList.remove("fa-eye-slash");
@@ -2033,9 +2060,6 @@
         startStatusPanelTimer();
         startRealtimeUpdates();
         
-        // PERUBAHAN: HAPUS POPUP SELAMAT DATANG SAAT LOGIN
-        // Baris ini dihapus: showPopup(`<div style="color:#2ed573;text-align:center;"><i class="fas fa-check-circle fa-2x"></i><br><strong>Login berhasil!</strong><br>Selamat datang <strong>${userFound.name}</strong></div>`, 4000);
-        
         updateConnectionStatus(true, `Logged in as ${userFound.name}`);
       } catch (error) {
         console.error('Login error:', error);
@@ -2475,9 +2499,3 @@ document.addEventListener('selectstart', function(e) {
 });
 </script>
 </html>
-
-
-
-
-
-
