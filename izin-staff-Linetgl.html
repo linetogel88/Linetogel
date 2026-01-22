@@ -404,7 +404,30 @@
     .duration-overlimit td:nth-child(6) {
       position: relative; 
       overflow: visible !important;
-      color: #ff9999;
+      color: #ff9999 !important; /* Warna merah untuk durasi yang lewat batas */
+      font-weight: bold;
+    }
+
+    /* --- STYLE KHUSUS UNTUK SEJARAH LEWAT BATAS --- */
+    .history-overlimit {
+      background: linear-gradient(90deg, rgba(150, 0, 0, 0.2), rgba(100, 0, 0, 0.1)) !important;
+      border: 1px solid rgba(255, 0, 0, 0.2) !important;
+    }
+    
+    .history-overlimit td:nth-child(6) {
+      color: #ff6666 !important;
+      position: relative;
+    }
+    
+    .history-overlimit td:nth-child(6)::after {
+      content: " ⚠️";
+      font-size: 1.1rem;
+      animation: blinkWarning 1.5s infinite;
+    }
+    
+    @keyframes blinkWarning {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
     }
 
     .duration-overlimit td:nth-child(6)::before {
@@ -454,6 +477,29 @@
       text-transform: uppercase;
       font-weight: bold;
       letter-spacing: 1px;
+    }
+    
+    /* --- BADGE UNTUK LEWAT BATAS DI PARENT ROW --- */
+    .overlimit-badge {
+      background: linear-gradient(90deg, var(--marvel-red), var(--marvel-dark-red));
+      color: white;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 800;
+      white-space: nowrap;
+      border: 1px solid rgba(255,255,255,0.3);
+      box-shadow: 0 3px 10px rgba(236, 29, 36, 0.4);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      animation: pulseBadge 2s infinite;
+      margin-left: 10px;
+    }
+    
+    @keyframes pulseBadge {
+      0%, 100% { transform: scale(1); box-shadow: 0 3px 10px rgba(236, 29, 36, 0.4); }
+      50% { transform: scale(1.05); box-shadow: 0 5px 15px rgba(236, 29, 36, 0.6); }
     }
 
     .warning {
@@ -632,6 +678,10 @@
       }
       .staff-main-name { font-size: 1.1rem; }
       .staff-detail-row td:nth-child(1) { padding-left: 25px !important; }
+      .overlimit-badge {
+        padding: 4px 8px;
+        font-size: 0.7rem;
+      }
     }
 
     td {
@@ -714,6 +764,9 @@
     
     // Map untuk menyimpan stopwatch data per staff
     const staffStopwatches = new Map();
+    
+    // Map untuk menyimpan jumlah lewat batas per staff hari ini
+    const staffOverlimitCount = new Map();
     
     // Batas waktu maksimal durasi (dalam menit)
     const DURATION_LIMIT_MINUTES = 15; 
@@ -845,6 +898,33 @@
         durationMinutes = calculateDurationFromTimes(startTime, endTime);
       }
       return durationMinutes > DURATION_LIMIT_MINUTES;
+    }
+    
+    // Fungsi baru: Hitung jumlah lewat batas untuk setiap staff
+    function calculateStaffOverlimitCount(data) {
+      const { completeEntries, incompleteEntries } = data;
+      const overlimitMap = new Map();
+      
+      // Gabungkan semua entri
+      const allEntries = [...incompleteEntries, ...completeEntries];
+      
+      // Hitung untuk setiap entri
+      allEntries.forEach(entry => {
+        const staffName = entry.namaStaff;
+        if (!staffName) return;
+        
+        // Cek apakah entri ini lewat batas
+        const isOverlimit = isDurationOverLimit(entry.durasi, entry.startTime, entry.endTime);
+        
+        if (isOverlimit) {
+          if (!overlimitMap.has(staffName)) {
+            overlimitMap.set(staffName, 0);
+          }
+          overlimitMap.set(staffName, overlimitMap.get(staffName) + 1);
+        }
+      });
+      
+      return overlimitMap;
     }
     
     async function fetchBackgroundLinks() {
@@ -1109,13 +1189,26 @@
       
       updateWarningMessage(incompleteEntries);
       
+      // Hitung jumlah lewat batas per staff
+      staffOverlimitCount.clear();
+      const overlimitMap = calculateStaffOverlimitCount(data);
+      staffOverlimitCount.clear();
+      overlimitMap.forEach((value, key) => {
+        staffOverlimitCount.set(key, value);
+      });
+      
       const groupedData = {};
       
       // --- LOOP BALIK UNTUK COMPLETE ENTRIES (History) ---
       for (let i = completeEntries.length - 1; i >= 0; i--) {
         const entry = completeEntries[i];
         if (!groupedData[entry.namaStaff]) {
-          groupedData[entry.namaStaff] = { role: entry.jobdesk, trips: [], isActive: false };
+          groupedData[entry.namaStaff] = { 
+            role: entry.jobdesk, 
+            trips: [], 
+            isActive: false,
+            overlimitCount: staffOverlimitCount.get(entry.namaStaff) || 0
+          };
         }
         groupedData[entry.namaStaff].trips.push(entry);
       }
@@ -1123,9 +1216,15 @@
       // --- INCOMPLETE ENTRIES (Aktif) di paling atas ---
       incompleteEntries.forEach(entry => {
         if (!groupedData[entry.namaStaff]) {
-          groupedData[entry.namaStaff] = { role: entry.jobdesk, trips: [], isActive: true };
+          groupedData[entry.namaStaff] = { 
+            role: entry.jobdesk, 
+            trips: [], 
+            isActive: true,
+            overlimitCount: staffOverlimitCount.get(entry.namaStaff) || 0
+          };
         } else {
           groupedData[entry.namaStaff].isActive = true;
+          groupedData[entry.namaStaff].overlimitCount = staffOverlimitCount.get(entry.namaStaff) || 0;
         }
         groupedData[entry.namaStaff].trips.unshift(entry);
       });
@@ -1141,12 +1240,12 @@
       sortedNames.forEach((name) => {
         const staff = groupedData[name];
         const totalTrips = staff.trips.length;
+        const overlimitCount = staff.overlimitCount || 0;
         
         // --- Parent Row (Header) ---
         const parentTr = document.createElement('tr');
         
-        // PERUBAHAN DI SINI: Tidak ada 'expanded' secara default
-        // Aktif atau tidak, semuanya minimize awalnya.
+        // Tidak ada 'expanded' secara default
         parentTr.className = staff.isActive ? 'staff-header-row active' : 'staff-header-row';
         
         parentTr.onclick = function() { toggleStaffRows(this); };
@@ -1165,6 +1264,11 @@
                             <span class="staff-main-name">${name}</span>
                             <span class="staff-sub-role">${staff.role}</span>
                         </div>
+                        ${overlimitCount > 0 ? 
+                          `<div class="overlimit-badge" title="Pernah lewat batas ${overlimitCount} kali hari ini">
+                            <i class="fas fa-exclamation-triangle"></i> ${overlimitCount}x lewat batas
+                          </div>` 
+                          : ''}
                     </div>
                     <div class="header-right">
                         <div style="text-align:right;">
@@ -1192,7 +1296,18 @@
             }
 
             const isDurationOver = isDurationOverLimit(trip.durasi, trip.startTime, trip.endTime);
-            if (isDurationOver) childTr.classList.add("duration-overlimit");
+            
+            // Tentukan class berdasarkan status (aktif atau history yang lewat batas)
+            if (isDurationOver) {
+              // Jika ini adalah entri aktif yang masih berjalan (incomplete)
+              if (!trip.endTime || trip.endTime === '-' || trip.endTime === '' || 
+                  trip.endTime === 'Belum' || trip.endTime.toLowerCase().includes('belum')) {
+                childTr.classList.add("duration-overlimit");
+              } else {
+                // Jika ini adalah history (complete) yang pernah lewat batas
+                childTr.classList.add("history-overlimit");
+              }
+            }
             
             if (trip.keterangan && trip.keterangan.toLowerCase().includes("lewat")) {
                 childTr.classList.add("lewat-row");
@@ -1203,7 +1318,10 @@
             const displayEndTime = formatTimeDisplay(trip.endTime);
             let displayDuration = formatHistoryDuration(trip.durasi);
             
-            if (isDurationOver) displayDuration = `⚠️ ${displayDuration} ⚠️`;
+            // Tambahkan indikator jika durasi melebihi batas
+            if (isDurationOver) {
+              displayDuration = `⚠️ ${displayDuration} ⚠️`;
+            }
             
             childTr.innerHTML = `
                 <td>${name}</td>
@@ -1215,7 +1333,7 @@
                 <td>${trip.keterangan || '-'}</td>
                 <td>
                      <span class="count-badge">
-                        Detail
+                        ${isDurationOver ? '⚠️ Lewat Batas' : 'Detail'}
                     </span>
                 </td>
             `;
@@ -1276,6 +1394,7 @@
                 <th>Role</th>
                 <th>JAM KELUAR</th>
                 <th>DURASI</th>
+                <th>STATUS</th>
               </tr>
             </thead>
             <tbody id="warningTableBody">
@@ -1313,6 +1432,9 @@
           );
           
           const displayTimeOut = formatTimeDisplay(entry.startTime);
+          const overlimitCount = staffOverlimitCount.get(entry.namaStaff) || 0;
+          const statusText = overlimitCount > 0 ? 
+            `⚠️ Pernah lewat ${overlimitCount}x` : 'Normal';
           
           const row = document.createElement('tr');
           row.className = 'warning-row';
@@ -1325,6 +1447,12 @@
                    id="stopwatch-${staffKey.replace(/[^a-zA-Z0-9]/g, '-')}">
                 <i class="fas fa-stopwatch"></i>${timeResult.formattedTime}
               </div>
+            </td>
+            <td>
+              <span style="color: ${overlimitCount > 0 ? 'var(--marvel-red)' : 'var(--hulk-green)'}; 
+                    font-weight: bold; font-size: 0.9rem;">
+                ${statusText}
+              </span>
             </td>
           `;
           
@@ -1648,5 +1776,3 @@ document.addEventListener('selectstart', function(e) {
 });
 </script>
 </html>
-
-
