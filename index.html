@@ -139,7 +139,7 @@
       text-align: center;
       color: rgba(255, 255, 255, 0.6);
       font-size: 14px;
-      margin-bottom: 15px; /* Adjusted for running text */
+      margin-bottom: 35px;
       font-weight: 300;
     }
 
@@ -805,58 +805,11 @@
       font-display: swap;
     }
 
-    /* ============================================
-       RUNNING TEXT STYLE (CLASSY FADE)
-    ============================================ */
-    .running-text-wrapper {
-      background: rgba(0, 243, 255, 0.05);
-      border: 1px solid rgba(0, 243, 255, 0.2);
-      border-radius: 8px;
-      overflow: hidden;
-      white-space: normal; /* Allow wrapping for classy look */
-      position: relative;
-      margin: 10px 0 20px 0;
-      box-shadow: 0 0 10px rgba(0, 243, 255, 0.1);
-      height: auto; /* Auto height to fit text */
-      min-height: 35px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 10px;
-      text-align: center;
-    }
-
-    .running-text-content {
-      display: inline-block;
-      color: #00f3ff;
-      font-size: 13px;
-      font-weight: 500;
-      text-shadow: 0 0 5px rgba(0, 243, 255, 0.5);
-      /* Animation Classy Fade */
-      opacity: 1;
-      transition: opacity 0.8s ease-in-out; 
-    }
-    
-    /* Remove previous scroll animation */
-    /* @keyframes scrollText ... REMOVED */
-    
-    /* Specific adjustments for placement */
-    #loginRunningText {
-        margin-bottom: 20px;
-        font-size: 12px;
-    }
-    
-    #dashboardRunningText {
-        margin-top: 10px;
-        margin-bottom: 20px;
-    }
-
     @media (max-width: 768px) {
       .container { padding: 20px; margin: 10px; }
       .time-btns, .account-actions { grid-template-columns: 1fr; }
       .clock { font-size: 2.5rem; }
       #loginForm { padding: 30px 20px; }
-      .running-text-content { font-size: 11px; }
     }
   </style>
 </head>
@@ -976,11 +929,6 @@
       <h2>Selamat Datang</h2>
       <p class="subtitle">Silahkan masuk ke akun anda</p>
     </div>
-
-    <!-- RUNNING TEXT: LOGIN VIEW -->
-    <div id="loginRunningText" class="running-text-wrapper">
-      <div class="running-text-content">Memuat pengumuman...</div>
-    </div>
     
     <form id="loginFormForm" onsubmit="event.preventDefault(); login();">
       
@@ -1024,12 +972,6 @@
     <center>
       <div id="MyClockDisplay" class="clock"></div>
     </center>
-
-    <!-- RUNNING TEXT: DASHBOARD VIEW -->
-    <div id="dashboardRunningText" class="running-text-wrapper">
-      <div class="running-text-content">Memuat pengumuman...</div>
-    </div>
-
     <hr class="fancy-hr">
     
     <!-- Warning Marquee -->
@@ -1133,12 +1075,11 @@
       WHITELIST: 'Whitelist IP',
       JOBDESK: 'Jobdesk',
       BACKGROUND: 'background',
-      DATABASE: 'DATABASE LINETOGEL',
-      RUNNING_TEXT: 'Running Teks' // FIX: Ganti 'Text' jadi 'Teks' (Indonesia)
+      DATABASE: 'DATABASE LINETOGEL'
     };
 
     // Google Apps Script URL
-    const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwh4hxwZA3e8PDGY_oeTV0nYFkxVYKeHFH4zubp0n70WASJaIHK4-issvFQwBuKJxg/exec';
+    const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzCrbbVEeEgEq8L0a4w8-SPJBoRQg7rDV9h6mOt4OQ82oeuoL6AgdSwE1DzwjhAdEc/exec';
 
     // ============================================
     // VARIABEL GLOBAL
@@ -1164,11 +1105,6 @@
     let accessCache = null;
     let backgroundCache = null;
     
-    // Running Text Variables (NEW: ARRAY BASED)
-    let runningTextArray = [];
-    let runningTextIndex = 0;
-    let runningTextInterval = null;
-
     // Variabel untuk status panel dan timer
     let statusPanelTimer = null;
     let currentSessionStartTime = null;
@@ -1289,112 +1225,8 @@
       startTimeButton: document.getElementById('startTimeButton'),
       endTimeButton: document.getElementById('endTimeButton'),
       logoutButton: document.getElementById('logoutButton'),
-      changePasswordButton: document.getElementById('changePasswordButton'),
-
-      // Running Text Elements
-      loginRunningText: document.getElementById('loginRunningText'),
-      dashboardRunningText: document.getElementById('dashboardRunningText')
+      changePasswordButton: document.getElementById('changePasswordButton')
     };
-
-    // ============================================
-    // FUNGSI RUNNING TEXT (CLASSY FADE ANIMATION)
-    // ============================================
-    function startRunningTextAnimation() {
-        const loginContent = elements.loginRunningText.querySelector('.running-text-content');
-        const dashContent = elements.dashboardRunningText.querySelector('.running-text-content');
-
-        if (runningTextInterval) clearInterval(runningTextInterval);
-
-        // Set initial text
-        if (runningTextArray.length > 0) {
-            loginContent.innerText = runningTextArray[0];
-            dashContent.innerText = runningTextArray[0];
-        }
-
-        runningTextInterval = setInterval(() => {
-            // 1. Fade Out
-            loginContent.style.opacity = 0;
-            dashContent.style.opacity = 0;
-
-            setTimeout(() => {
-                // 2. Change Text
-                runningTextIndex = (runningTextIndex + 1) % runningTextArray.length;
-                const nextText = runningTextArray[runningTextIndex];
-
-                loginContent.innerText = nextText;
-                dashContent.innerText = nextText;
-
-                // 3. Fade In
-                loginContent.style.opacity = 1;
-                dashContent.style.opacity = 1;
-            }, 800); // Wait for fade out to complete
-
-        }, 5000); // Change every 5 seconds
-    }
-
-    async function loadRunningText() {
-      try {
-        // Gunakan nama sheet yang benar: 'Running Teks'
-        const sheetName = SHEET_NAMES.RUNNING_TEXT;
-        console.log("Fetching Running Text from: " + sheetName);
-        
-        // Encode nama sheet agar spasi terbaca aman di URL
-        const sheetNameEncoded = encodeURIComponent(sheetName);
-        const url = `https://opensheet.elk.sh/${SPREADSHEET_ID}/${sheetNameEncoded}`;
-        
-        const response = await fetch(url);
-        if (!response.ok) {
-          console.error("Failed to fetch Running Text:", response.status);
-          return;
-        }
-        
-        const data = await response.json();
-        console.log("Raw Running Text Data:", data);
-
-        if (!data || data.length === 0) return;
-
-        // Slice(1) untuk melewati header (baris 1), mulai dari B2
-        const rows = data.slice(1);
-        let tempArray = [];
-
-        rows.forEach((row, index) => {
-          // Ambil semua value dalam object baris tersebut
-          const values = Object.values(row);
-          
-          // Logika spesifik: Ambil nilai kolom B (indeks ke-2 dari array values)
-          let content = '';
-          
-          if (values.length > 1) {
-            content = values[1]; // Kolom B
-          } else if (values.length > 0) {
-            content = values[0]; // Kolom A (Fallback)
-          }
-
-          // Convert ke string dan trim
-          content = String(content || '').trim();
-
-          // Hanya tambahkan jika ada isinya
-          if (content && content.toLowerCase() !== 'nan' && content.toLowerCase() !== 'undefined') {
-            tempArray.push(content);
-          }
-        });
-
-        // Jika kosong, beri default text
-        if (tempArray.length === 0) {
-            tempArray.push("Tidak ada pengumuman saat ini.");
-        }
-
-        console.log("Generated Running Text Array:", tempArray);
-
-        // Update global array dan restart animation
-        runningTextArray = tempArray;
-        runningTextIndex = 0;
-        startRunningTextAnimation();
-
-      } catch (error) {
-        console.error('Error loading running text:', error);
-      }
-    }
 
     // ============================================
     // FUNGSI STATUS PANEL
@@ -1655,7 +1487,6 @@
       setInterval(updateClock, 1000);
       getUserIP();
       loadBackgroundImages();
-      loadRunningText(); // Load running text saat start
       checkLoginStatus();
       testConnection();
       setInterval(updateTimeRestriction, 30000);
@@ -1695,8 +1526,6 @@
       stopRealtimeUpdates();
       hideLoading();
       
-      if (runningTextInterval) clearInterval(runningTextInterval);
-
       currentUser = null;
       userData = null;
       jobdeskList = [];
@@ -1747,9 +1576,6 @@
       elements.dashboard.style.display = 'none';
       elements.loginForm.style.display = 'block';
       
-      // Reload running text saat logout (opsional, jika ingin refresh)
-      loadRunningText();
-
       updateConnectionStatus(true, 'Connected - Please login');
       showPopup(`<div style="color:#2ed573;text-align:center;"><i class="fas fa-check-circle fa-2x"></i><br><strong>Logout Berhasil!</strong></div>`, 3000);
     }
@@ -1972,8 +1798,7 @@
           checkUserDataUpdates(),
           checkJobdeskUpdates(),
           checkAccessUpdates(),
-          checkBackgroundUpdates(),
-          checkRunningTextUpdates() // Added running text check
+          checkBackgroundUpdates()
         ]);
         
         lastUpdateCheck = new Date().toISOString();
@@ -1981,52 +1806,6 @@
           if (result.status === 'fulfilled' && result.value) console.log(`Update ${index} applied successfully`);
         });
       } catch (error) { console.error('Error checking for updates:', error); }
-    }
-    
-    async function checkRunningTextUpdates() {
-      try {
-        const sheetNameEncoded = encodeURIComponent(SHEET_NAMES.RUNNING_TEXT);
-        const url = `https://opensheet.elk.sh/${SPREADSHEET_ID}/${sheetNameEncoded}`;
-        const response = await fetch(url);
-        if (!response.ok) return false;
-
-        const latestData = await response.json();
-        if (!latestData || latestData.length === 0) return false;
-        
-        const rows = latestData.slice(1);
-        let newTempArray = [];
-        
-        rows.forEach(row => {
-          const values = Object.values(row);
-          let content = '';
-          if (values.length > 1) {
-            content = values[1];
-          } else if (values.length > 0) {
-            content = values[0];
-          }
-          if (content && String(content).trim() !== '') {
-            newTempArray.push(content.trim());
-          }
-        });
-        
-        if (newTempArray.length === 0) newTempArray.push("Tidak ada pengumuman saat ini.");
-
-        // Compare arrays
-        if (runningTextCache) {
-            if (JSON.stringify(runningTextCache) !== JSON.stringify(newTempArray)) {
-                runningTextCache = newTempArray;
-                runningTextArray = newTempArray;
-                // Restart animation with new data
-                startRunningTextAnimation();
-                showUpdateNotification('Pengumuman diperbarui');
-                return true;
-            }
-        } else {
-            runningTextCache = newTempArray;
-            return false;
-        }
-        return false;
-      } catch (error) { console.error('Error checking running text updates:', error); return false; }
     }
 
     async function checkUserDataUpdates() {
@@ -2543,7 +2322,7 @@
       startTime, endTime, login, logout, startRealtimeUpdates, stopRealtimeUpdates,
       writeToDatabaseSheet, checkStartTimeLimit, updateStartCounterUI, isRestrictedTime,
       updateTimeRestriction, isBlocked, isMaxLimitReached, updateStatusPanel,
-      showPasswordChangeModal, changePassword, toggleModalPassword, loadRunningText
+      showPasswordChangeModal, changePassword, toggleModalPassword
     };
     
     console.log('Time Tracker System Ready with Persistent State!');
