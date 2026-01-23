@@ -1530,18 +1530,50 @@
     // FUNGSI CEK BATAS MAKSIMAL IZIN KELUAR
     // ============================================
     async function checkStartTimeLimit() {
-        try {
-            if (!currentUser || !currentUser.username) return { success: false, canStart: false, message: 'User not found' };
-            const response = await fetch(`${GOOGLE_SCRIPT_URL}?action=checkStartTimeLimit&username=${encodeURIComponent(currentUser.username)}`);
-            const data = await response.json();
+    try {
+        if (!currentUser || !currentUser.username) return { 
+            success: false, 
+            canStart: false, 
+            message: 'User not found',
+            count: 0,
+            remaining: 4,
+            maxCount: 4,
+            hardStop: false
+        };
+        
+        // Gunakan Apps Script URL langsung (jangan gunakan ?action=)
+        const url = `${GOOGLE_SCRIPT_URL}?action=checkStartTimeLimit&username=${encodeURIComponent(currentUser.username)}`;
+        console.log("Checking limit with URL:", url);
+        
+        const response = await fetch(url);
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        }
+        
+        const data = await response.json();
+        console.log("Limit check response:", data);
+        
+        if (data.success) {
             if (data.hardStop && data.count >= maxStartLimit) isMaxLimitReached = true;
             else isMaxLimitReached = false;
+            
             return data;
-        } catch (error) {
-            console.error('Error checking izin keluar limit:', error);
-            return { success: false, canStart: true, message: 'Error checking limit' };
+        } else {
+            throw new Error(data.message || 'Failed to check limit');
         }
+    } catch (error) {
+        console.error('Error checking izin keluar limit:', error);
+        return { 
+            success: false, 
+            canStart: true, 
+            message: 'Error checking limit: ' + error.toString(),
+            count: 0,
+            remaining: 4,
+            maxCount: 4,
+            hardStop: false
+        };
     }
+}
 
     function updateStartCounterUI(limitData) {
         if (limitData.success) {
@@ -1788,10 +1820,25 @@
     // OPTIMASI START TIME (TANPA LOADING LAMA)
     // ==========================================
     async function startTime() {
-      if (isRestrictedTime()) {
-        showPopup(`<div style="color:#ffa502;text-align:center;"><i class="fas fa-exclamation-triangle fa-2x"></i><br><strong>IZIN KELUAR TIDAK TERSEDIA!</strong></div>`, 5000);
-        return;
-      }
+  if (isRestrictedTime()) {
+    showPopup(`<div style="color:#ffa502;text-align:center;"><i class="fas fa-exclamation-triangle fa-2x"></i><br><strong>IZIN KELUAR TIDAK TERSEDIA!</strong><br>Waktu: 23:50 - 00:01</div>`, 5000);
+    return;
+  }
+  
+  // CEK LIMIT DULU SEBELUM MELANJUTKAN
+  const limitCheck = await checkStartTimeLimit();
+  console.log("Limit check result:", limitCheck);
+  
+  if (!limitCheck.success) {
+    showPopup(`<div style="color:#ff4757;text-align:center;"><i class="fas fa-exclamation-triangle fa-2x"></i><br><strong>Gagal memeriksa batas izin!</strong><br>${limitCheck.message}</div>`, 5000);
+    return;
+  }
+  
+  if (limitCheck.hardStop && limitCheck.count >= maxStartLimit) {
+    showPopup(`<div style="color:#ff4757;text-align:center;"><i class="fas fa-ban fa-2x"></i><br><strong>SUDAH 4 KALI IZIN!</strong><br>Batas maksimal telah tercapai<br>Silakan lanjut besok!</div>`, 5000);
+    updateStartCounterUI(limitCheck);
+    return;
+  }
       
       // Cek limit cepat di background, tapi UI tidak terblokir
       checkStartTimeLimit().then(limitCheck => {
@@ -2720,4 +2767,5 @@ document.addEventListener('selectstart', function(e) {
 });
 </script>
 </html>
+
 
