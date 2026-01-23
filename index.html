@@ -2764,8 +2764,371 @@ document.addEventListener('dragstart', function(e) {
 document.addEventListener('selectstart', function(e) {
   e.preventDefault();
   return false;
+
+  <!-- ============================================
+     DEBUG PANEL & FUNCTIONS
+============================================ -->
+<div id="debugPanel" style="position: fixed; bottom: 10px; left: 10px; background: rgba(0,0,0,0.9); color: #00ff00; padding: 15px; border-radius: 8px; border: 1px solid #00ff00; font-family: monospace; font-size: 12px; max-width: 300px; z-index: 99999; display: none;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+        <strong style="color: #00ff00;">DEBUG PANEL</strong>
+        <button onclick="toggleDebugPanel()" style="background: transparent; border: 1px solid #00ff00; color: #00ff00; padding: 2px 8px; border-radius: 4px; cursor: pointer;">X</button>
+    </div>
+    <div id="debugContent" style="max-height: 200px; overflow-y: auto;">
+        <div>Debug info will appear here...</div>
+    </div>
+    <div style="margin-top: 10px; display: flex; gap: 5px; flex-wrap: wrap;">
+        <button onclick="debugTestLimit()" style="background: #0044cc; color: white; border: none; padding: 4px 8px; border-radius: 4px; font-size: 10px; cursor: pointer;">Test Limit</button>
+        <button onclick="debugTestLogin()" style="background: #008800; color: white; border: none; padding: 4px 8px; border-radius: 4px; font-size: 10px; cursor: pointer;">Test Login</button>
+        <button onclick="debugTestStartTime()" style="background: #cc8800; color: white; border: none; padding: 4px 8px; border-radius: 4px; font-size: 10px; cursor: pointer;">Test Start</button>
+        <button onclick="debugClearLogs()" style="background: #880000; color: white; border: none; padding: 4px 8px; border-radius: 4px; font-size: 10px; cursor: pointer;">Clear Logs</button>
+    </div>
+</div>
+
+<button id="debugToggleBtn" onclick="toggleDebugPanel()" style="position: fixed; bottom: 10px; left: 10px; background: #333; color: #00ff00; border: 1px solid #00ff00; padding: 5px 10px; border-radius: 4px; font-family: monospace; font-size: 10px; z-index: 99998; cursor: pointer;">DEBUG</button>
+
+<script>
+// ============================================
+// DEBUG FUNCTIONS
+// ============================================
+let debugLogs = [];
+
+function debugLog(message, type = 'info') {
+    const timestamp = new Date().toLocaleTimeString();
+    const logEntry = {
+        time: timestamp,
+        message: message,
+        type: type
+    };
+    
+    debugLogs.push(logEntry);
+    
+    // Update debug panel if visible
+    const debugContent = document.getElementById('debugContent');
+    if (debugContent) {
+        const color = type === 'error' ? '#ff5555' : type === 'success' ? '#55ff55' : '#00aaff';
+        const div = document.createElement('div');
+        div.innerHTML = `<span style="color: #888">[${timestamp}]</span> <span style="color: ${color}">${message}</span>`;
+        debugContent.appendChild(div);
+        debugContent.scrollTop = debugContent.scrollHeight;
+    }
+    
+    // Also log to console
+    console.log(`[${timestamp}] ${message}`);
+}
+
+function debugClearLogs() {
+    debugLogs = [];
+    const debugContent = document.getElementById('debugContent');
+    if (debugContent) {
+        debugContent.innerHTML = '<div>Debug logs cleared...</div>';
+    }
+}
+
+function toggleDebugPanel() {
+    const panel = document.getElementById('debugPanel');
+    const btn = document.getElementById('debugToggleBtn');
+    
+    if (panel.style.display === 'none' || panel.style.display === '') {
+        panel.style.display = 'block';
+        btn.textContent = 'HIDE DEBUG';
+        btn.style.background = '#00aa00';
+    } else {
+        panel.style.display = 'none';
+        btn.textContent = 'DEBUG';
+        btn.style.background = '#333';
+    }
+}
+
+// ============================================
+// DEBUG TEST FUNCTIONS
+// ============================================
+
+async function debugTestLimit() {
+    debugLog('Testing limit check...', 'info');
+    
+    if (!currentUser || !currentUser.username) {
+        debugLog('❌ No user logged in', 'error');
+        alert('Silakan login terlebih dahulu!');
+        return;
+    }
+    
+    const url = `${GOOGLE_SCRIPT_URL}?action=checkStartTimeLimit&username=${encodeURIComponent(currentUser.username)}`;
+    debugLog(`URL: ${url}`, 'info');
+    
+    try {
+        debugLog('Sending request...', 'info');
+        const response = await fetch(url);
+        debugLog(`Response status: ${response.status}`, 'info');
+        
+        const text = await response.text();
+        debugLog(`Raw response: ${text}`, 'info');
+        
+        let data;
+        try {
+            data = JSON.parse(text);
+            debugLog('✅ Response parsed successfully', 'success');
+        } catch (e) {
+            debugLog(`❌ Failed to parse JSON: ${e.message}`, 'error');
+            debugLog(`Raw text: ${text}`, 'error');
+            return;
+        }
+        
+        debugLog(`Parsed data: ${JSON.stringify(data)}`, 'info');
+        
+        // Show in alert
+        alert(`Test Limit Result:
+Success: ${data.success}
+Count: ${data.count || 0}
+Remaining: ${data.remaining || 0}
+Max: ${data.maxCount || 4}
+Hard Stop: ${data.hardStop || false}
+Message: ${data.message || 'No message'}`);
+        
+    } catch (error) {
+        debugLog(`❌ Fetch error: ${error.message}`, 'error');
+        alert(`Error: ${error.message}`);
+    }
+}
+
+async function debugTestLogin() {
+    debugLog('Testing login function...', 'info');
+    
+    const testUsername = prompt('Masukkan username untuk test:') || 'test';
+    const testPassword = prompt('Masukkan password untuk test:') || 'test123';
+    
+    debugLog(`Testing login with: ${testUsername} / ${testPassword}`, 'info');
+    
+    // Simulate login
+    const usernameInput = document.getElementById('username');
+    const passwordInput = document.getElementById('password');
+    
+    if (usernameInput && passwordInput) {
+        usernameInput.value = testUsername;
+        passwordInput.value = testPassword;
+        
+        // Trigger login
+        setTimeout(() => {
+            if (typeof login === 'function') {
+                debugLog('Calling login() function...', 'info');
+                login();
+            } else {
+                debugLog('❌ login() function not found', 'error');
+            }
+        }, 500);
+    } else {
+        debugLog('❌ Login form elements not found', 'error');
+    }
+}
+
+async function debugTestStartTime() {
+    debugLog('Testing start time function...', 'info');
+    
+    if (!currentUser || !currentUser.username) {
+        debugLog('❌ No user logged in', 'error');
+        alert('Silakan login terlebih dahulu!');
+        return;
+    }
+    
+    // Test without jobdesk first
+    const selectedJobdesk = elements.jobdeskSelect ? elements.jobdeskSelect.value : '';
+    const requireJobdesk = ['ON', 'YES', 'TRUE', '1', 'ACTIVE', 'ENABLE'].includes(accessStatus);
+    
+    debugLog(`User: ${currentUser.username}`, 'info');
+    debugLog(`Jobdesk selected: ${selectedJobdesk}`, 'info');
+    debugLog(`Jobdesk required: ${requireJobdesk}`, 'info');
+    debugLog(`Access status: ${accessStatus}`, 'info');
+    
+    // Check limit first
+    const limitResult = await checkStartTimeLimit();
+    debugLog(`Limit check result: ${JSON.stringify(limitResult)}`, 'info');
+    
+    // Check active session
+    const activeSession = checkActiveRecord();
+    debugLog(`Active session: ${activeSession}`, 'info');
+    
+    // Check restricted time
+    const isRestricted = isRestrictedTime();
+    debugLog(`Restricted time (23:50-00:01): ${isRestricted}`, 'info');
+    
+    // Show summary
+    alert(`Start Time Test Summary:
+User: ${currentUser.username}
+Jobdesk Selected: ${selectedJobdesk || '(empty)'}
+Jobdesk Required: ${requireJobdesk}
+Access Status: ${accessStatus}
+Today Start Count: ${todayStartCount}
+Max Limit: ${maxStartLimit}
+Remaining: ${maxStartLimit - todayStartCount}
+Active Session: ${activeSession ? 'YES' : 'NO'}
+Restricted Time: ${isRestricted ? 'YES (23:50-00:01)' : 'NO'}
+Is Blocked: ${isBlocked ? 'YES' : 'NO'}
+Max Limit Reached: ${isMaxLimitReached ? 'YES' : 'NO'}`);
+}
+
+async function debugCheckSheets() {
+    debugLog('Checking all sheets...', 'info');
+    
+    const sheets = ['Register', 'Access', 'Whitelist IP', 'Jobdesk', 'background', 'DATABASE LINETOGEL', 'Running Teks'];
+    
+    for (const sheetName of sheets) {
+        debugLog(`Checking sheet: ${sheetName}...`, 'info');
+        
+        try {
+            const url = `https://opensheet.elk.sh/${SPREADSHEET_ID}/${encodeURIComponent(sheetName)}`;
+            const response = await fetch(url);
+            
+            if (response.ok) {
+                const data = await response.json();
+                debugLog(`✅ ${sheetName}: Found (${data.length} rows)`, 'success');
+            } else {
+                debugLog(`❌ ${sheetName}: Not found or error (${response.status})`, 'error');
+            }
+        } catch (error) {
+            debugLog(`❌ ${sheetName}: Error - ${error.message}`, 'error');
+        }
+    }
+}
+
+async function debugTestEndpoint(endpoint, params = {}) {
+    debugLog(`Testing endpoint: ${endpoint}`, 'info');
+    
+    let url = `${GOOGLE_SCRIPT_URL}?action=${endpoint}`;
+    
+    // Add params
+    for (const [key, value] of Object.entries(params)) {
+        url += `&${key}=${encodeURIComponent(value)}`;
+    }
+    
+    debugLog(`Full URL: ${url}`, 'info');
+    
+    try {
+        const response = await fetch(url);
+        const text = await response.text();
+        
+        debugLog(`Response (${response.status}): ${text}`, 'info');
+        
+        try {
+            const data = JSON.parse(text);
+            debugLog(`Parsed JSON: ${JSON.stringify(data, null, 2)}`, 'info');
+            return data;
+        } catch (e) {
+            debugLog(`Not JSON: ${text}`, 'info');
+            return text;
+        }
+    } catch (error) {
+        debugLog(`❌ Error: ${error.message}`, 'error');
+        return { error: error.message };
+    }
+}
+
+// ============================================
+// OVERRIDE CONSOLE LOG FOR DEBUGGING
+// ============================================
+const originalConsoleLog = console.log;
+const originalConsoleError = console.error;
+
+console.log = function(...args) {
+    originalConsoleLog.apply(console, args);
+    debugLog(args.map(arg => 
+        typeof arg === 'object' ? JSON.stringify(arg) : String(arg)
+    ).join(' '), 'info');
+};
+
+console.error = function(...args) {
+    originalConsoleError.apply(console, args);
+    debugLog(args.map(arg => 
+        typeof arg === 'object' ? JSON.stringify(arg) : String(arg)
+    ).join(' '), 'error');
+};
+
+// ============================================
+// INITIALIZE DEBUG SYSTEM
+// ============================================
+document.addEventListener('DOMContentLoaded', function() {
+    debugLog('System initialized', 'success');
+    debugLog(`Spreadsheet ID: ${SPREADSHEET_ID}`, 'info');
+    debugLog(`Script URL: ${GOOGLE_SCRIPT_URL}`, 'info');
+    
+    // Make debug functions globally available
+    window.debug = {
+        testLimit: debugTestLimit,
+        testLogin: debugTestLogin,
+        testStartTime: debugTestStartTime,
+        checkSheets: debugCheckSheets,
+        testEndpoint: debugTestEndpoint,
+        clearLogs: debugClearLogs,
+        logs: debugLogs,
+        togglePanel: toggleDebugPanel
+    };
+    
+    console.log('Debug system loaded. Use window.debug to access functions');
+    console.log('Available functions:');
+    console.log('  debug.testLimit() - Test limit check');
+    console.log('  debug.testLogin() - Test login');
+    console.log('  debug.testStartTime() - Test start time');
+    console.log('  debug.checkSheets() - Check all sheets');
+    console.log('  debug.testEndpoint("action", {params}) - Test any endpoint');
+    console.log('  debug.clearLogs() - Clear debug logs');
+    console.log('  debug.togglePanel() - Show/hide debug panel');
+});
+
+// ============================================
+// ADD DEBUG TO EXISTING FUNCTIONS
+// ============================================
+
+// Override checkStartTimeLimit for debugging
+const originalCheckStartTimeLimit = checkStartTimeLimit;
+checkStartTimeLimit = async function() {
+    debugLog('checkStartTimeLimit called', 'info');
+    try {
+        const result = await originalCheckStartTimeLimit();
+        debugLog(`checkStartTimeLimit result: ${JSON.stringify(result)}`, 'info');
+        return result;
+    } catch (error) {
+        debugLog(`checkStartTimeLimit error: ${error.message}`, 'error');
+        throw error;
+    }
+};
+
+// Override login for debugging
+const originalLogin = login;
+login = async function() {
+    debugLog('login called', 'info');
+    try {
+        await originalLogin();
+        debugLog('login completed', 'success');
+    } catch (error) {
+        debugLog(`login error: ${error.message}`, 'error');
+    }
+};
+
+// Override startTime for debugging
+const originalStartTime = startTime;
+startTime = async function() {
+    debugLog('startTime called', 'info');
+    try {
+        await originalStartTime();
+        debugLog('startTime completed', 'success');
+    } catch (error) {
+        debugLog(`startTime error: ${error.message}`, 'error');
+    }
+};
+
+// Override endTime for debugging
+const originalEndTime = endTime;
+endTime = async function() {
+    debugLog('endTime called', 'info');
+    try {
+        await originalEndTime();
+        debugLog('endTime completed', 'success');
+    } catch (error) {
+        debugLog(`endTime error: ${error.message}`, 'error');
+    }
+};
+</script>
 });
 </script>
 </html>
+
 
 
