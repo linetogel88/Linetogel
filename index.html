@@ -1825,7 +1825,7 @@
     return;
   }
   
-  // CEK LIMIT DULU SEBELUM MELANJUTKAN
+  // 1. CEK LIMIT DULU
   const limitCheck = await checkStartTimeLimit();
   console.log("Limit check result:", limitCheck);
   
@@ -1839,6 +1839,72 @@
     updateStartCounterUI(limitCheck);
     return;
   }
+  
+  // 2. VALIDASI JOBDESK
+  const selectedJobdesk = elements.jobdeskSelect.value;
+  const requireJobdesk = ['ON', 'YES', 'TRUE', '1', 'ACTIVE', 'ENABLE'].includes(accessStatus);
+  
+  if (requireJobdesk && !selectedJobdesk) {
+    elements.jobdeskError.style.display = 'block';
+    showPopup('Silahkan pilih jobdesk terlebih dahulu', 3000);
+    return;
+  }
+  
+  elements.jobdeskError.style.display = 'none';
+  
+  // 3. PREPARE DATA
+  const now = new Date();
+  const dateStr = getFormattedDate(now);
+  const timeStr = getFormattedTime(now);
+  
+  showLoading('Mencatat izin keluar...');
+  
+  try {
+    // Gunakan POST untuk logStartTime
+    const formData = new FormData();
+    formData.append('action', 'logStartTime');
+    formData.append('username', currentUser.username);
+    formData.append('time', timeStr);
+    formData.append('jobdesk', selectedJobdesk || '');
+    
+    const response = await fetch(GOOGLE_SCRIPT_URL, {
+      method: 'POST',
+      body: formData
+    });
+    
+    const result = await response.text();
+    
+    try {
+      const data = JSON.parse(result);
+      if (data.success) {
+        // Update UI
+        if (selectedJobdesk) elements.jobdeskSelect.value = '';
+        updateTimeButtonsUI(true);
+        todayStartCount++;
+        
+        showPopup(`<div style="color:#2ed573;text-align:center;"><i class="fas fa-check-circle fa-2x"></i><br><strong>Izin Keluar Berhasil!</strong><br>${data.message || ''}</div>`, 3000);
+        
+        // Refresh limit data
+        setTimeout(async () => {
+          const newLimitData = await checkStartTimeLimit();
+          updateStartCounterUI(newLimitData);
+        }, 1000);
+        
+      } else {
+        showPopup(`<div style="color:#ff4757;text-align:center;"><i class="fas fa-times-circle fa-2x"></i><br><strong>Gagal!</strong><br>${data.message || 'Unknown error'}</div>`, 5000);
+      }
+    } catch (e) {
+      // If response is not JSON (old format)
+      showPopup(`<div style="color:#2ed573;text-align:center;"><i class="fas fa-check-circle fa-2x"></i><br><strong>Izin Keluar Berhasil!</strong><br>${result}</div>`, 3000);
+    }
+    
+  } catch (error) {
+    console.error('Error in startTime:', error);
+    showPopup(`<div style="color:#ff4757;text-align:center;"><i class="fas fa-times-circle fa-2x"></i><br><strong>Error Sistem!</strong><br>${error.message}</div>`, 5000);
+  } finally {
+    hideLoading();
+  }
+}
       
       // Cek limit cepat di background, tapi UI tidak terblokir
       checkStartTimeLimit().then(limitCheck => {
@@ -3129,6 +3195,7 @@ endTime = async function() {
 });
 </script>
 </html>
+
 
 
 
