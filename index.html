@@ -1,25 +1,16 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Izin Keluar Linetogel</title>
-  
-  <!-- FAVICON -->
-  <link rel="shortcut icon" href="https://cdn-icons-png.flaticon.com/512/190/190411.png" type="image/x-icon">
-  
-  <!-- STYLES & FONTS -->
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-  
+  <title>Absensi Staff Linetogel</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    /* BASIC RESET */
     * { margin: 0; padding: 0; box-sizing: border-box; }
     
     body {
-      font-family: 'Poppins', sans-serif;
-      background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
-      color: #fff;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       min-height: 100vh;
       display: flex;
       justify-content: center;
@@ -27,27 +18,21 @@
       padding: 20px;
     }
     
-    /* LOGIN FORM */
-    .login-container {
+    .container {
       width: 100%;
-      max-width: 420px;
-      background: rgba(255, 255, 255, 0.05);
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 15px;
-      padding: 40px 30px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-      animation: fadeIn 0.5s ease;
+      max-width: 400px;
     }
     
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
+    .login-box {
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 15px;
+      padding: 30px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      text-align: center;
     }
     
     .logo {
-      text-align: center;
-      margin-bottom: 30px;
+      margin-bottom: 20px;
     }
     
     .logo img {
@@ -55,32 +40,31 @@
       height: 80px;
       border-radius: 50%;
       object-fit: cover;
-      margin-bottom: 15px;
-      border: 2px solid #00f3ff;
-      box-shadow: 0 0 20px rgba(0, 243, 255, 0.3);
+      border: 3px solid #764ba2;
     }
     
-    .logo h1 {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 24px;
-      color: #00f3ff;
+    h1 {
+      color: #333;
       margin-bottom: 5px;
+      font-size: 24px;
     }
     
-    .logo p {
-      color: rgba(255, 255, 255, 0.6);
+    .subtitle {
+      color: #666;
+      margin-bottom: 25px;
       font-size: 14px;
     }
     
     .form-group {
       margin-bottom: 20px;
+      text-align: left;
     }
     
-    .form-group label {
+    label {
       display: block;
-      margin-bottom: 8px;
-      color: rgba(255, 255, 255, 0.8);
-      font-size: 14px;
+      margin-bottom: 5px;
+      color: #555;
+      font-weight: 500;
     }
     
     .input-with-icon {
@@ -92,24 +76,21 @@
       left: 15px;
       top: 50%;
       transform: translateY(-50%);
-      color: rgba(255, 255, 255, 0.5);
+      color: #888;
     }
     
     .input-with-icon input {
       width: 100%;
-      padding: 15px 15px 15px 45px;
-      background: rgba(0, 0, 0, 0.3);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 10px;
-      color: #fff;
+      padding: 12px 15px 12px 45px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
       font-size: 16px;
-      transition: all 0.3s ease;
+      transition: border 0.3s;
     }
     
     .input-with-icon input:focus {
       outline: none;
-      border-color: #00f3ff;
-      box-shadow: 0 0 10px rgba(0, 243, 255, 0.2);
+      border-color: #667eea;
     }
     
     .password-toggle {
@@ -117,460 +98,132 @@
       right: 15px;
       top: 50%;
       transform: translateY(-50%);
-      color: rgba(255, 255, 255, 0.5);
+      color: #888;
       cursor: pointer;
     }
     
-    .btn-login {
+    .btn {
       width: 100%;
-      padding: 15px;
-      background: linear-gradient(135deg, #00f3ff 0%, #0088ff 100%);
-      border: none;
-      border-radius: 10px;
+      padding: 14px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       color: white;
+      border: none;
+      border-radius: 8px;
       font-size: 16px;
       font-weight: 600;
       cursor: pointer;
-      transition: all 0.3s ease;
-      margin-top: 10px;
+      transition: transform 0.3s;
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 10px;
     }
     
-    .btn-login:hover {
+    .btn:hover {
       transform: translateY(-2px);
-      box-shadow: 0 5px 15px rgba(0, 243, 255, 0.4);
     }
     
-    .btn-login:active {
+    .btn:active {
       transform: translateY(0);
     }
     
     .alert {
-      padding: 12px 15px;
+      padding: 12px;
       border-radius: 8px;
-      margin: 15px 0;
-      font-size: 14px;
+      margin-bottom: 15px;
       display: none;
     }
     
     .alert-error {
-      background: rgba(255, 71, 87, 0.1);
-      border: 1px solid rgba(255, 71, 87, 0.3);
-      color: #ff4757;
+      background: #ffeaea;
+      border: 1px solid #ffb3b3;
+      color: #d8000c;
     }
     
     .alert-success {
-      background: rgba(46, 213, 115, 0.1);
-      border: 1px solid rgba(46, 213, 115, 0.3);
-      color: #2ed573;
-    }
-    
-    .alert-warning {
-      background: rgba(255, 165, 2, 0.1);
-      border: 1px solid rgba(255, 165, 2, 0.3);
-      color: #ffa502;
-    }
-    
-    /* DASHBOARD */
-    .dashboard-container {
-      width: 100%;
-      max-width: 600px;
-      background: rgba(255, 255, 255, 0.05);
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 15px;
-      padding: 30px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-      display: none;
-    }
-    
-    .header {
-      text-align: center;
-      margin-bottom: 30px;
-    }
-    
-    .header img {
-      width: 70px;
-      height: 70px;
-      border-radius: 50%;
-      margin-bottom: 15px;
-    }
-    
-    .header h1 {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 22px;
-      color: #00f3ff;
-      margin-bottom: 5px;
-    }
-    
-    .clock {
-      font-family: 'Courier New', monospace;
-      font-size: 36px;
-      font-weight: bold;
-      text-align: center;
-      color: #00f3ff;
-      margin: 20px 0;
-      text-shadow: 0 0 10px rgba(0, 243, 255, 0.5);
-    }
-    
-    .user-info {
-      background: rgba(0, 0, 0, 0.3);
-      border-radius: 10px;
-      padding: 20px;
-      margin-bottom: 20px;
-      text-align: center;
-    }
-    
-    .user-info h3 {
-      color: #00f3ff;
-      margin-bottom: 10px;
-      font-size: 20px;
-    }
-    
-    .user-info p {
-      color: rgba(255, 255, 255, 0.8);
-      margin: 5px 0;
-    }
-    
-    .jobdesk-section {
-      margin-bottom: 20px;
-    }
-    
-    .jobdesk-section select {
-      width: 100%;
-      padding: 12px 15px;
-      background: rgba(0, 0, 0, 0.3);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 8px;
-      color: white;
-      font-size: 16px;
-    }
-    
-    .button-group {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 15px;
-      margin: 25px 0;
-    }
-    
-    .btn {
-      padding: 15px;
-      border: none;
-      border-radius: 10px;
-      font-size: 16px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-    }
-    
-    .btn-primary {
-      background: linear-gradient(135deg, #00f3ff 0%, #0088ff 100%);
-      color: white;
-    }
-    
-    .btn-success {
-      background: linear-gradient(135deg, #2ed573 0%, #1dd1a1 100%);
-      color: white;
-    }
-    
-    .btn-warning {
-      background: linear-gradient(135deg, #ffa502 0%, #ff7f00 100%);
-      color: white;
-    }
-    
-    .btn-danger {
-      background: linear-gradient(135deg, #ff4757 0%, #ff3838 100%);
-      color: white;
-    }
-    
-    .btn:hover:not(:disabled) {
-      transform: translateY(-2px);
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-    }
-    
-    .btn:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-    }
-    
-    .status-panel {
-      background: rgba(0, 0, 0, 0.3);
-      border-radius: 10px;
-      padding: 20px;
-      margin: 20px 0;
-      text-align: center;
-    }
-    
-    .status-title {
-      color: #00f3ff;
-      font-size: 18px;
-      margin-bottom: 10px;
-    }
-    
-    .status-time {
-      font-size: 24px;
-      font-weight: bold;
-      margin: 10px 0;
-    }
-    
-    .status-duration {
-      color: #ffa502;
-      font-size: 16px;
+      background: #eaffea;
+      border: 1px solid #b3ffb3;
+      color: #00a800;
     }
     
     .footer {
-      text-align: center;
-      margin-top: 30px;
-      color: rgba(255, 255, 255, 0.4);
+      margin-top: 20px;
+      color: #888;
       font-size: 12px;
     }
     
-    .running-text {
-      background: rgba(0, 243, 255, 0.05);
-      border: 1px solid rgba(0, 243, 255, 0.1);
-      border-radius: 8px;
-      padding: 10px;
-      margin: 15px 0;
-      text-align: center;
-      color: #00f3ff;
-      font-size: 13px;
-      min-height: 40px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    
-    .hidden {
-      display: none !important;
-    }
-    
-    /* MODAL */
-    .modal {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.8);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 1000;
-      display: none;
-    }
-    
-    .modal-content {
-      background: #1a1a2e;
-      border-radius: 15px;
-      padding: 30px;
-      max-width: 400px;
-      width: 90%;
-      border: 1px solid rgba(0, 243, 255, 0.2);
-    }
-    
-    .modal-title {
-      text-align: center;
-      color: #00f3ff;
-      margin-bottom: 20px;
-      font-size: 20px;
-    }
-    
-    .modal-buttons {
-      display: flex;
-      gap: 10px;
-      margin-top: 20px;
-    }
-    
-    /* LOADING */
     .loading {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(0, 0, 0, 0.8);
+      background: rgba(0, 0, 0, 0.7);
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      z-index: 1001;
+      z-index: 1000;
       display: none;
     }
     
     .spinner {
-      width: 50px;
-      height: 50px;
-      border: 3px solid rgba(255, 255, 255, 0.1);
+      width: 40px;
+      height: 40px;
+      border: 3px solid #f3f3f3;
+      border-top: 3px solid #667eea;
       border-radius: 50%;
-      border-top-color: #00f3ff;
       animation: spin 1s linear infinite;
       margin-bottom: 15px;
     }
     
     @keyframes spin {
-      to { transform: rotate(360deg); }
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    .hidden {
+      display: none !important;
     }
   </style>
 </head>
 <body>
   <!-- LOGIN FORM -->
-  <div class="login-container" id="loginContainer">
-    <div class="logo">
-      <img src="https://cdn.areabermain.club/assets/cdn/az6/2026/01/22/20260122/488c225ecce2c68019933eff2b248567/contoh.png" alt="Logo">
-      <h1>Selamat Datang</h1>
-      <p>Silahkan masuk ke akun anda</p>
-    </div>
-    
-    <div class="running-text" id="loginRunningText">
-      Memuat pengumuman...
-    </div>
-    
-    <div class="alert alert-error" id="errorMessage"></div>
-    
-    <div class="form-group">
-      <label for="username">Username</label>
-      <div class="input-with-icon">
-        <i class="fas fa-user"></i>
-        <input type="text" id="username" placeholder="Masukkan username" autocomplete="off">
-      </div>
-    </div>
-    
-    <div class="form-group">
-      <label for="password">Password</label>
-      <div class="input-with-icon">
-        <i class="fas fa-lock"></i>
-        <input type="password" id="password" placeholder="Masukkan password" autocomplete="current-password">
-        <i class="fas fa-eye password-toggle" id="togglePassword" onclick="togglePassword()"></i>
-      </div>
-    </div>
-    
-    <button class="btn-login" onclick="login()">
-      <i class="fas fa-sign-in-alt"></i>
-      <span>MASUK SEKARANG</span>
-    </button>
-    
-    <div class="footer">
-      &copy; 2026 Staff Linetogel
-    </div>
-  </div>
-  
-  <!-- DASHBOARD -->
-  <div class="dashboard-container" id="dashboardContainer">
-    <div class="header">
-      <img src="https://cdn.areabermain.club/assets/cdn/az4/2025/04/23/20250423/a82bdc6fb564d0dff3671aeb9a4d1da5/logo.png" alt="Logo">
-      <h1>IZIN STAFF LINETOGEL</h1>
-      <p>Sistem Absensi Digital</p>
-    </div>
-    
-    <div class="clock" id="clockDisplay">00:00:00</div>
-    
-    <div class="running-text" id="dashboardRunningText">
-      Memuat pengumuman...
-    </div>
-    
-    <div class="alert alert-warning" id="timeWarning" style="display: none;">
-      <i class="fas fa-exclamation-triangle"></i> Izin keluar tidak tersedia pada pukul 23:50 - 00:01
-    </div>
-    
-    <div class="alert alert-error" id="maxLimitAlert" style="display: none;">
-      <i class="fas fa-ban"></i> Anda sudah mencapai batas maksimal 4x izin hari ini
-    </div>
-    
-    <div class="user-info">
-      <h3 id="userName">Nama Staff</h3>
-      <p><i class="fas fa-id-badge"></i> Role: <span id="userRole">Staff</span></p>
-      <p><i class="fas fa-history"></i> Sisa Izin: <span id="remainingCount">4</span> kali</p>
-    </div>
-    
-    <div class="jobdesk-section" id="jobdeskSection" style="display: none;">
-      <label for="jobdeskSelect">Pilih Jobdesk</label>
-      <select id="jobdeskSelect">
-        <option value="">-- Pilih Jobdesk --</option>
-      </select>
-      <div class="alert alert-error" id="jobdeskError" style="display: none; margin-top: 10px;">
-        Silakan pilih jobdesk terlebih dahulu
-      </div>
-    </div>
-    
-    <div class="button-group">
-      <button class="btn btn-primary" id="startTimeBtn" onclick="startTime()">
-        <i class="fas fa-door-open"></i> Izin Keluar
-      </button>
-      <button class="btn btn-success" id="endTimeBtn" onclick="endTime()" disabled>
-        <i class="fas fa-sign-in-alt"></i> Kembali Masuk
-      </button>
-    </div>
-    
-    <div class="status-panel" id="statusPanel">
-      <div class="status-title">
-        <i class="fas fa-info-circle"></i> Status Saat Ini
-      </div>
-      <div id="statusContent">
-        <p>Silakan klik "Izin Keluar" untuk mulai</p>
-      </div>
-    </div>
-    
-    <div class="button-group">
-      <button class="btn btn-warning" onclick="changePassword()">
-        <i class="fas fa-key"></i> Ganti Password
-      </button>
-      <button class="btn btn-danger" onclick="logout()">
-        <i class="fas fa-sign-out-alt"></i> Logout
-      </button>
-    </div>
-    
-    <div class="footer">
-      Sistem Absensi Digital Linetogel &copy; 2026
-    </div>
-  </div>
-  
-  <!-- MODAL CHANGE PASSWORD -->
-  <div class="modal" id="passwordModal">
-    <div class="modal-content">
-      <div class="modal-title">
-        <i class="fas fa-key"></i> Ganti Password
+  <div class="container">
+    <div class="login-box" id="loginBox">
+      <div class="logo">
+        <img src="https://cdn.areabermain.club/assets/cdn/az6/2026/01/22/20260122/488c225ecce2c68019933eff2b248567/contoh.png" alt="Logo Linetogel">
       </div>
       
-      <div class="alert" id="passwordMessage"></div>
+      <h1>Selamat Datang</h1>
+      <p class="subtitle">Silahkan masuk ke akun Anda</p>
+      
+      <div class="alert" id="alertMessage"></div>
       
       <div class="form-group">
-        <label for="oldPassword">Password Lama</label>
+        <label for="username">Username</label>
+        <div class="input-with-icon">
+          <i class="fas fa-user"></i>
+          <input type="text" id="username" placeholder="Masukkan username" autocomplete="off">
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label for="password">Password</label>
         <div class="input-with-icon">
           <i class="fas fa-lock"></i>
-          <input type="password" id="oldPassword" placeholder="Masukkan password lama">
+          <input type="password" id="password" placeholder="Masukkan password" autocomplete="current-password">
+          <i class="fas fa-eye password-toggle" id="togglePassword" onclick="togglePassword()"></i>
         </div>
       </div>
       
-      <div class="form-group">
-        <label for="newPassword">Password Baru</label>
-        <div class="input-with-icon">
-          <i class="fas fa-key"></i>
-          <input type="password" id="newPassword" placeholder="Masukkan password baru">
-        </div>
-      </div>
+      <button class="btn" onclick="login()">
+        <i class="fas fa-sign-in-alt"></i>
+        <span>MASUK SEKARANG</span>
+      </button>
       
-      <div class="form-group">
-        <label for="confirmPassword">Konfirmasi Password</label>
-        <div class="input-with-icon">
-          <i class="fas fa-check-circle"></i>
-          <input type="password" id="confirmPassword" placeholder="Konfirmasi password baru">
-        </div>
-      </div>
-      
-      <div class="modal-buttons">
-        <button class="btn btn-primary" onclick="savePassword()" style="flex: 1;">
-          <i class="fas fa-save"></i> Simpan
-        </button>
-        <button class="btn btn-danger" onclick="closePasswordModal()" style="flex: 1;">
-          <i class="fas fa-times"></i> Batal
-        </button>
+      <div class="footer">
+        &copy; 2026 Sistem Absensi Linetogel
       </div>
     </div>
   </div>
@@ -583,39 +236,13 @@
   
   <script>
     // ==================== KONFIGURASI ====================
-    const SPREADSHEET_ID = '1JcZW0LC1-4l0GlFS_UQEZwrCC2OrXfQKh-Kr5opOdZs';
     // UPDATE INI DENGAN URL DEPLOYMENT ANDA
     const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyourdeploymentid/exec';
     
     // ==================== VARIABEL GLOBAL ====================
     let currentUser = null;
-    let jobdeskOptions = [];
-    let accessStatus = 'OFF';
-    let todayStartCount = 0;
-    let maxStartLimit = 4;
-    let isBlocked = false;
-    let runningTexts = [];
-    let runningTextIndex = 0;
-    let runningTextInterval = null;
     
     // ==================== FUNGSI UTAMA ====================
-    document.addEventListener('DOMContentLoaded', function() {
-      updateClock();
-      setInterval(updateClock, 1000);
-      loadRunningText();
-      checkSavedLogin();
-      updateTimeRestriction();
-      setInterval(updateTimeRestriction, 30000);
-    });
-    
-    function updateClock() {
-      const now = new Date();
-      const hours = now.getHours().toString().padStart(2, '0');
-      const minutes = now.getMinutes().toString().padStart(2, '0');
-      const seconds = now.getSeconds().toString().padStart(2, '0');
-      document.getElementById('clockDisplay').textContent = `${hours}:${minutes}:${seconds}`;
-    }
-    
     function togglePassword() {
       const passwordInput = document.getElementById('password');
       const toggleIcon = document.getElementById('togglePassword');
@@ -636,22 +263,32 @@
       const password = document.getElementById('password').value.trim();
       
       if (!username || !password) {
-        showError('Username dan password harus diisi');
+        showAlert('Username dan password harus diisi', 'error');
         return;
       }
       
       showLoading('Memeriksa login...');
       
       try {
-        // Get IP Address
-        const ipResponse = await fetch('https://api.ipify.org?format=json');
-        const ipData = await ipResponse.json();
-        const ipAddress = ipData.ip;
+        // Test koneksi ke server
+        const testUrl = GOOGLE_SCRIPT_URL + '?test=' + Date.now();
+        console.log('Testing connection to:', testUrl);
         
-        // Check login
-        const url = `${GOOGLE_SCRIPT_URL}?action=checkLogin&username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}&ipAddress=${encodeURIComponent(ipAddress)}`;
+        // Kirim request login
+        const url = GOOGLE_SCRIPT_URL + '?action=checkLogin&username=' + 
+                   encodeURIComponent(username) + '&password=' + 
+                   encodeURIComponent(password);
+        
+        console.log('Login URL:', url);
+        
         const response = await fetch(url);
+        
+        if (!response.ok) {
+          throw new Error(`HTTP Error: ${response.status} - ${response.statusText}`);
+        }
+        
         const result = await response.json();
+        console.log('Login response:', result);
         
         if (result.success) {
           currentUser = {
@@ -660,229 +297,98 @@
             role: result.role
           };
           
-          // Save to localStorage
-          localStorage.setItem('currentUser', JSON.stringify(currentUser));
-          localStorage.setItem('loginTime', new Date().toISOString());
+          showAlert('Login berhasil!', 'success');
           
-          // Load dashboard
-          await loadDashboard();
-          showSuccess('Login berhasil!');
+          // Redirect ke dashboard sederhana
+          setTimeout(() => {
+            showDashboard();
+          }, 1500);
           
         } else {
-          showError(result.message || 'Login gagal');
+          showAlert(result.message || 'Login gagal', 'error');
         }
       } catch (error) {
         console.error('Login error:', error);
-        showError('Terjadi kesalahan: ' + error.message);
+        showAlert('Gagal terhubung ke server: ' + error.message + 
+                 '. Pastikan URL deployment benar dan koneksi internet stabil.', 'error');
       } finally {
         hideLoading();
       }
     }
     
-    async function loadDashboard() {
-      document.getElementById('loginContainer').style.display = 'none';
-      document.getElementById('dashboardContainer').style.display = 'block';
-      
-      // Update user info
-      document.getElementById('userName').textContent = currentUser.fullName;
-      document.getElementById('userRole').textContent = currentUser.role;
-      
-      // Load data
-      await loadJobdeskOptions();
-      await loadAccessStatus();
-      await checkStartTimeLimit();
-      await checkActiveSession();
-      
-      // Start running text for dashboard
-      startRunningText();
-    }
-    
-    async function loadJobdeskOptions() {
-      try {
-        const url = `${GOOGLE_SCRIPT_URL}?action=getJobdeskOptions`;
-        const response = await fetch(url);
-        const result = await response.json();
+    function showDashboard() {
+      document.getElementById('loginBox').innerHTML = `
+        <div class="logo">
+          <img src="https://cdn.areabermain.club/assets/cdn/az4/2025/04/23/20250423/a82bdc6fb564d0dff3671aeb9a4d1da5/logo.png" alt="Logo">
+        </div>
         
-        if (result.success) {
-          jobdeskOptions = result.data || [];
-          const select = document.getElementById('jobdeskSelect');
-          select.innerHTML = '<option value="">-- Pilih Jobdesk --</option>';
-          
-          jobdeskOptions.forEach(option => {
-            const opt = document.createElement('option');
-            opt.value = option;
-            opt.textContent = option;
-            select.appendChild(opt);
-          });
-        }
-      } catch (error) {
-        console.error('Error loading jobdesk:', error);
-      }
-    }
-    
-    async function loadAccessStatus() {
-      try {
-        const url = `${GOOGLE_SCRIPT_URL}?action=checkAccess`;
-        const response = await fetch(url);
-        const result = await response.json();
+        <h1>Selamat Datang, ${currentUser.fullName}</h1>
+        <p class="subtitle">Role: ${currentUser.role}</p>
         
-        if (result.success) {
-          accessStatus = result.status;
-          const jobdeskSection = document.getElementById('jobdeskSection');
-          
-          if (accessStatus === 'ON') {
-            jobdeskSection.style.display = 'block';
-          } else {
-            jobdeskSection.style.display = 'none';
-          }
-        }
-      } catch (error) {
-        console.error('Error loading access status:', error);
-      }
-    }
-    
-    async function checkStartTimeLimit() {
-      if (!currentUser) return;
-      
-      try {
-        const url = `${GOOGLE_SCRIPT_URL}?action=checkStartTimeLimit&username=${encodeURIComponent(currentUser.username)}`;
-        const response = await fetch(url);
-        const result = await response.json();
+        <div id="dashboardAlert" class="alert"></div>
         
-        if (result.success) {
-          todayStartCount = result.count || 0;
-          const remaining = result.remaining || 4;
-          isBlocked = result.hardStop || false;
+        <div style="margin: 25px 0;">
+          <button class="btn" onclick="startTime()" style="margin-bottom: 10px;">
+            <i class="fas fa-door-open"></i>
+            <span>IZIN KELUAR</span>
+          </button>
           
-          document.getElementById('remainingCount').textContent = remaining;
-          
-          const maxLimitAlert = document.getElementById('maxLimitAlert');
-          if (isBlocked) {
-            maxLimitAlert.style.display = 'block';
-            document.getElementById('startTimeBtn').disabled = true;
-          } else {
-            maxLimitAlert.style.display = 'none';
-            if (!checkIfInActiveSession()) {
-              document.getElementById('startTimeBtn').disabled = false;
-            }
-          }
-          
-          updateStatusPanel();
-        }
-      } catch (error) {
-        console.error('Error checking limit:', error);
-      }
-    }
-    
-    async function checkActiveSession() {
-      if (!currentUser) return;
-      
-      try {
-        const url = `${GOOGLE_SCRIPT_URL}?action=checkActiveSessions&username=${encodeURIComponent(currentUser.username)}`;
-        const response = await fetch(url);
-        const result = await response.json();
+          <button class="btn" onclick="endTime()" style="background: linear-gradient(135deg, #2ed573 0%, #1dd1a1 100%);">
+            <i class="fas fa-sign-in-alt"></i>
+            <span>KEMBALI MASUK</span>
+          </button>
+        </div>
         
-        if (result.success) {
-          const hasActiveSession = result.count > 0;
-          const startBtn = document.getElementById('startTimeBtn');
-          const endBtn = document.getElementById('endTimeBtn');
-          
-          if (hasActiveSession) {
-            startBtn.disabled = true;
-            endBtn.disabled = false;
-            
-            if (result.activeSessions && result.activeSessions.length > 0) {
-              const session = result.activeSessions[0];
-              document.getElementById('statusContent').innerHTML = `
-                <div class="status-time">Mulai: ${session.startTime}</div>
-                <div class="status-duration">Status: Sedang Keluar</div>
-                <p>Silakan klik "Kembali Masuk" untuk masuk</p>
-              `;
-            }
-          } else {
-            if (!isBlocked) startBtn.disabled = false;
-            endBtn.disabled = true;
-            
-            document.getElementById('statusContent').innerHTML = `
-              <p>Sisa izin: <strong>${maxStartLimit - todayStartCount}</strong> kali</p>
-              <p>Silakan klik "Izin Keluar" untuk mulai</p>
-            `;
-          }
-        }
-      } catch (error) {
-        console.error('Error checking active session:', error);
-      }
-    }
-    
-    function checkIfInActiveSession() {
-      // Simple check - in real app, you would call API
-      return document.getElementById('endTimeBtn').disabled === false;
+        <div style="margin: 20px 0; padding: 15px; background: #f8f9fa; border-radius: 8px;">
+          <p style="color: #555; margin-bottom: 10px;"><i class="fas fa-info-circle"></i> Status</p>
+          <p id="statusText" style="color: #333; font-weight: 500;">Silakan pilih aksi</p>
+        </div>
+        
+        <button class="btn" onclick="logout()" style="background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%); margin-top: 10px;">
+          <i class="fas fa-sign-out-alt"></i>
+          <span>LOGOUT</span>
+        </button>
+        
+        <div class="footer">
+          Sistem Absensi Linetogel &copy; 2026
+        </div>
+      `;
     }
     
     async function startTime() {
-      // Check restricted time (23:50 - 00:01)
-      const now = new Date();
-      const hours = now.getHours();
-      const minutes = now.getMinutes();
-      
-      if ((hours === 23 && minutes >= 50) || (hours === 0 && minutes <= 1)) {
-        showError('Izin keluar tidak tersedia pada pukul 23:50 - 00:01');
-        return;
-      }
-      
-      // Check jobdesk if required
-      const jobdeskSelect = document.getElementById('jobdeskSelect');
-      const selectedJobdesk = jobdeskSelect.value;
-      
-      if (accessStatus === 'ON' && (!selectedJobdesk || selectedJobdesk.trim() === '')) {
-        document.getElementById('jobdeskError').style.display = 'block';
-        showError('Silakan pilih jobdesk terlebih dahulu');
-        return;
-      }
-      
-      document.getElementById('jobdeskError').style.display = 'none';
-      
       showLoading('Mencatat izin keluar...');
       
       try {
-        const url = `${GOOGLE_SCRIPT_URL}?action=logStartTime`;
-        const formData = new FormData();
-        formData.append('username', currentUser.username);
-        formData.append('jobdesk', selectedJobdesk || '');
+        const url = GOOGLE_SCRIPT_URL + '?action=logStartTime&username=' + 
+                   encodeURIComponent(currentUser.username);
         
-        const response = await fetch(url, {
-          method: 'POST',
-          body: formData
-        });
-        
+        const response = await fetch(url);
         const result = await response.json();
         
         if (result.success) {
-          showSuccess(result.message);
-          jobdeskSelect.value = '';
-          document.getElementById('startTimeBtn').disabled = true;
-          document.getElementById('endTimeBtn').disabled = false;
-          
-          // Update status
-          const now = new Date();
-          const timeStr = now.getHours().toString().padStart(2, '0') + ':' + 
-                         now.getMinutes().toString().padStart(2, '0') + ':' + 
-                         now.getSeconds().toString().padStart(2, '0');
-          
-          document.getElementById('statusContent').innerHTML = `
-            <div class="status-time">Mulai: ${timeStr}</div>
-            <div class="status-duration">Status: Sedang Keluar</div>
-            <p>Silakan klik "Kembali Masuk" untuk masuk</p>
+          document.getElementById('dashboardAlert').innerHTML = `
+            <div class="alert-success">
+              <i class="fas fa-check-circle"></i> ${result.message}
+            </div>
           `;
-          
-          // Refresh limit
-          setTimeout(checkStartTimeLimit, 1000);
+          document.getElementById('statusText').innerHTML = `
+            <span style="color: #2ed573;">✓ Sedang izin keluar</span><br>
+            <small>${new Date().toLocaleTimeString()}</small>
+          `;
         } else {
-          showError(result.message);
+          document.getElementById('dashboardAlert').innerHTML = `
+            <div class="alert-error">
+              <i class="fas fa-exclamation-circle"></i> ${result.message}
+            </div>
+          `;
         }
       } catch (error) {
-        console.error('Error starting time:', error);
-        showError('Terjadi kesalahan: ' + error.message);
+        console.error('Start time error:', error);
+        document.getElementById('dashboardAlert').innerHTML = `
+          <div class="alert-error">
+            <i class="fas fa-exclamation-circle"></i> Error: ${error.message}
+          </div>
+        `;
       } finally {
         hideLoading();
       }
@@ -892,115 +398,36 @@
       showLoading('Mencatat kembali masuk...');
       
       try {
-        const url = `${GOOGLE_SCRIPT_URL}?action=logEndTime`;
-        const formData = new FormData();
-        formData.append('username', currentUser.username);
+        const url = GOOGLE_SCRIPT_URL + '?action=logEndTime&username=' + 
+                   encodeURIComponent(currentUser.username);
         
-        const response = await fetch(url, {
-          method: 'POST',
-          body: formData
-        });
-        
+        const response = await fetch(url);
         const result = await response.json();
         
         if (result.success) {
-          showSuccess(result.message);
-          document.getElementById('startTimeBtn').disabled = false;
-          document.getElementById('endTimeBtn').disabled = true;
-          
-          document.getElementById('statusContent').innerHTML = `
-            <p>Izin selesai. Terima kasih!</p>
-            <p>Sisa izin: <strong>${maxStartLimit - todayStartCount}</strong> kali</p>
+          document.getElementById('dashboardAlert').innerHTML = `
+            <div class="alert-success">
+              <i class="fas fa-check-circle"></i> ${result.message}
+            </div>
           `;
-          
-          // Refresh limit
-          setTimeout(checkStartTimeLimit, 1000);
+          document.getElementById('statusText').innerHTML = `
+            <span style="color: #2ed573;">✓ Sudah kembali masuk</span><br>
+            <small>${new Date().toLocaleTimeString()}</small>
+          `;
         } else {
-          showError(result.message);
+          document.getElementById('dashboardAlert').innerHTML = `
+            <div class="alert-error">
+              <i class="fas fa-exclamation-circle"></i> ${result.message}
+            </div>
+          `;
         }
       } catch (error) {
-        console.error('Error ending time:', error);
-        showError('Terjadi kesalahan: ' + error.message);
-      } finally {
-        hideLoading();
-      }
-    }
-    
-    function changePassword() {
-      document.getElementById('oldPassword').value = '';
-      document.getElementById('newPassword').value = '';
-      document.getElementById('confirmPassword').value = '';
-      document.getElementById('passwordMessage').className = 'alert';
-      document.getElementById('passwordMessage').style.display = 'none';
-      document.getElementById('passwordModal').style.display = 'flex';
-    }
-    
-    function closePasswordModal() {
-      document.getElementById('passwordModal').style.display = 'none';
-    }
-    
-    async function savePassword() {
-      const oldPassword = document.getElementById('oldPassword').value.trim();
-      const newPassword = document.getElementById('newPassword').value.trim();
-      const confirmPassword = document.getElementById('confirmPassword').value.trim();
-      const messageEl = document.getElementById('passwordMessage');
-      
-      if (!oldPassword || !newPassword || !confirmPassword) {
-        messageEl.className = 'alert alert-error';
-        messageEl.textContent = 'Semua field harus diisi';
-        messageEl.style.display = 'block';
-        return;
-      }
-      
-      if (newPassword !== confirmPassword) {
-        messageEl.className = 'alert alert-error';
-        messageEl.textContent = 'Password baru dan konfirmasi tidak cocok';
-        messageEl.style.display = 'block';
-        return;
-      }
-      
-      if (newPassword.length < 4) {
-        messageEl.className = 'alert alert-error';
-        messageEl.textContent = 'Password baru minimal 4 karakter';
-        messageEl.style.display = 'block';
-        return;
-      }
-      
-      showLoading('Mengubah password...');
-      
-      try {
-        const url = `${GOOGLE_SCRIPT_URL}?action=updatePassword`;
-        const formData = new FormData();
-        formData.append('username', currentUser.username);
-        formData.append('oldPassword', oldPassword);
-        formData.append('newPassword', newPassword);
-        
-        const response = await fetch(url, {
-          method: 'POST',
-          body: formData
-        });
-        
-        const result = await response.json();
-        
-        if (result.success) {
-          messageEl.className = 'alert alert-success';
-          messageEl.textContent = result.message;
-          messageEl.style.display = 'block';
-          
-          setTimeout(() => {
-            closePasswordModal();
-            showSuccess('Password berhasil diubah!');
-          }, 2000);
-        } else {
-          messageEl.className = 'alert alert-error';
-          messageEl.textContent = result.message;
-          messageEl.style.display = 'block';
-        }
-      } catch (error) {
-        console.error('Error changing password:', error);
-        messageEl.className = 'alert alert-error';
-        messageEl.textContent = 'Terjadi kesalahan: ' + error.message;
-        messageEl.style.display = 'block';
+        console.error('End time error:', error);
+        document.getElementById('dashboardAlert').innerHTML = `
+          <div class="alert-error">
+            <i class="fas fa-exclamation-circle"></i> Error: ${error.message}
+          </div>
+        `;
       } finally {
         hideLoading();
       }
@@ -1008,111 +435,22 @@
     
     function logout() {
       currentUser = null;
-      localStorage.removeItem('currentUser');
-      localStorage.removeItem('loginTime');
-      
-      document.getElementById('username').value = '';
-      document.getElementById('password').value = '';
-      document.getElementById('dashboardContainer').style.display = 'none';
-      document.getElementById('loginContainer').style.display = 'block';
-      
-      showSuccess('Logout berhasil');
+      location.reload();
     }
     
-    function checkSavedLogin() {
-      const savedUser = localStorage.getItem('currentUser');
-      const loginTime = localStorage.getItem('loginTime');
+    // ==================== FUNGSI HELPER ====================
+    function showAlert(message, type) {
+      const alertEl = document.getElementById('alertMessage');
+      alertEl.innerHTML = message;
+      alertEl.className = `alert alert-${type}`;
+      alertEl.style.display = 'block';
       
-      if (savedUser && loginTime) {
-        const loginDate = new Date(loginTime);
-        const now = new Date();
-        const hoursDiff = (now - loginDate) / (1000 * 60 * 60);
-        
-        if (hoursDiff < 8) { // Session valid for 8 hours
-          currentUser = JSON.parse(savedUser);
-          loadDashboard();
-        } else {
-          localStorage.removeItem('currentUser');
-          localStorage.removeItem('loginTime');
-        }
-      }
-    }
-    
-    function updateTimeRestriction() {
-      const now = new Date();
-      const hours = now.getHours();
-      const minutes = now.getMinutes();
-      const warningEl = document.getElementById('timeWarning');
-      const startBtn = document.getElementById('startTimeBtn');
-      
-      if ((hours === 23 && minutes >= 50) || (hours === 0 && minutes <= 1)) {
-        warningEl.style.display = 'block';
-        startBtn.disabled = true;
-      } else {
-        warningEl.style.display = 'none';
-        if (!isBlocked && !checkIfInActiveSession()) {
-          startBtn.disabled = false;
-        }
-      }
-    }
-    
-    function updateStatusPanel() {
-      const remaining = maxStartLimit - todayStartCount;
-      const statusEl = document.getElementById('statusContent');
-      
-      if (checkIfInActiveSession()) {
-        // Already updated by checkActiveSession
-        return;
-      }
-      
-      if (todayStartCount > 0) {
-        statusEl.innerHTML = `
-          <p>Hari ini: <strong>${todayStartCount}</strong> kali izin</p>
-          <p>Sisa izin: <strong>${remaining}</strong> kali</p>
-        `;
-      } else {
-        statusEl.innerHTML = `
-          <p>Selamat datang <strong>${currentUser?.fullName || ''}</strong></p>
-          <p>Sisa izin: <strong>${remaining}</strong> kali</p>
-        `;
-      }
-    }
-    
-    async function loadRunningText() {
-      try {
-        const url = `${GOOGLE_SCRIPT_URL}?action=getRunningText`;
-        const response = await fetch(url);
-        const result = await response.json();
-        
-        if (result.success && result.data && result.data.length > 0) {
-          runningTexts = result.data;
-          document.getElementById('loginRunningText').textContent = runningTexts[0];
-          document.getElementById('dashboardRunningText').textContent = runningTexts[0];
-          startRunningText();
-        } else {
-          runningTexts = ["Selamat datang di Sistem Absensi Linetogel"];
-          startRunningText();
-        }
-      } catch (error) {
-        console.error('Error loading running text:', error);
-        runningTexts = ["Sistem Absensi Linetogel"];
-        startRunningText();
-      }
-    }
-    
-    function startRunningText() {
-      if (runningTextInterval) clearInterval(runningTextInterval);
-      
-      if (runningTexts.length <= 1) return;
-      
-      runningTextInterval = setInterval(() => {
-        runningTextIndex = (runningTextIndex + 1) % runningTexts.length;
-        document.getElementById('loginRunningText').textContent = runningTexts[runningTextIndex];
-        document.getElementById('dashboardRunningText').textContent = runningTexts[runningTextIndex];
+      setTimeout(() => {
+        alertEl.style.display = 'none';
       }, 5000);
     }
     
-    function showLoading(message = 'Loading...') {
+    function showLoading(message) {
       document.getElementById('loadingText').textContent = message;
       document.getElementById('loading').style.display = 'flex';
     }
@@ -1121,64 +459,33 @@
       document.getElementById('loading').style.display = 'none';
     }
     
-    function showError(message) {
-      const el = document.getElementById('errorMessage');
-      el.textContent = message;
-      el.className = 'alert alert-error';
-      el.style.display = 'block';
-      setTimeout(() => el.style.display = 'none', 5000);
-    }
-    
-    function showSuccess(message) {
-      const el = document.getElementById('errorMessage');
-      el.textContent = message;
-      el.className = 'alert alert-success';
-      el.style.display = 'block';
-      setTimeout(() => el.style.display = 'none', 3000);
-    }
+    // ==================== EVENT LISTENERS ====================
+    document.addEventListener('DOMContentLoaded', function() {
+      // Enter key untuk login
+      document.getElementById('password').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+          login();
+        }
+      });
+    });
     
     // ==================== DEBUG FUNCTIONS ====================
-    // Tambahkan tombol debug di console
-    console.log('System loaded. Available functions:');
-    console.log('  debugTestLimit() - Test limit check');
-    console.log('  debugTestLogin() - Test login');
-    
-    window.debugTestLimit = async function() {
-      if (!currentUser) {
-        alert('Login dulu!');
-        return;
-      }
-      
-      console.log('Testing limit check...');
-      const url = `${GOOGLE_SCRIPT_URL}?action=checkStartTimeLimit&username=${encodeURIComponent(currentUser.username)}`;
-      console.log('URL:', url);
+    window.testConnection = async function() {
+      const url = GOOGLE_SCRIPT_URL + '?test=' + Date.now();
+      console.log('Testing URL:', url);
       
       try {
         const response = await fetch(url);
         const text = await response.text();
         console.log('Response:', text);
-        
-        try {
-          const data = JSON.parse(text);
-          console.log('Parsed:', data);
-          alert(JSON.stringify(data, null, 2));
-        } catch(e) {
-          console.log('Not JSON:', text);
-        }
-      } catch(error) {
-        console.error('Error:', error);
+        alert('Connection test: ' + (response.ok ? 'SUCCESS' : 'FAILED'));
+      } catch (error) {
+        console.error('Connection test failed:', error);
+        alert('Connection failed: ' + error.message);
       }
     };
     
-    window.debugTestLogin = function() {
-      const username = prompt('Username:') || 'test';
-      const password = prompt('Password:') || 'test123';
-      
-      document.getElementById('username').value = username;
-      document.getElementById('password').value = password;
-      
-      setTimeout(() => login(), 500);
-    };
+    console.log('System loaded. Use testConnection() to test server.');
   </script>
 </body>
 </html>
