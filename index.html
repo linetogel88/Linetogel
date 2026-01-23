@@ -806,36 +806,39 @@
     }
 
     /* ============================================
-       RUNNING TEXT STYLE (NEW FEATURE)
+       RUNNING TEXT STYLE (CLASSY FADE)
     ============================================ */
     .running-text-wrapper {
       background: rgba(0, 243, 255, 0.05);
       border: 1px solid rgba(0, 243, 255, 0.2);
       border-radius: 8px;
       overflow: hidden;
-      white-space: nowrap;
+      white-space: normal; /* Allow wrapping for classy look */
       position: relative;
       margin: 10px 0 20px 0;
       box-shadow: 0 0 10px rgba(0, 243, 255, 0.1);
-      height: 35px; /* Fixed height */
+      height: auto; /* Auto height to fit text */
+      min-height: 35px;
       display: flex;
+      justify-content: center;
       align-items: center;
+      padding: 10px;
+      text-align: center;
     }
 
     .running-text-content {
       display: inline-block;
-      padding-left: 100%;
-      animation: scrollText 20s linear infinite;
       color: #00f3ff;
       font-size: 13px;
       font-weight: 500;
       text-shadow: 0 0 5px rgba(0, 243, 255, 0.5);
+      /* Animation Classy Fade */
+      opacity: 1;
+      transition: opacity 0.8s ease-in-out; 
     }
-
-    @keyframes scrollText {
-      0% { transform: translate(0, 0); }
-      100% { transform: translate(-100%, 0); }
-    }
+    
+    /* Remove previous scroll animation */
+    /* @keyframes scrollText ... REMOVED */
     
     /* Specific adjustments for placement */
     #loginRunningText {
@@ -853,7 +856,7 @@
       .time-btns, .account-actions { grid-template-columns: 1fr; }
       .clock { font-size: 2.5rem; }
       #loginForm { padding: 30px 20px; }
-      .running-text-content { font-size: 11px; animation-duration: 15s; }
+      .running-text-content { font-size: 11px; }
     }
   </style>
 </head>
@@ -1160,8 +1163,12 @@
     let jobdeskCache = null;
     let accessCache = null;
     let backgroundCache = null;
-    let runningTextCache = null; // Cache untuk running text
     
+    // Running Text Variables (NEW: ARRAY BASED)
+    let runningTextArray = [];
+    let runningTextIndex = 0;
+    let runningTextInterval = null;
+
     // Variabel untuk status panel dan timer
     let statusPanelTimer = null;
     let currentSessionStartTime = null;
@@ -1290,8 +1297,41 @@
     };
 
     // ============================================
-    // FUNGSI RUNNING TEXT (FIXED NAME & LOGIC)
+    // FUNGSI RUNNING TEXT (CLASSY FADE ANIMATION)
     // ============================================
+    function startRunningTextAnimation() {
+        const loginContent = elements.loginRunningText.querySelector('.running-text-content');
+        const dashContent = elements.dashboardRunningText.querySelector('.running-text-content');
+
+        if (runningTextInterval) clearInterval(runningTextInterval);
+
+        // Set initial text
+        if (runningTextArray.length > 0) {
+            loginContent.innerText = runningTextArray[0];
+            dashContent.innerText = runningTextArray[0];
+        }
+
+        runningTextInterval = setInterval(() => {
+            // 1. Fade Out
+            loginContent.style.opacity = 0;
+            dashContent.style.opacity = 0;
+
+            setTimeout(() => {
+                // 2. Change Text
+                runningTextIndex = (runningTextIndex + 1) % runningTextArray.length;
+                const nextText = runningTextArray[runningTextIndex];
+
+                loginContent.innerText = nextText;
+                dashContent.innerText = nextText;
+
+                // 3. Fade In
+                loginContent.style.opacity = 1;
+                dashContent.style.opacity = 1;
+            }, 800); // Wait for fade out to complete
+
+        }, 5000); // Change every 5 seconds
+    }
+
     async function loadRunningText() {
       try {
         // Gunakan nama sheet yang benar: 'Running Teks'
@@ -1311,54 +1351,46 @@
         const data = await response.json();
         console.log("Raw Running Text Data:", data);
 
-        // Cek apakah data kosong atau error
-        if (!data || data.length === 0 || (data.length === 1 && data[0].error)) {
-            console.warn("Running Text sheet empty or not found.");
-            return;
-        }
+        if (!data || data.length === 0) return;
 
         // Slice(1) untuk melewati header (baris 1), mulai dari B2
         const rows = data.slice(1);
-        let textToRun = "";
+        let tempArray = [];
 
         rows.forEach((row, index) => {
-          // Ambil semua value dalam object baris tersebut (Array of values)
+          // Ambil semua value dalam object baris tersebut
           const values = Object.values(row);
           
-          // Logika spesifik untuk Kolom B (Indeks ke-2)
-          // Jika values length > 1, ambil index 1. Jika tidak, ambil index 0.
+          // Logika spesifik: Ambil nilai kolom B (indeks ke-2 dari array values)
           let content = '';
           
           if (values.length > 1) {
-            content = values[1]; // Ini adalah Kolom B
+            content = values[1]; // Kolom B
           } else if (values.length > 0) {
-            content = values[0]; // Fallback ke Kolom A jika hanya ada 1 kolom
+            content = values[0]; // Kolom A (Fallback)
           }
 
           // Convert ke string dan trim
           content = String(content || '').trim();
 
-          // Hanya tambahkan jika ada isinya DAN bukan header kosong
-          if (content && 
-              content.toLowerCase() !== 'nan' && 
-              content.toLowerCase() !== 'undefined' &&
-              content !== '') {
-            textToRun += content + "   ✦   ";
+          // Hanya tambahkan jika ada isinya
+          if (content && content.toLowerCase() !== 'nan' && content.toLowerCase() !== 'undefined') {
+            tempArray.push(content);
           }
         });
 
         // Jika kosong, beri default text
-        if (!textToRun) {
-            textToRun = "Tidak ada pengumuman saat ini.   ✦   ";
+        if (tempArray.length === 0) {
+            tempArray.push("Tidak ada pengumuman saat ini.");
         }
 
-        console.log("Generated Running Text:", textToRun);
+        console.log("Generated Running Text Array:", tempArray);
 
-        // Update kedua elemen running text
-        elements.loginRunningText.querySelector('.running-text-content').innerText = textToRun;
-        elements.dashboardRunningText.querySelector('.running-text-content').innerText = textToRun;
+        // Update global array dan restart animation
+        runningTextArray = tempArray;
+        runningTextIndex = 0;
+        startRunningTextAnimation();
 
-        runningTextCache = textToRun;
       } catch (error) {
         console.error('Error loading running text:', error);
       }
@@ -1663,6 +1695,8 @@
       stopRealtimeUpdates();
       hideLoading();
       
+      if (runningTextInterval) clearInterval(runningTextInterval);
+
       currentUser = null;
       userData = null;
       jobdeskList = [];
@@ -1960,7 +1994,8 @@
         if (!latestData || latestData.length === 0) return false;
         
         const rows = latestData.slice(1);
-        let newText = "";
+        let newTempArray = [];
+        
         rows.forEach(row => {
           const values = Object.values(row);
           let content = '';
@@ -1970,18 +2005,25 @@
             content = values[0];
           }
           if (content && String(content).trim() !== '') {
-            newText += content.trim() + "   ✦   ";
+            newTempArray.push(content.trim());
           }
         });
         
-        if (!runningTextCache) { runningTextCache = newText; return false; }
-        
-        if (newText !== runningTextCache) {
-          runningTextCache = newText;
-          elements.loginRunningText.querySelector('.running-text-content').innerText = newText;
-          elements.dashboardRunningText.querySelector('.running-text-content').innerText = newText;
-          showUpdateNotification('Pengumuman diperbarui');
-          return true;
+        if (newTempArray.length === 0) newTempArray.push("Tidak ada pengumuman saat ini.");
+
+        // Compare arrays
+        if (runningTextCache) {
+            if (JSON.stringify(runningTextCache) !== JSON.stringify(newTempArray)) {
+                runningTextCache = newTempArray;
+                runningTextArray = newTempArray;
+                // Restart animation with new data
+                startRunningTextAnimation();
+                showUpdateNotification('Pengumuman diperbarui');
+                return true;
+            }
+        } else {
+            runningTextCache = newTempArray;
+            return false;
         }
         return false;
       } catch (error) { console.error('Error checking running text updates:', error); return false; }
