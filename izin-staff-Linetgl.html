@@ -64,7 +64,7 @@
     /* --- TITLE: COMPACT & HORIZONTAL --- */
     h2 {
       text-align: center;
-      margin-bottom: 25px; 
+      margin-bottom: 20px; 
       font-size: 2.8rem;
       font-weight: 900;
       text-transform: uppercase;
@@ -142,6 +142,75 @@
       0% { opacity: 0.3; width: 60%; }
       50% { opacity: 1; width: 80%; box-shadow: 0 0 10px var(--marvel-red); }
       100% { opacity: 0.3; width: 60%; }
+    }
+
+    /* --- RUNNING TEXT (UPDATE: RATA KIRI/FLEX START) --- */
+    .running-text-container {
+      width: 100%;
+      max-width: 1400px;
+      margin: 0 auto 25px auto;
+      background: rgba(10, 10, 15, 0.7);
+      border: 1px solid var(--marvel-red);
+      border-radius: 50px;
+      box-shadow: 0 0 15px rgba(236, 29, 36, 0.3), inset 0 0 10px rgba(0,0,0,0.5);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      overflow: hidden;
+      height: 50px;
+      position: relative;
+      z-index: 5;
+      backdrop-filter: blur(5px);
+      transition: all 0.3s ease;
+    }
+
+    .rt-label {
+      background: var(--marvel-red);
+      color: white;
+      padding: 0 25px;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      font-weight: 800;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      z-index: 10;
+      clip-path: polygon(0 0, 100% 0, 90% 100%, 0% 100%);
+      box-shadow: 5px 0 15px rgba(0,0,0,0.3);
+      flex-shrink: 0;
+    }
+
+    .rt-label i { margin-right: 8px; }
+
+    .rt-content-wrapper {
+      flex-grow: 1;
+      padding: 0 30px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start; /* PERBAIKAN: RATA KIRI, BUKAN TENGAH */
+      height: 100%;
+      position: relative;
+    }
+
+    .rt-text {
+      color: var(--light-text);
+      font-size: 1rem;
+      font-weight: 500;
+      text-shadow: 0 1px 2px black;
+      text-align: left; /* PERBAIKAN: Teks Rata Kiri */
+      width: 100%;
+      transition: opacity 0.5s ease-in-out, transform 0.5s ease;
+    }
+
+    .rt-hidden {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+
+    .rt-visible {
+      opacity: 1;
+      transform: translateY(0);
     }
 
     /* --- SEARCH BOX (GLASS PILL) --- */
@@ -632,6 +701,25 @@
       }
       .staff-main-name { font-size: 1.1rem; }
       .staff-detail-row td:nth-child(1) { padding-left: 25px !important; }
+      
+      /* Running Text Mobile */
+      .running-text-container {
+        flex-direction: column;
+        height: auto;
+        padding: 10px 0;
+      }
+      .rt-label {
+        width: 100%;
+        justify-content: flex-start; /* Mobile: Label kiri */
+        clip-path: none;
+        margin-bottom: 5px;
+        padding: 5px 15px;
+      }
+      .rt-content-wrapper {
+        padding: 0 15px;
+        justify-content: flex-start; /* Mobile: Teks kiri */
+      }
+      .rt-text { font-size: 0.9rem; }
     }
 
     td {
@@ -652,6 +740,18 @@
         <span class="title-sub">Monitor</span>
         <div class="title-underline"></div>
       </h2>
+
+      <!-- RUNNING TEXT (FINAL: RATA KIRI) -->
+      <div class="running-text-container" id="rt-container">
+        <div class="rt-label">
+            <i class="fas fa-bullhorn"></i> INFO
+        </div>
+        <div class="rt-content-wrapper">
+            <div class="rt-text rt-visible" id="rt-text-content">
+                MEMUAT INFORMASI...
+            </div>
+        </div>
+      </div>
 
       <!-- SEARCH BOX: GLASS PILL -->
       <div class="search-box">
@@ -694,14 +794,20 @@
     const SPREADSHEET_ID = '1JcZW0LC1-4l0GlFS_UQEZwrCC2OrXfQKh-Kr5opOdZs';
     const SHEET_NAME = 'DATABASE LINETOGEL';
     const BACKGROUND_SHEET_NAME = 'background';
+    const RUNNING_TEXT_SHEET_NAME = 'Running Teks';
     
-    // URL untuk mengambil data dalam format CSV
+    // URL
     const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(SHEET_NAME)}`;
     const BACKGROUND_SHEET_URL = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(BACKGROUND_SHEET_NAME)}`;
+    const RUNNING_TEXT_SHEET_URL = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(RUNNING_TEXT_SHEET_NAME)}`;
     
-    // Variabel untuk real-time tracking
+    // Variabel Global
     let lastDataHash = '';
+    let lastRtHash = '';
     let currentData = [];
+    let rtMessages = []; 
+    let currentRtIndex = 0;
+    let rtAnimationInterval = null;
     let retryCount = 0;
     const MAX_RETRIES = 10;
     let updateInterval;
@@ -712,14 +818,112 @@
       "https://cdn.areabermain.club/assets/cdn/az6/2026/01/08/20260108/0e9b0ec9a88ad88a5935bc5802bc41a5/linetogel-background-07januari2026.jpg"
     ];
     
-    // Map untuk menyimpan stopwatch data per staff
+    // Map Stopwatch
     const staffStopwatches = new Map();
-    
-    // Batas waktu maksimal durasi (dalam menit)
     const DURATION_LIMIT_MINUTES = 15; 
 
+    // --- HELPER: CSV PARSER ROBUST ---
+    function parseCSVLine(line) {
+        const values = [];
+        let current = '';
+        let inQuotes = false;
+        for (let j = 0; j < line.length; j++) {
+            const char = line[j];
+            if (char === '"') { inQuotes = !inQuotes; } 
+            else if (char === ',' && !inQuotes) { values.push(current); current = ''; } 
+            else { current += char; }
+        }
+        values.push(current);
+        return values;
+    }
+
+    // --- FUNGSI RUNNING TEXT ---
+    async function fetchRunningText() {
+        try {
+            const response = await fetch(RUNNING_TEXT_SHEET_URL);
+            if (!response.ok) throw new Error('Gagal fetch running text');
+            const csvText = await response.text();
+            
+            // Hitung hash untuk deteksi perubahan data tanpa reload
+            const newHash = csvText.split('').reduce((a,b) => (((a << 5) - a) + b.charCodeAt(0))|0, 0);
+
+            if (newHash !== lastRtHash) {
+                lastRtHash = newHash;
+                const lines = csvText.split('\n').filter(line => line.trim() !== '');
+                const messages = [];
+                
+                // Mulai dari index 1 (skip header)
+                for (let i = 1; i < lines.length; i++) {
+                    const line = lines[i].trim();
+                    if (!line) continue;
+                    
+                    const values = parseCSVLine(line);
+                    
+                    // Kolom B adalah index 1
+                    if (values[1]) {
+                        const text = values[1].replace(/"/g, '').trim();
+                        if (text) messages.push(text);
+                    }
+                }
+                
+                // Update pesan global
+                rtMessages = messages;
+                
+                // Reset animasi UI jika data berubah
+                resetRunningTextAnimation();
+            }
+        } catch (error) {
+            console.error("Error Running Text:", error);
+        }
+    }
+
+    function resetRunningTextAnimation() {
+        // Stop animasi lama
+        if (rtAnimationInterval) clearInterval(rtAnimationInterval);
+        
+        const container = document.getElementById('rt-container');
+        const textEl = document.getElementById('rt-text-content');
+
+        // Jika tidak ada data, HIDE container
+        if (rtMessages.length === 0) {
+            container.style.display = 'none';
+            return;
+        }
+
+        // Jika ada data, SHOW container
+        container.style.display = 'flex';
+        currentRtIndex = 0;
+
+        // Tampilkan pesan pertama langsung
+        textEl.textContent = rtMessages[0];
+        textEl.className = 'rt-text rt-visible';
+
+        // Jika hanya ada 1 data, tidak perlu interval ganti (statis)
+        if (rtMessages.length === 1) {
+            return;
+        }
+
+        // Jika lebih dari 1 data, jalankan interval ganti teks
+        rtAnimationInterval = setInterval(() => {
+            // 1. Fade Out
+            textEl.classList.remove('rt-visible');
+            textEl.classList.add('rt-hidden');
+
+            // 2. Ganti Teks setelah transisi selesai (500ms)
+            setTimeout(() => {
+                currentRtIndex = (currentRtIndex + 1) % rtMessages.length;
+                textEl.textContent = rtMessages[currentRtIndex];
+                
+                // 3. Fade In
+                textEl.classList.remove('rt-hidden');
+                textEl.classList.add('rt-visible');
+            }, 500); 
+
+        }, 5000); // Ganti teks setiap 5 detik
+    }
+
     // ---------------------------------------------------------
-    // FUNGSI 1: Normalisasi waktu & Parsing Detik (AM/PM Support)
+    // FUNGSI UTAMA LAINNYA (TIDAK DIUBAH)
     // ---------------------------------------------------------
     function normalizeTime(timeString) {
       try {
@@ -727,13 +931,12 @@
         
         let time = timeString.trim().toUpperCase();
         
-        // Jika sudah format 24 jam, parse saja
         if (!time.includes('AM') && !time.includes('PM')) {
           time = time.replace('.', ':').replace(',', ':');
           let parts = time.split(':');
           let h = parseInt(parts[0]) || 0;
           let m = parseInt(parts[1]) || 0;
-          let s = parseInt(parts[2]) || 0; // Detik diambil dari sini
+          let s = parseInt(parts[2]) || 0;
           
           h = h % 24;
           
@@ -749,7 +952,7 @@
         
         let h = parseInt(parts[0]) || 0;
         let m = parseInt(parts[1]) || 0;
-        let s = parseInt(parts[2]) || 0; // Detik
+        let s = parseInt(parts[2]) || 0;
         
         if (isPM) {
           if (h !== 12) h += 12;
@@ -772,7 +975,7 @@
       const norm = normalizeTime(timeString);
       let h = norm.h;
       const m = norm.m;
-      const s = norm.s; // Ambil detik dari parsing
+      const s = norm.s;
       
       const ampm = h >= 12 ? 'PM' : 'AM';
       
@@ -780,9 +983,8 @@
       h = h ? h : 12; 
       
       const mStr = m.toString().padStart(2, '0');
-      const sStr = s.toString().padStart(2, '0'); // Format detik (00)
+      const sStr = s.toString().padStart(2, '0');
       
-      // Tambahkan detik ke output string
       return `${h}:${mStr}:${sStr} ${ampm}`;
     }
     
@@ -862,17 +1064,7 @@
           const line = lines[i].trim();
           if (!line) continue;
           
-          const values = [];
-          let current = '';
-          let inQuotes = false;
-          
-          for (let j = 0; j < line.length; j++) {
-            const char = line[j];
-            if (char === '"') { inQuotes = !inQuotes; } 
-            else if (char === ',' && !inQuotes) { values.push(current); current = ''; } 
-            else { current += char; }
-          }
-          values.push(current);
+          const values = parseCSVLine(line);
           
           if (values.length > 1 && values[1]) {
             const url = values[1].replace(/"/g, '').trim();
@@ -994,6 +1186,7 @@
     }
     
     function checkForUpdates() {
+      // 1. Cek Data Utama
       fetchData().then(data => {
         const newHash = calculateDataHash(data);
         if (newHash !== lastDataHash) {
@@ -1010,6 +1203,9 @@
           setTimeout(checkForUpdates, 5000);
         }
       });
+
+      // 2. Cek Running Text
+      fetchRunningText();
     }
     
     async function fetchData() {
@@ -1052,17 +1248,7 @@
         const line = lines[i].trim();
         if (!line) continue;
         
-        const values = [];
-        let current = '';
-        let inQuotes = false;
-        
-        for (let j = 0; j < line.length; j++) {
-          const char = line[j];
-          if (char === '"') { inQuotes = !inQuotes; } 
-          else if (char === ',' && !inQuotes) { values.push(current); current = ''; } 
-          else { current += char; }
-        }
-        values.push(current);
+        const values = parseCSVLine(line);
         
         const rowData = {};
         Object.keys(columnIndices).forEach(key => {
@@ -1145,16 +1331,12 @@
         // --- Parent Row (Header) ---
         const parentTr = document.createElement('tr');
         
-        // PERUBAHAN DI SINI: Tidak ada 'expanded' secara default
-        // Aktif atau tidak, semuanya minimize awalnya.
         parentTr.className = staff.isActive ? 'staff-header-row active' : 'staff-header-row';
         
         parentTr.onclick = function() { toggleStaffRows(this); };
 
-        // Icon awal selalu Chevron Right (tutup) karena tidak ada expanded
         const toggleIconClass = 'fa-chevron-right';
         
-        // Parent uses COLSPAN=8 to span full width for custom layout
         parentTr.innerHTML = `
             <td colspan="8">
                 <div class="staff-header-content">
@@ -1186,7 +1368,6 @@
             const childTr = document.createElement('tr');
             childTr.className = 'staff-detail-row';
             
-            // Karena parent tidak punya class 'expanded', semua child akan otomatis hidden
             if (!parentTr.classList.contains('expanded')) {
                 childTr.classList.add('hidden-row');
             }
@@ -1198,7 +1379,6 @@
                 childTr.classList.add("lewat-row");
             }
 
-            // Memanggil formatTimeDisplay yang sudah diupdate (dengan detik)
             const displayStartTime = formatTimeDisplay(trip.startTime);
             const displayEndTime = formatTimeDisplay(trip.endTime);
             let displayDuration = formatHistoryDuration(trip.durasi);
@@ -1416,7 +1596,6 @@
       if (keyword === '') {
           parentRows.forEach(parent => {
               parent.style.display = '';
-              // Saat search dikosongkan, tutup semua kembali (minimize)
               parent.classList.remove('expanded');
               const icon = parent.querySelector('.toggle-icon');
               if(icon) {
@@ -1446,6 +1625,9 @@
         console.error('Gagal mengambil data background:', error);
       }
       
+      // Fetch Running Text Awal
+      fetchRunningText();
+
       fetchData().then(data => {
         currentData = data;
         lastDataHash = calculateDataHash(data);
@@ -1561,92 +1743,42 @@ const shortcut = {
   }
 };
 
-// Fungsi kosong yang tidak melakukan apa-apa
 function doNothing(e) {
-  // Tidak melakukan apapun, hanya mencegah aksi default
   console.log("Shortcut diblokir: " + (e.key || e.keyCode));
 }
 
-// Fungsi untuk mengatur shortcut
 function setupShortcuts() {
-  // === Shortcut Ctrl+U ===
   shortcut.add("Ctrl+U", doNothing);
-  
-  // === Shortcut F12 ===
   shortcut.add("f12", doNothing);
-  
-  // === Tambahkan juga shortcut lainnya ===
   shortcut.add("Ctrl+Shift+I", doNothing);
   shortcut.add("Ctrl+Shift+J", doNothing);
   shortcut.add("Ctrl+Shift+C", doNothing);
 }
 
-// Setup shortcut saat pertama kali
 setupShortcuts();
 
-// Event listener untuk mencegah semua aksi default shortcut developer
 document.addEventListener('keydown', function(e) {
-  // F12 - Developer Tools
-  if (e.keyCode === 123) {
-    e.preventDefault();
-    e.stopPropagation();
-    return false;
-  }
-  
-  // Ctrl+Shift+I - Developer Tools
-  if (e.ctrlKey && e.shiftKey && e.keyCode === 73) {
-    e.preventDefault();
-    e.stopPropagation();
-    return false;
-  }
-  
-  // Ctrl+Shift+J - JavaScript Console
-  if (e.ctrlKey && e.shiftKey && e.keyCode === 74) {
-    e.preventDefault();
-    e.stopPropagation();
-    return false;
-  }
-  
-  // Ctrl+Shift+C - Inspect Element
-  if (e.ctrlKey && e.shiftKey && e.keyCode === 67) {
-    e.preventDefault();
-    e.stopPropagation();
-    return false;
-  }
-  
-  // Ctrl+U - View Source
-  if (e.ctrlKey && e.keyCode === 85) {
-    e.preventDefault();
-    e.stopPropagation();
-    return false;
-  }
-  
-  // Ctrl+S - Save Page
-  if (e.ctrlKey && e.keyCode === 83) {
-    e.preventDefault();
-    e.stopPropagation();
-    return false;
-  }
+  if (e.keyCode === 123) { e.preventDefault(); e.stopPropagation(); return false; }
+  if (e.ctrlKey && e.shiftKey && e.keyCode === 73) { e.preventDefault(); e.stopPropagation(); return false; }
+  if (e.ctrlKey && e.shiftKey && e.keyCode === 74) { e.preventDefault(); e.stopPropagation(); return false; }
+  if (e.ctrlKey && e.shiftKey && e.keyCode === 67) { e.preventDefault(); e.stopPropagation(); return false; }
+  if (e.ctrlKey && e.keyCode === 85) { e.preventDefault(); e.stopPropagation(); return false; }
+  if (e.ctrlKey && e.keyCode === 83) { e.preventDefault(); e.stopPropagation(); return false; }
 });
 
-// Mencegah klik kanan (opsional)
 document.addEventListener('contextmenu', function(e) {
   e.preventDefault();
   return false;
 });
 
-// Mencegah drag & drop (opsional, untuk mencegah pengambilan gambar/element)
 document.addEventListener('dragstart', function(e) {
   e.preventDefault();
   return false;
 });
 
-// Mencegah seleksi teks (opsional)
 document.addEventListener('selectstart', function(e) {
   e.preventDefault();
   return false;
 });
 </script>
 </html>
-
-
