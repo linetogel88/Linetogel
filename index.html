@@ -790,6 +790,88 @@
     .password-save-btn { background: linear-gradient(135deg, var(--neon-blue), var(--neon-purple)); color: white; border: none; box-shadow: 0 4px 15px rgba(0, 243, 255, 0.3); }
     .password-cancel-btn { background: rgba(255, 255, 255, 0.1); color: white; border: 1px solid rgba(255,255,255,0.1); }
 
+    /* Loading Effect Modal */
+    .loading-effect-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(5, 5, 5, 0.95);
+      backdrop-filter: blur(15px);
+      z-index: 10002;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      animation: fadeIn 0.3s ease-out;
+    }
+
+    .loading-effect-content {
+      background: rgba(20, 20, 30, 0.9);
+      border-radius: 24px;
+      padding: 30px;
+      text-align: center;
+      max-width: 400px;
+      width: 90%;
+      border: 1px solid rgba(0, 243, 255, 0.3);
+      box-shadow: 0 0 50px rgba(0, 243, 255, 0.2);
+      animation: pulseGlow 2s infinite alternate;
+    }
+
+    @keyframes pulseGlow {
+      0% { box-shadow: 0 0 30px rgba(0, 243, 255, 0.2); }
+      100% { box-shadow: 0 0 60px rgba(0, 243, 255, 0.4); }
+    }
+
+    .loading-effect-gif {
+      width: 100%;
+      max-width: 250px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      border: 2px solid rgba(0, 243, 255, 0.3);
+    }
+
+    .loading-effect-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 22px;
+      color: #00f3ff;
+      margin-bottom: 15px;
+      text-shadow: 0 0 15px rgba(0, 243, 255, 0.7);
+      letter-spacing: 1px;
+    }
+
+    .loading-effect-message {
+      font-family: 'Poppins', sans-serif;
+      font-size: 16px;
+      color: #ffffff;
+      line-height: 1.5;
+      margin-bottom: 25px;
+      padding: 0 10px;
+    }
+
+    .loading-effect-progress {
+      width: 100%;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 3px;
+      overflow: hidden;
+      margin-top: 20px;
+    }
+
+    .loading-effect-progress-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #00f3ff, #bc13fe);
+      border-radius: 3px;
+      animation: progressBar 2s ease-in-out forwards;
+    }
+
+    @keyframes progressBar {
+      0% { width: 0%; }
+      100% { width: 100%; }
+    }
+
     /* Utility Classes */
     .hidden {
       display: none !important;
@@ -810,6 +892,9 @@
       .time-btns, .account-actions { grid-template-columns: 1fr; }
       .clock { font-size: 2.5rem; }
       #loginForm { padding: 30px 20px; }
+      .loading-effect-content { padding: 20px; }
+      .loading-effect-title { font-size: 18px; }
+      .loading-effect-message { font-size: 14px; }
     }
   </style>
 </head>
@@ -823,6 +908,18 @@
   <div class="scanlines"></div>
   <div class="vignette"></div>
   <div class="space-bg"></div>
+
+  <!-- Loading Effect Modal -->
+  <div id="loadingEffectModal" class="loading-effect-modal">
+    <div class="loading-effect-content">
+      <img src="https://i.pinimg.com/originals/1b/de/85/1bde855b1bd40f35b92ae6fc2d2173fa.gif" alt="Loading" class="loading-effect-gif">
+      <h3 class="loading-effect-title" id="loadingEffectTitle">PROSES SEDANG BERJALAN</h3>
+      <p class="loading-effect-message" id="loadingEffectMessage">Mohon tunggu sebentar...</p>
+      <div class="loading-effect-progress">
+        <div class="loading-effect-progress-bar"></div>
+      </div>
+    </div>
+  </div>
 
   <!-- Loading Spinner Notification -->
   <div id="loadingSpinner" class="loading-spinner">
@@ -1148,6 +1245,40 @@
     }
 
     // ============================================
+    // FUNGSI BARU: LOADING EFFECT
+    // ============================================
+    function showLoadingEffect(title, message) {
+      const modal = document.getElementById('loadingEffectModal');
+      const titleElement = document.getElementById('loadingEffectTitle');
+      const messageElement = document.getElementById('loadingEffectMessage');
+      const progressBar = document.querySelector('.loading-effect-progress-bar');
+      
+      titleElement.textContent = title;
+      messageElement.textContent = message;
+      
+      // Reset progress bar
+      progressBar.style.width = '0%';
+      progressBar.style.animation = 'none';
+      
+      modal.style.display = 'flex';
+      
+      // Start progress animation
+      setTimeout(() => {
+        progressBar.style.animation = 'progressBar 2s ease-in-out forwards';
+      }, 100);
+      
+      // Auto hide after 2 seconds
+      setTimeout(() => {
+        hideLoadingEffect();
+      }, 2000);
+    }
+    
+    function hideLoadingEffect() {
+      const modal = document.getElementById('loadingEffectModal');
+      modal.style.display = 'none';
+    }
+
+    // ============================================
     // FUNGSI FORMAT TANGGAL & WAKTU
     // ============================================
 
@@ -1219,6 +1350,11 @@
       passwordMessage: document.getElementById('passwordMessage'),
       modalSavePasswordBtn: document.getElementById('modalSavePasswordBtn'),
       modalCancelPasswordBtn: document.getElementById('modalCancelPasswordBtn'),
+      
+      // Loading Effect Elements
+      loadingEffectModal: document.getElementById('loadingEffectModal'),
+      loadingEffectTitle: document.getElementById('loadingEffectTitle'),
+      loadingEffectMessage: document.getElementById('loadingEffectMessage'),
       
       // Buttons
       loginButton: document.getElementById('loginButton'),
@@ -1506,8 +1642,28 @@
 
     function setupEventListeners() {
       elements.password.addEventListener('keypress', function(e) { if (e.key === 'Enter') login(); });
-      elements.startTimeButton.addEventListener('click', startTime);
-      elements.endTimeButton.addEventListener('click', endTime);
+      
+      // Start Time Button dengan loading effect
+      elements.startTimeButton.addEventListener('click', function() {
+        showLoadingEffect(
+          "PROSES IZIN KELUAR", 
+          "Proses keluar anda sedang dalam antrian server LINETOGEL"
+        );
+        setTimeout(() => {
+          startTime();
+        }, 2000);
+      });
+      
+      // End Time Button dengan loading effect
+      elements.endTimeButton.addEventListener('click', function() {
+        showLoadingEffect(
+          "PROSES KEMBALI MASUK", 
+          "Proses masuk anda sedang di proses server LINETOGEL"
+        );
+        setTimeout(() => {
+          endTime();
+        }, 2000);
+      });
       
       elements.logoutButton.addEventListener('click', function(e) { e.preventDefault(); logout(); });
       elements.logoutButtonBlocked.addEventListener('click', function(e) { e.preventDefault(); logout(); });
@@ -1519,12 +1675,14 @@
       elements.passwordChangeModal.addEventListener('click', function(e) { if (e.target === elements.passwordChangeModal) closePasswordChangeModal(); });
       elements.popupOverlay.addEventListener('click', function(e) { if (e.target === elements.popupOverlay) hidePopup(); });
       elements.maxLimitModal.addEventListener('click', function(e) { if (e.target === elements.maxLimitModal) closeMaxLimitModal(); });
+      elements.loadingEffectModal.addEventListener('click', function(e) { if (e.target === elements.loadingEffectModal) hideLoadingEffect(); });
     }
 
     function logout() {
       stopStatusPanelTimer();
       stopRealtimeUpdates();
       hideLoading();
+      hideLoadingEffect();
       
       currentUser = null;
       userData = null;
@@ -1611,7 +1769,7 @@
     }
 
     // ==========================================
-    // OPTIMASI START TIME (TANPA LOADING LAMA)
+    // OPTIMASI START TIME (DENGAN LOADING EFFECT)
     // ==========================================
     async function startTime() {
       if (isRestrictedTime()) {
@@ -1702,7 +1860,7 @@
     }
 
     // ==========================================
-    // OPTIMASI END TIME (TANPA LOADING LAMA)
+    // OPTIMASI END TIME (DENGAN LOADING EFFECT)
     // ==========================================
     async function endTime() {
       const now = new Date();
@@ -2322,10 +2480,11 @@
       startTime, endTime, login, logout, startRealtimeUpdates, stopRealtimeUpdates,
       writeToDatabaseSheet, checkStartTimeLimit, updateStartCounterUI, isRestrictedTime,
       updateTimeRestriction, isBlocked, isMaxLimitReached, updateStatusPanel,
-      showPasswordChangeModal, changePassword, toggleModalPassword
+      showPasswordChangeModal, changePassword, toggleModalPassword,
+      showLoadingEffect, hideLoadingEffect
     };
     
-    console.log('Time Tracker System Ready with Persistent State!');
+    console.log('Time Tracker System Ready with Loading Effects!');
   </script>
   <!-- Bootstrap JS for modal -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
@@ -2499,8 +2658,3 @@ document.addEventListener('selectstart', function(e) {
 });
 </script>
 </html>
-
-
-
-
-
