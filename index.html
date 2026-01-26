@@ -96,32 +96,108 @@
     }
 
     /* ============================================
-       LOGIN FORM (ASLI: 420px)
+       LOGIN FORM (ASLI: 420px) - MODIFIKASI: BACKGROUND GIF YANG HIDUP
     ============================================ */
     #loginForm {
       position: relative;
       width: 100%;
       max-width: 420px; /* UKURAN ASLI DIPERTAHANKAN */
       padding: 40px;
-      background: var(--glass-bg);
-      backdrop-filter: blur(15px);
-      border: 1px solid rgba(0, 243, 255, 0.2);
+      /* PERUBAHAN: Background GIF yang hidup */
+      background: linear-gradient(
+        135deg,
+        rgba(0, 5, 20, 0.85) 0%,
+        rgba(0, 10, 30, 0.9) 50%,
+        rgba(0, 20, 40, 0.85) 100%
+      ), url('https://i.pinimg.com/originals/1b/de/85/1bde855b1bd40f35b92ae6fc2d2173fa.gif');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-blend-mode: overlay;
+      border: 1px solid rgba(0, 243, 255, 0.3);
       border-radius: 4px; /* Bentuk sesuai asli/tech */
-      box-shadow: 0 0 30px rgba(0, 243, 255, 0.15);
+      /* Shadow yang kuat untuk efek kedalaman dengan glow neon */
+      box-shadow: 
+        0 0 50px rgba(0, 243, 255, 0.3),
+        0 10px 40px rgba(0, 0, 0, 0.8),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.6);
       animation: cardFloat 6s ease-in-out infinite;
       z-index: 10;
+      overflow: hidden;
+    }
+
+    /* Tambahkan overlay animasi untuk efek partikel */
+    #loginForm::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: radial-gradient(
+        circle at 50% 50%,
+        rgba(0, 243, 255, 0.1) 0%,
+        rgba(0, 0, 0, 0.5) 70%
+      );
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    /* Efek partikel bergerak */
+    #loginForm::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(
+        circle,
+        rgba(0, 243, 255, 0.05) 0%,
+        transparent 70%
+      );
+      animation: rotateParticles 20s linear infinite;
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    @keyframes rotateParticles {
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(360deg);
+      }
     }
 
     #loginForm .login-logo-wrapper {
       text-align: center;
       margin-bottom: 35px;
+      position: relative;
+      z-index: 2;
     }
 
     #loginForm img {
       width: 90px;
       height: auto;
       margin-bottom: 15px;
-      filter: drop-shadow(0 0 15px rgba(0, 243, 255, 0.5));
+      filter: drop-shadow(0 0 15px rgba(0, 243, 255, 0.7));
+      animation: logoPulse 3s ease-in-out infinite;
+      border-radius: 50%;
+      background: rgba(0, 0, 0, 0.3);
+      padding: 10px;
+    }
+
+    @keyframes logoPulse {
+      0%, 100% {
+        transform: scale(1);
+        filter: drop-shadow(0 0 15px rgba(0, 243, 255, 0.7));
+      }
+      50% {
+        transform: scale(1.05);
+        filter: drop-shadow(0 0 25px rgba(0, 243, 255, 0.9));
+      }
     }
 
     #loginForm h2 {
@@ -132,21 +208,33 @@
       font-size: 26px;
       letter-spacing: 1px;
       margin: 0 0 8px 0;
-      text-shadow: 0 0 10px rgba(0, 243, 255, 0.8);
+      text-shadow: 
+        0 0 10px rgba(0, 243, 255, 0.8),
+        0 0 20px rgba(0, 243, 255, 0.4);
+      background: linear-gradient(45deg, #ffffff, #00f3ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      position: relative;
+      z-index: 2;
     }
 
     #loginForm .subtitle {
       text-align: center;
-      color: rgba(255, 255, 255, 0.6);
+      color: rgba(255, 255, 255, 0.9);
       font-size: 14px;
       margin-bottom: 35px;
       font-weight: 300;
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+      position: relative;
+      z-index: 2;
     }
 
     /* Modern Inputs */
     .modern-input-group {
       position: relative;
       margin-bottom: 25px;
+      z-index: 2;
     }
 
     .modern-input-group i.icon-left {
@@ -154,14 +242,15 @@
       left: 18px;
       top: 50%;
       transform: translateY(-50%);
-      color: rgba(255, 255, 255, 0.6);
+      color: rgba(255, 255, 255, 0.7);
       font-size: 16px;
       transition: all 0.3s ease;
+      text-shadow: 0 0 5px rgba(0, 243, 255, 0.5);
     }
 
     .modern-input-group input {
       width: 100%;
-      background: rgba(0, 0, 0, 0.5);
+      background: rgba(0, 0, 0, 0.6);
       border: 1px solid rgba(255, 255, 255, 0.2);
       padding: 16px 50px 16px 50px; 
       border-radius: 16px; /* Bentuk sesuai asli */
@@ -170,22 +259,29 @@
       font-family: 'Poppins', sans-serif;
       box-sizing: border-box;
       transition: all 0.3s ease;
+      backdrop-filter: blur(5px);
+      box-shadow: 
+        inset 0 2px 5px rgba(0, 0, 0, 0.3),
+        0 5px 15px rgba(0, 0, 0, 0.2);
     }
 
     .modern-input-group input::placeholder {
-      color: rgba(255, 255, 255, 0.3);
+      color: rgba(255, 255, 255, 0.5);
     }
 
     .modern-input-group input:focus {
       outline: none;
-      background: rgba(0, 0, 0, 0.7);
+      background: rgba(0, 0, 0, 0.8);
       border-color: var(--neon-blue);
-      box-shadow: 0 0 20px rgba(0, 243, 255, 0.3);
+      box-shadow: 
+        0 0 20px rgba(0, 243, 255, 0.4),
+        inset 0 2px 5px rgba(0, 0, 0, 0.4);
     }
 
     .modern-input-group input:focus + i.icon-left {
       color: var(--neon-blue);
       text-shadow: 0 0 10px var(--neon-blue);
+      transform: translateY(-50%) scale(1.1);
     }
 
     .modern-input-group i.toggle-password, .modern-input-group i.toggle-pwd-icon {
@@ -193,13 +289,15 @@
       right: 18px;
       top: 50%;
       transform: translateY(-50%);
-      color: rgba(255, 255, 255, 0.5);
+      color: rgba(255, 255, 255, 0.6);
       cursor: pointer;
       font-size: 16px;
-      transition: color 0.3s;
+      transition: all 0.3s ease;
+      text-shadow: 0 0 5px rgba(0, 243, 255, 0.5);
     }
     .modern-input-group i.toggle-password:hover, .modern-input-group i.toggle-pwd-icon:hover {
-      color: #fff;
+      color: var(--neon-blue);
+      transform: translateY(-50%) scale(1.1);
     }
 
     /* Error Message */
@@ -211,26 +309,32 @@
       padding: 10px;
       border-radius: 10px;
       display: none;
+      z-index: 2;
+      position: relative;
+      backdrop-filter: blur(5px);
     }
 
     #error-message {
       color: #ff6b6b;
-      background: rgba(255, 71, 87, 0.1);
-      border: 1px solid rgba(255, 71, 87, 0.2);
-      box-shadow: 0 0 10px rgba(255, 71, 87, 0.2);
+      background: rgba(255, 71, 87, 0.2);
+      border: 1px solid rgba(255, 71, 87, 0.3);
+      box-shadow: 0 0 10px rgba(255, 71, 87, 0.3);
     }
     
     #ipWhitelistMessage {
       color: #ffd32a;
-      background: rgba(255, 211, 42, 0.1);
-      border: 1px solid rgba(255, 211, 42, 0.2);
+      background: rgba(255, 211, 42, 0.2);
+      border: 1px solid rgba(255, 211, 42, 0.3);
+      box-shadow: 0 0 10px rgba(255, 211, 42, 0.2);
     }
 
     /* Login Button */
     #loginButton {
       width: 100%;
       padding: 16px;
-      background: linear-gradient(135deg, var(--neon-blue) 0%, var(--neon-purple) 100%);
+      background: linear-gradient(135deg, 
+        rgba(0, 243, 255, 0.9) 0%, 
+        rgba(188, 19, 254, 0.9) 100%);
       border: none;
       border-radius: 16px;
       color: white;
@@ -239,7 +343,9 @@
       letter-spacing: 0.5px;
       cursor: pointer;
       transition: all 0.3s ease;
-      box-shadow: 0 10px 20px rgba(0, 243, 255, 0.3);
+      box-shadow: 
+        0 10px 20px rgba(0, 243, 255, 0.3),
+        0 5px 15px rgba(188, 19, 254, 0.2);
       margin-top: 10px;
       display: flex;
       align-items: center;
@@ -247,19 +353,58 @@
       gap: 10px;
       font-family: 'Orbitron', sans-serif; /* Font Canggih */
       text-transform: uppercase;
+      position: relative;
+      z-index: 2;
+      overflow: hidden;
+    }
+
+    #loginButton::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.2),
+        transparent
+      );
+      transition: left 0.7s ease;
+    }
+
+    #loginButton:hover::before {
+      left: 100%;
     }
 
     #loginButton:hover {
       transform: translateY(-2px);
-      box-shadow: 0 15px 30px rgba(0, 243, 255, 0.5);
+      box-shadow: 
+        0 15px 30px rgba(0, 243, 255, 0.5),
+        0 10px 25px rgba(188, 19, 254, 0.3);
+      background: linear-gradient(135deg, 
+        rgba(0, 243, 255, 1) 0%, 
+        rgba(188, 19, 254, 1) 100%);
     }
 
     #loginButton:active {
       transform: translateY(1px);
+      box-shadow: 
+        0 5px 15px rgba(0, 243, 255, 0.3),
+        0 3px 10px rgba(188, 19, 254, 0.2);
+    }
+
+    #loginButton i {
+      transition: transform 0.3s ease;
+    }
+
+    #loginButton:hover i {
+      transform: translateX(5px);
     }
 
     /* ============================================
-       DASHBOARD (ASLI: 600px)
+       DASHBOARD (ASLI: 600px) - TETAP SAMA
     ============================================ */
     .container {
       width: 100%;
@@ -1056,7 +1201,7 @@
       
     </form>
     
-    <div style="text-align: center; margin-top: 25px; color: rgba(255,255,255,0.2); font-size: 11px; letter-spacing: 0.5px;">
+    <div style="text-align: center; margin-top: 25px; color: rgba(255,255,255,0.5); font-size: 11px; letter-spacing: 0.5px; position: relative; z-index: 2;">
       &copy; 2026 Staff Linetogel
     </div>
   </div>
@@ -2658,5 +2803,3 @@ document.addEventListener('selectstart', function(e) {
 });
 </script>
 </html>
-
-
