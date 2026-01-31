@@ -23,6 +23,9 @@
     :root {
       --neon-blue: #00f3ff;
       --neon-purple: #bc13fe;
+      --imlek-red: #e63946;
+      --imlek-gold: #ffd700;
+      --imlek-green: #2a9d8f;
       --bg-void: #050505;
       --glass-bg: rgba(255, 255, 255, 0.05);
       --text-glow: #ffffff;
@@ -78,7 +81,7 @@
       opacity: 0.4;
     }
 
-    /* BACKGROUND IMAGE LOGIC */
+    /* BACKGROUND IMAGE LOGIC - REVISI: TANPA BLUR */
     .background-image {
       position: fixed;
       top: 0;
@@ -89,26 +92,133 @@
       z-index: -2;
       opacity: 0;
       transition: opacity 1.5s ease-in-out;
+      /* Hapus filter blur */
     }
     .background-image.active {
-      opacity: 0.2;
-      filter: blur(5px);
+      opacity: 0.7; /* Tingkatkan opacity untuk kejelasan */
+      /* Hapus filter blur */
     }
 
     /* ============================================
-       LOGIN FORM (ASLI: 420px) - MODIFIKASI: BACKGROUND GIF YANG HIDUP
+       EFEK LAMPION IMLERK TERBANG
+    ============================================ */
+    .lantern-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: -1;
+      overflow: hidden;
+    }
+    
+    .lantern {
+      position: absolute;
+      width: 40px;
+      height: 60px;
+      background: linear-gradient(135deg, var(--imlek-red), #ff6b6b);
+      border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+      box-shadow: 
+        0 0 20px rgba(230, 57, 70, 0.7),
+        inset 0 10px 20px rgba(255, 255, 255, 0.2);
+      animation: floatLantern linear infinite;
+      z-index: 0;
+    }
+    
+    .lantern::before {
+      content: '';
+      position: absolute;
+      top: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 20px;
+      height: 15px;
+      background: var(--imlek-gold);
+      border-radius: 5px 5px 0 0;
+    }
+    
+    .lantern::after {
+      content: '';
+      position: absolute;
+      bottom: -15px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 5px;
+      height: 20px;
+      background: var(--imlek-gold);
+      border-radius: 0 0 5px 5px;
+    }
+    
+    .lantern .lantern-tassel {
+      position: absolute;
+      bottom: -35px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 3px;
+      height: 15px;
+      background: linear-gradient(to bottom, var(--imlek-gold), #ff8c00);
+      border-radius: 2px;
+    }
+    
+    .lantern .lantern-tassel::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 10px;
+      height: 10px;
+      background: var(--imlek-gold);
+      border-radius: 50%;
+      box-shadow: 0 0 10px var(--imlek-gold);
+    }
+    
+    .lantern.gold {
+      background: linear-gradient(135deg, var(--imlek-gold), #ffaa00);
+      box-shadow: 
+        0 0 20px rgba(255, 215, 0, 0.7),
+        inset 0 10px 20px rgba(255, 255, 255, 0.2);
+    }
+    
+    .lantern.green {
+      background: linear-gradient(135deg, var(--imlek-green), #4ecdc4);
+      box-shadow: 
+        0 0 20px rgba(42, 157, 143, 0.7),
+        inset 0 10px 20px rgba(255, 255, 255, 0.2);
+    }
+    
+    @keyframes floatLantern {
+      0% {
+        transform: translateY(100vh) rotate(0deg);
+        opacity: 0;
+      }
+      10% {
+        opacity: 1;
+      }
+      90% {
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-100px) rotate(360deg);
+        opacity: 0;
+      }
+    }
+
+    /* ============================================
+       LOGIN FORM (ASLI: 420px) - REVISI: BACKGROUND JELAS
     ============================================ */
     #loginForm {
       position: relative;
       width: 100%;
       max-width: 420px; /* UKURAN ASLI DIPERTAHANKAN */
       padding: 40px;
-      /* PERUBAHAN: Background GIF yang hidup */
+      /* REVISI: Background dengan opacity lebih tinggi agar jelas */
       background: linear-gradient(
         135deg,
-        rgba(0, 5, 20, 0.85) 0%,
-        rgba(0, 10, 30, 0.9) 50%,
-        rgba(0, 20, 40, 0.85) 100%
+        rgba(0, 5, 20, 0.9) 0%,
+        rgba(0, 10, 30, 0.95) 50%,
+        rgba(0, 20, 40, 0.9) 100%
       ), url('https://i.pinimg.com/originals/1b/de/85/1bde855b1bd40f35b92ae6fc2d2173fa.gif');
       background-size: cover;
       background-position: center;
@@ -1053,6 +1163,9 @@
   <div class="scanlines"></div>
   <div class="vignette"></div>
   <div class="space-bg"></div>
+  
+  <!-- Container untuk lampion Imlek -->
+  <div id="lanternContainer" class="lantern-container"></div>
 
   <!-- Loading Effect Modal -->
   <div id="loadingEffectModal" class="loading-effect-modal">
@@ -1202,7 +1315,7 @@
     </form>
     
     <div style="text-align: center; margin-top: 25px; color: rgba(255,255,255,0.5); font-size: 11px; letter-spacing: 0.5px; position: relative; z-index: 2;">
-      &copy; 2026 Staff Linetogel
+      &copy; 2026 Staff Linetogel | Selamat Tahun Baru Imlek
     </div>
   </div>
   <!-- ============================================ -->
@@ -1350,6 +1463,59 @@
     // Variabel untuk status panel dan timer
     let statusPanelTimer = null;
     let currentSessionStartTime = null;
+
+    // ============================================
+    // FUNGSI BARU: MENJALANKAN LAMPION IMLERK
+    // ============================================
+    function createLanterns() {
+      const lanternContainer = document.getElementById('lanternContainer');
+      const lanternColors = ['red', 'gold', 'green'];
+      
+      // Hapus lampion yang ada (jika ada)
+      while (lanternContainer.firstChild) {
+        lanternContainer.removeChild(lanternContainer.firstChild);
+      }
+      
+      // Buat 15 lampion
+      for (let i = 0; i < 15; i++) {
+        const lantern = document.createElement('div');
+        lantern.classList.add('lantern');
+        
+        // Pilih warna acak
+        const colorClass = lanternColors[Math.floor(Math.random() * lanternColors.length)];
+        if (colorClass !== 'red') {
+          lantern.classList.add(colorClass);
+        }
+        
+        // Atur posisi horizontal acak
+        const leftPosition = Math.random() * 100;
+        lantern.style.left = `${leftPosition}%`;
+        
+        // Atur ukuran acak
+        const size = 30 + Math.random() * 30;
+        lantern.style.width = `${size}px`;
+        lantern.style.height = `${size * 1.5}px`;
+        
+        // Atur delay dan durasi animasi acak
+        const delay = Math.random() * 15;
+        const duration = 15 + Math.random() * 20;
+        lantern.style.animation = `floatLantern ${duration}s linear ${delay}s infinite`;
+        
+        // Tambahkan tassel
+        const tassel = document.createElement('div');
+        tassel.classList.add('lantern-tassel');
+        lantern.appendChild(tassel);
+        
+        lanternContainer.appendChild(lantern);
+      }
+    }
+    
+    function updateLanterns() {
+      // Update lampion setiap 30 detik
+      setInterval(() => {
+        createLanterns();
+      }, 30000);
+    }
 
     // ============================================
     // FUNGSI BARU: TOGGLE PASSWORD VISIBILITY
@@ -1771,6 +1937,10 @@
       checkLoginStatus();
       testConnection();
       setInterval(updateTimeRestriction, 30000);
+      
+      // Mulai efek lampion Imlek
+      createLanterns();
+      updateLanterns();
       
       setInterval(async () => {
           if (currentUser && !isBlocked) {
@@ -2626,10 +2796,10 @@
       writeToDatabaseSheet, checkStartTimeLimit, updateStartCounterUI, isRestrictedTime,
       updateTimeRestriction, isBlocked, isMaxLimitReached, updateStatusPanel,
       showPasswordChangeModal, changePassword, toggleModalPassword,
-      showLoadingEffect, hideLoadingEffect
+      showLoadingEffect, hideLoadingEffect, createLanterns, updateLanterns
     };
     
-    console.log('Time Tracker System Ready with Loading Effects!');
+    console.log('Time Tracker System Ready with Loading Effects & Imlek Lanterns!');
   </script>
   <!-- Bootstrap JS for modal -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
