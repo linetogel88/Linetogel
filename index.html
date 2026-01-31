@@ -18,16 +18,13 @@
   
   <style>
     /* ============================================
-       QUANTUM GLOW DESIGN (PADA UKURAN ASLI)
+       QUANTUM GLOW DESIGN (REVISED BACKGROUND)
     ============================================ */
     :root {
       --neon-blue: #00f3ff;
       --neon-purple: #bc13fe;
-      --imlek-red: #e63946;
-      --imlek-gold: #ffd700;
-      --imlek-green: #2a9d8f;
       --bg-void: #050505;
-      --glass-bg: rgba(255, 255, 255, 0.05);
+      --glass-bg: rgba(0, 0, 0, 0.4); /* Sedikit lebih gelap agar teks tetap terbaca di bg jelas */
       --text-glow: #ffffff;
     }
 
@@ -51,11 +48,11 @@
       width: 100%;
       height: 100%;
       background-image: 
-        linear-gradient(rgba(0, 243, 255, 0.1) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0, 243, 255, 0.1) 1px, transparent 1px);
+        linear-gradient(rgba(0, 243, 255, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 243, 255, 0.05) 1px, transparent 1px);
       background-size: 50px 50px;
       z-index: -3;
-      opacity: 0.3;
+      opacity: 0.2;
     }
 
     .vignette {
@@ -64,7 +61,7 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: radial-gradient(circle, transparent 40%, #000 100%);
+      background: radial-gradient(circle, transparent 50%, #000 100%);
       z-index: -1;
     }
 
@@ -74,14 +71,14 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+      background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
       background-size: 100% 2px, 3px 100%;
       pointer-events: none;
       z-index: 100;
-      opacity: 0.4;
+      opacity: 0.2; /* Dikurangi agar background tidak terganggu */
     }
 
-    /* BACKGROUND IMAGE LOGIC - REVISI: TANPA BLUR */
+    /* BACKGROUND IMAGE LOGIC - REVISION: JELAS & TIDAK BLUR */
     .background-image {
       position: fixed;
       top: 0;
@@ -89,144 +86,50 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
-      z-index: -2;
+      z-index: -3;
       opacity: 0;
       transition: opacity 1.5s ease-in-out;
-      /* Hapus filter blur */
+      /* PERUBAHAN: Tidak ada blur, opasitas lebih tinggi */
     }
     .background-image.active {
-      opacity: 0.7; /* Tingkatkan opacity untuk kejelasan */
-      /* Hapus filter blur */
+      opacity: 0.8; /* Lebih jelas/terang */
+      filter: none; /* Blur dihapus */
     }
 
     /* ============================================
-       EFEK LAMPION IMLERK TERBANG
+       CANVAS LANTERN (EFEK LAMPION TERBANG)
     ============================================ */
-    .lantern-container {
+    #lanternCanvas {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
+      z-index: -2; /* Di atas background image, di bawah vignette */
       pointer-events: none;
-      z-index: -1;
-      overflow: hidden;
-    }
-    
-    .lantern {
-      position: absolute;
-      width: 40px;
-      height: 60px;
-      background: linear-gradient(135deg, var(--imlek-red), #ff6b6b);
-      border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
-      box-shadow: 
-        0 0 20px rgba(230, 57, 70, 0.7),
-        inset 0 10px 20px rgba(255, 255, 255, 0.2);
-      animation: floatLantern linear infinite;
-      z-index: 0;
-    }
-    
-    .lantern::before {
-      content: '';
-      position: absolute;
-      top: -10px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 20px;
-      height: 15px;
-      background: var(--imlek-gold);
-      border-radius: 5px 5px 0 0;
-    }
-    
-    .lantern::after {
-      content: '';
-      position: absolute;
-      bottom: -15px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 5px;
-      height: 20px;
-      background: var(--imlek-gold);
-      border-radius: 0 0 5px 5px;
-    }
-    
-    .lantern .lantern-tassel {
-      position: absolute;
-      bottom: -35px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 3px;
-      height: 15px;
-      background: linear-gradient(to bottom, var(--imlek-gold), #ff8c00);
-      border-radius: 2px;
-    }
-    
-    .lantern .lantern-tassel::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 10px;
-      height: 10px;
-      background: var(--imlek-gold);
-      border-radius: 50%;
-      box-shadow: 0 0 10px var(--imlek-gold);
-    }
-    
-    .lantern.gold {
-      background: linear-gradient(135deg, var(--imlek-gold), #ffaa00);
-      box-shadow: 
-        0 0 20px rgba(255, 215, 0, 0.7),
-        inset 0 10px 20px rgba(255, 255, 255, 0.2);
-    }
-    
-    .lantern.green {
-      background: linear-gradient(135deg, var(--imlek-green), #4ecdc4);
-      box-shadow: 
-        0 0 20px rgba(42, 157, 143, 0.7),
-        inset 0 10px 20px rgba(255, 255, 255, 0.2);
-    }
-    
-    @keyframes floatLantern {
-      0% {
-        transform: translateY(100vh) rotate(0deg);
-        opacity: 0;
-      }
-      10% {
-        opacity: 1;
-      }
-      90% {
-        opacity: 1;
-      }
-      100% {
-        transform: translateY(-100px) rotate(360deg);
-        opacity: 0;
-      }
     }
 
     /* ============================================
-       LOGIN FORM (ASLI: 420px) - REVISI: BACKGROUND JELAS
+       LOGIN FORM
     ============================================ */
     #loginForm {
       position: relative;
       width: 100%;
-      max-width: 420px; /* UKURAN ASLI DIPERTAHANKAN */
+      max-width: 420px;
       padding: 40px;
-      /* REVISI: Background dengan opacity lebih tinggi agar jelas */
+      /* Background agak lebih gelap untuk kontras teks karena background sekarang jelas */
       background: linear-gradient(
         135deg,
-        rgba(0, 5, 20, 0.9) 0%,
+        rgba(0, 5, 20, 0.90) 0%,
         rgba(0, 10, 30, 0.95) 50%,
-        rgba(0, 20, 40, 0.9) 100%
+        rgba(0, 20, 40, 0.90) 100%
       ), url('https://i.pinimg.com/originals/1b/de/85/1bde855b1bd40f35b92ae6fc2d2173fa.gif');
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
       background-blend-mode: overlay;
       border: 1px solid rgba(0, 243, 255, 0.3);
-      border-radius: 4px; /* Bentuk sesuai asli/tech */
-      /* Shadow yang kuat untuk efek kedalaman dengan glow neon */
+      border-radius: 4px;
       box-shadow: 
         0 0 50px rgba(0, 243, 255, 0.3),
         0 10px 40px rgba(0, 0, 0, 0.8),
@@ -237,7 +140,6 @@
       overflow: hidden;
     }
 
-    /* Tambahkan overlay animasi untuk efek partikel */
     #loginForm::before {
       content: '';
       position: absolute;
@@ -254,31 +156,9 @@
       pointer-events: none;
     }
 
-    /* Efek partikel bergerak */
-    #loginForm::after {
-      content: '';
-      position: absolute;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
-      background: radial-gradient(
-        circle,
-        rgba(0, 243, 255, 0.05) 0%,
-        transparent 70%
-      );
-      animation: rotateParticles 20s linear infinite;
-      z-index: -1;
-      pointer-events: none;
-    }
-
     @keyframes rotateParticles {
-      0% {
-        transform: rotate(0deg);
-      }
-      100% {
-        transform: rotate(360deg);
-      }
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
     }
 
     #loginForm .login-logo-wrapper {
@@ -313,7 +193,7 @@
     #loginForm h2 {
       text-align: center;
       color: #ffffff;
-      font-family: 'Orbitron', sans-serif; /* Font Canggih */
+      font-family: 'Orbitron', sans-serif;
       font-weight: 700;
       font-size: 26px;
       letter-spacing: 1px;
@@ -363,7 +243,7 @@
       background: rgba(0, 0, 0, 0.6);
       border: 1px solid rgba(255, 255, 255, 0.2);
       padding: 16px 50px 16px 50px; 
-      border-radius: 16px; /* Bentuk sesuai asli */
+      border-radius: 16px;
       color: #fff;
       font-size: 15px;
       font-family: 'Poppins', sans-serif;
@@ -461,7 +341,7 @@
       align-items: center;
       justify-content: center;
       gap: 10px;
-      font-family: 'Orbitron', sans-serif; /* Font Canggih */
+      font-family: 'Orbitron', sans-serif;
       text-transform: uppercase;
       position: relative;
       z-index: 2;
@@ -514,24 +394,23 @@
     }
 
     /* ============================================
-       DASHBOARD (ASLI: 600px) - TETAP SAMA
+       DASHBOARD (ASLI: 600px)
     ============================================ */
     .container {
       width: 100%;
-      max-width: 600px; /* UKURAN ASLI DIPERTAHANKAN */
+      max-width: 600px;
       margin: 20px auto;
       padding: 30px;
-      border-radius: 30px; /* Bentuk sesuai asli */
+      border-radius: 30px;
       box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-      background: var(--glass-bg);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: var(--glass-bg); /* Transparan untuk melihat background */
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
       position: relative;
       animation: fadeIn 0.5s ease-out;
     }
     
-    /* Tambahkan Glow pada Dashboard Container */
     .container {
        box-shadow: 0 0 40px rgba(0, 243, 255, 0.1);
        border: 1px solid rgba(0, 243, 255, 0.2);
@@ -547,7 +426,7 @@
     .account-actions-container {
       margin-top: 25px;
       padding: 20px;
-      background: rgba(255, 255, 255, 0.03);
+      background: rgba(255, 255, 255, 0.05);
       border-radius: 20px;
       border: 1px solid rgba(255, 255, 255, 0.05);
     }
@@ -709,7 +588,7 @@
       background: rgba(0, 0, 0, 0.3);
       color: white;
       font-size: 15px;
-      appearance: none; /* Hide default arrow */
+      appearance: none;
       background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
       background-repeat: no-repeat;
       background-position: right 1rem center;
@@ -1014,11 +893,10 @@
     .password-form-group { margin-bottom: 20px; text-align: left; }
     .password-form-group label { display: block; margin-bottom: 8px; color: #ccc; font-size: 13px; font-weight: 500; }
     
-    /* Reuse modern-input-group for modal inputs for consistency */
     .password-form-group .modern-input-group { margin-bottom: 0; }
     .password-form-group input {
       width: 100%;
-      padding: 12px 50px 12px 45px; /* Adjust padding for icon */
+      padding: 12px 50px 12px 45px;
       background: rgba(0,0,0,0.3);
       border: 1px solid rgba(255,255,255,0.1);
       border-radius: 12px;
@@ -1028,7 +906,6 @@
     }
     .password-form-group input:focus { border-color: var(--neon-blue); outline: none; box-shadow: 0 0 10px rgba(0, 243, 255, 0.2); }
     
-    /* Icon left positioning for modal inputs */
     .password-form-group .modal-icon-left {
       position: absolute;
       left: 15px;
@@ -1156,6 +1033,9 @@
 
 <body>
 
+  <!-- Canvas untuk Efek Lampion Terbang -->
+  <canvas id="lanternCanvas"></canvas>
+
   <!-- Background Image -->
   <img id="backgroundImage" class="background-image" src="" alt="Background">
   
@@ -1163,9 +1043,6 @@
   <div class="scanlines"></div>
   <div class="vignette"></div>
   <div class="space-bg"></div>
-  
-  <!-- Container untuk lampion Imlek -->
-  <div id="lanternContainer" class="lantern-container"></div>
 
   <!-- Loading Effect Modal -->
   <div id="loadingEffectModal" class="loading-effect-modal">
@@ -1276,7 +1153,7 @@
   </div>
 
   <!-- ============================================
-       NEW LOGIN FORM DESIGN (HTML ASLI DARI USER)
+       NEW LOGIN FORM DESIGN
   ============================================ -->
   <div id="loginForm">
     <div class="login-logo-wrapper">
@@ -1315,12 +1192,12 @@
     </form>
     
     <div style="text-align: center; margin-top: 25px; color: rgba(255,255,255,0.5); font-size: 11px; letter-spacing: 0.5px; position: relative; z-index: 2;">
-      &copy; 2026 Staff Linetogel | Selamat Tahun Baru Imlek
+      &copy; 2026 Staff Linetogel
     </div>
   </div>
   <!-- ============================================ -->
 
-  <!-- Dashboard (HTML ASLI DARI USER) -->
+  <!-- Dashboard -->
   <div id="dashboard" class="container hidden">
     <center><img src="https://cdn.areabermain.club/assets/cdn/az4/2025/04/23/20250423/a82bdc6fb564d0dff3671aeb9a4d1da5/logo.png" alt="Logo" class="logo"></center>
     <h2><i class="fas fa-clock"></i>IZIN STAFF LINETOGEL 2026 </h2>
@@ -1463,59 +1340,6 @@
     // Variabel untuk status panel dan timer
     let statusPanelTimer = null;
     let currentSessionStartTime = null;
-
-    // ============================================
-    // FUNGSI BARU: MENJALANKAN LAMPION IMLERK
-    // ============================================
-    function createLanterns() {
-      const lanternContainer = document.getElementById('lanternContainer');
-      const lanternColors = ['red', 'gold', 'green'];
-      
-      // Hapus lampion yang ada (jika ada)
-      while (lanternContainer.firstChild) {
-        lanternContainer.removeChild(lanternContainer.firstChild);
-      }
-      
-      // Buat 15 lampion
-      for (let i = 0; i < 15; i++) {
-        const lantern = document.createElement('div');
-        lantern.classList.add('lantern');
-        
-        // Pilih warna acak
-        const colorClass = lanternColors[Math.floor(Math.random() * lanternColors.length)];
-        if (colorClass !== 'red') {
-          lantern.classList.add(colorClass);
-        }
-        
-        // Atur posisi horizontal acak
-        const leftPosition = Math.random() * 100;
-        lantern.style.left = `${leftPosition}%`;
-        
-        // Atur ukuran acak
-        const size = 30 + Math.random() * 30;
-        lantern.style.width = `${size}px`;
-        lantern.style.height = `${size * 1.5}px`;
-        
-        // Atur delay dan durasi animasi acak
-        const delay = Math.random() * 15;
-        const duration = 15 + Math.random() * 20;
-        lantern.style.animation = `floatLantern ${duration}s linear ${delay}s infinite`;
-        
-        // Tambahkan tassel
-        const tassel = document.createElement('div');
-        tassel.classList.add('lantern-tassel');
-        lantern.appendChild(tassel);
-        
-        lanternContainer.appendChild(lantern);
-      }
-    }
-    
-    function updateLanterns() {
-      // Update lampion setiap 30 detik
-      setInterval(() => {
-        createLanterns();
-      }, 30000);
-    }
 
     // ============================================
     // FUNGSI BARU: TOGGLE PASSWORD VISIBILITY
@@ -1930,6 +1754,7 @@
     // ============================================
     document.addEventListener('DOMContentLoaded', function() {
       setupEventListeners();
+      initLanterns(); // INISIALISASI LAMPION
       updateClock();
       setInterval(updateClock, 1000);
       getUserIP();
@@ -1937,10 +1762,6 @@
       checkLoginStatus();
       testConnection();
       setInterval(updateTimeRestriction, 30000);
-      
-      // Mulai efek lampion Imlek
-      createLanterns();
-      updateLanterns();
       
       setInterval(async () => {
           if (currentUser && !isBlocked) {
@@ -2788,6 +2609,89 @@
     }
 
     // ============================================
+    // ANIMASI LAMPION TERBANG (NEW FEATURE)
+    // ============================================
+    function initLanterns() {
+      const canvas = document.getElementById('lanternCanvas');
+      const ctx = canvas.getContext('2d');
+      let lanterns = [];
+      const numLanterns = 25; // Jumlah lampion
+
+      function resize() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      }
+
+      class Lantern {
+        constructor() {
+          this.reset(true);
+        }
+
+        reset(initial = false) {
+          this.x = Math.random() * canvas.width;
+          this.y = initial ? Math.random() * canvas.height : canvas.height + 50;
+          // Ukuran bervariasi
+          this.size = Math.random() * 8 + 5; 
+          // Kecepatan naik pelan
+          this.speed = Math.random() * 0.8 + 0.3; 
+          // Gerakan sway (kiri-kanan)
+          this.swaySpeed = Math.random() * 0.02 + 0.005;
+          this.swayRange = Math.random() * 2;
+          this.angle = Math.random() * Math.PI * 2;
+          
+          // Warna Imlek: Merah, Oranye, Gold
+          const colors = [
+            'rgba(255, 69, 0, ',    // Red Orange
+            'rgba(255, 140, 0, ',   // Dark Orange
+            'rgba(255, 215, 0, ',   // Gold
+            'rgba(220, 20, 60, '    // Crimson
+          ];
+          this.baseColor = colors[Math.floor(Math.random() * colors.length)];
+          this.opacity = Math.random() * 0.4 + 0.2; // Transparansi
+        }
+
+        update() {
+          this.y -= this.speed;
+          this.angle += this.swaySpeed;
+          this.x += Math.sin(this.angle) * 0.5;
+          
+          // Reset jika keluar layar atas
+          if (this.y < -50) this.reset();
+        }
+
+        draw() {
+          ctx.beginPath();
+          ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+          ctx.fillStyle = this.baseColor + this.opacity + ')';
+          ctx.shadowBlur = 15; // Efek cahaya (glow)
+          ctx.shadowColor = this.baseColor + '1)';
+          ctx.fill();
+          ctx.closePath();
+        }
+      }
+
+      // Inisialisasi Array Lampion
+      for(let i=0; i<numLanterns; i++) {
+        lanterns.push(new Lantern());
+      }
+
+      // Loop Animasi
+      function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        lanterns.forEach(l => { 
+          l.update(); 
+          l.draw(); 
+        });
+        requestAnimationFrame(animate);
+      }
+
+      // Event Listeners
+      window.addEventListener('resize', resize);
+      resize();
+      animate();
+    }
+
+    // ============================================
     // EXPORT UNTUK DEBUGGING
     // ============================================
     window.app = {
@@ -2796,10 +2700,10 @@
       writeToDatabaseSheet, checkStartTimeLimit, updateStartCounterUI, isRestrictedTime,
       updateTimeRestriction, isBlocked, isMaxLimitReached, updateStatusPanel,
       showPasswordChangeModal, changePassword, toggleModalPassword,
-      showLoadingEffect, hideLoadingEffect, createLanterns, updateLanterns
+      showLoadingEffect, hideLoadingEffect
     };
     
-    console.log('Time Tracker System Ready with Loading Effects & Imlek Lanterns!');
+    console.log('Time Tracker System Ready with Lantern Animation!');
   </script>
   <!-- Bootstrap JS for modal -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
