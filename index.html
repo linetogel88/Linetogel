@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Izin Keluar Linetgl - Imlek Edition</title>
+  <title>Izin Keluar Linetgl</title>
   
   <!-- FAVICON -->
   <link rel="shortcut icon" href="https://cdn-icons-png.flaticon.com/512/190/190411.png" type="image/x-icon">
@@ -18,7 +18,7 @@
   
   <style>
     /* ============================================
-       LUXURY IMLEK DESIGN (UPGRADED)
+       QUANTUM GLOW DESIGN (REVISI UI MIX)
     ============================================ */
     :root {
       --neon-blue: #00f3ff;
@@ -27,7 +27,7 @@
       --gold-dark: #b8860b;
       --red-imlek: #ff0f0f;
       --bg-void: #050505;
-      --glass-bg: rgba(10, 10, 20, 0.65); /* Lebih gelap agar teks jelas di bg ramai */
+      --glass-bg: rgba(255, 255, 255, 0.05); /* Warna Glass Transparan Asli */
       --text-glow: #ffffff;
     }
 
@@ -82,7 +82,7 @@
       opacity: 0.1;
     }
 
-    /* BACKGROUND IMAGE LOGIC - KEN BURNS EFFECT */
+    /* BACKGROUND IMAGE LOGIC */
     .background-image {
       position: fixed;
       top: 0;
@@ -93,12 +93,12 @@
       z-index: -4;
       opacity: 0;
       transition: opacity 1.5s ease-in-out;
-      filter: brightness(0.7); /* Sedikit gelap agar elemen depan terang */
+      filter: brightness(0.7);
     }
     .background-image.active {
       opacity: 0.85;
       filter: brightness(0.7);
-      animation: slowZoom 20s infinite alternate; /* Animasi hidup */
+      animation: slowZoom 20s infinite alternate;
     }
 
     @keyframes slowZoom {
@@ -107,7 +107,7 @@
     }
 
     /* ============================================
-       CANVAS LANTERN & KEMBANG API
+       CANVAS (HANYA KEMBANG API)
     ============================================ */
     #lanternCanvas {
       position: fixed;
@@ -120,7 +120,7 @@
     }
 
     /* ============================================
-       LOGIN FORM (UPGRADED UI)
+       LOGIN FORM (LUXURY IMLEK - TIDAK DIUBAH)
     ============================================ */
     #loginForm {
       position: relative;
@@ -143,11 +143,11 @@
       background-clip: padding-box;
       position: relative;
       box-shadow: 
-        0 0 30px rgba(255, 215, 0, 0.2), /* Gold Glow */
+        0 0 30px rgba(255, 215, 0, 0.2),
         0 20px 50px rgba(0, 0, 0, 0.8);
       animation: bounceIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
       z-index: 10;
-      overflow: visible; /* Untuk glow */
+      overflow: visible;
     }
     
     /* Pseudo-element untuk Border Emas */
@@ -252,7 +252,7 @@
       background: rgba(0, 0, 0, 0.7);
       border: 1px solid rgba(255, 215, 0, 0.3);
       padding: 16px 50px 16px 50px; 
-      border-radius: 50px; /* Pill shape */
+      border-radius: 50px;
       color: #fff;
       font-size: 15px;
       font-family: 'Poppins', sans-serif;
@@ -366,22 +366,24 @@
     #loginButton:hover i { transform: translateX(5px); }
 
     /* ============================================
-       DASHBOARD (ASLI: 600px) - REVAMPED
+       DASHBOARD (GLASS TRANSPARENT + GLOWING BORDER)
     ============================================ */
     .container {
       width: 100%;
       max-width: 600px;
       margin: 20px auto;
       padding: 30px;
-      border-radius: 24px;
-      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
+      border-radius: 30px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+      /* REVERT: Background Glass Transparan */
       background: var(--glass-bg);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
-      border: 1px solid rgba(255, 215, 0, 0.3); /* Gold Border */
+      /* RETAIN: Border Emas Menyala */
+      border: 1px solid rgba(255, 215, 0, 0.3);
       position: relative;
       animation: slideUpFade 0.6s ease-out;
-      overflow: visible; /* Untuk glow */
+      overflow: visible;
     }
     
     /* Glowing Border Effect for Dashboard */
@@ -389,13 +391,14 @@
       content: '';
       position: absolute;
       top: 0; left: 0; right: 0; bottom: 0;
-      border-radius: 24px;
+      border-radius: 30px;
       padding: 1px;
       background: linear-gradient(45deg, transparent, var(--gold-primary), transparent);
       -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
       -webkit-mask-composite: xor;
       mask-composite: exclude;
       pointer-events: none;
+      animation: glowingBorder 10s linear infinite;
     }
 
     @keyframes slideUpFade {
@@ -409,7 +412,7 @@
       padding: 20px;
       background: rgba(255, 255, 255, 0.05);
       border-radius: 20px;
-      border: 1px solid rgba(255, 215, 0, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.05);
     }
 
     button {
@@ -431,53 +434,49 @@
     #dashboard h2 {
       font-size: 22px;
       color: #fff;
-      font-weight: 700;
+      font-weight: 600;
       margin-bottom: 25px;
       text-transform: uppercase;
       letter-spacing: 1px;
       text-align: center;
       font-family: 'Orbitron', sans-serif;
-      text-shadow: 0 0 15px var(--gold-primary);
+      text-shadow: 0 0 15px var(--neon-blue); /* Kembali ke Blue Glow */
     }
     
     #dashboard img.logo {
       width: 80px;
       margin-bottom: 15px;
-      filter: drop-shadow(0 0 15px var(--gold-primary));
-      animation: floatLogo 3s ease-in-out infinite;
-    }
-    
-    @keyframes floatLogo {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-10px); }
+      filter: drop-shadow(0 0 10px rgba(255,255,255,0.5));
     }
 
     .clock {
       font-family: 'Digital dream Fat', monospace;
       font-size: 3.2rem;
       font-weight: bold;
-      color: var(--gold-primary);
+      /* REVERT: Warna Jam Kembali Biru Neon */
+      color: var(--neon-blue);
       text-align: center;
       margin: 20px 0;
-      text-shadow: 0 0 20px rgba(255, 215, 0, 0.6), 0 0 40px rgba(255, 0, 0, 0.4);
+      text-shadow: 0 0 20px rgba(0, 243, 255, 0.8);
       letter-spacing: 2px;
     }
 
     .fancy-hr {
       border: 0;
       height: 1px;
-      background: linear-gradient(to right, transparent, var(--gold-primary), transparent);
+      /* REVERT: Divider Kembali Biru */
+      background: linear-gradient(to right, transparent, rgba(0, 243, 255, 0.5), transparent);
       margin: 25px 0;
-      box-shadow: 0 0 10px var(--gold-primary);
+      box-shadow: 0 0 10px rgba(0, 243, 255, 0.5);
     }
 
     /* Staff Info Card */
     .staff-info {
-      background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(0, 0, 0, 0.3));
+      background: linear-gradient(135deg, rgba(0, 210, 255, 0.1), rgba(58, 123, 213, 0.05));
       padding: 20px;
       border-radius: 20px;
       margin: 20px 0;
-      border: 1px solid rgba(255, 215, 0, 0.3);
+      border: 1px solid rgba(0, 210, 255, 0.2);
       text-align: center;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
     }
@@ -493,9 +492,9 @@
     }
 
     .staff-info i {
-      color: var(--gold-primary);
+      color: var(--neon-blue);
       width: 20px;
-      text-shadow: 0 0 10px var(--gold-primary);
+      text-shadow: 0 0 10px var(--neon-blue);
     }
     
     .staff-name {
@@ -507,17 +506,17 @@
     
     .role-display {
       font-size: 13px !important;
-      background: rgba(255, 215, 0, 0.2);
-      color: var(--gold-primary) !important;
+      background: rgba(255, 255, 255, 0.1);
       padding: 4px 12px;
       border-radius: 20px;
-      border: 1px solid var(--gold-primary);
-      text-shadow: 0 0 5px var(--gold-primary);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: var(--neon-blue) !important;
+      text-shadow: 0 0 5px var(--neon-blue);
     }
 
     /* Status Panel */
     .status-panel {
-      background: rgba(0, 0, 0, 0.5);
+      background: rgba(0, 0, 0, 0.3);
       border: 1px solid rgba(255, 255, 255, 0.1);
       padding: 20px;
       border-radius: 20px;
@@ -529,9 +528,9 @@
     }
     
     .status-panel.active {
-      border-color: #00ff88;
-      box-shadow: 0 0 30px rgba(0, 255, 136, 0.2);
-      background: linear-gradient(135deg, rgba(0, 255, 136, 0.1), rgba(0, 0, 0, 0.5));
+      border-color: #2ed573;
+      box-shadow: 0 0 30px rgba(46, 213, 115, 0.2);
+      background: linear-gradient(135deg, rgba(46, 213, 115, 0.05), rgba(0, 0, 0, 0.3));
     }
 
     .status-title {
@@ -553,15 +552,14 @@
 
     .status-duration {
       font-size: 15px;
-      color: var(--gold-primary);
+      color: #ffa502;
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      background: rgba(255, 215, 0, 0.1);
+      background: rgba(255, 165, 2, 0.1);
       padding: 5px 12px;
       border-radius: 50px;
-      border: 1px solid rgba(255, 215, 0, 0.3);
-      text-shadow: 0 0 5px var(--gold-primary);
+      border: 1px solid rgba(255, 165, 2, 0.2);
     }
 
     /* Jobdesk Select */
@@ -573,12 +571,12 @@
       width: 100%;
       padding: 14px 20px;
       border-radius: 16px;
-      border: 1px solid rgba(255, 215, 0, 0.3);
-      background: rgba(0, 0, 0, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(0, 0, 0, 0.3);
       color: white;
       font-size: 15px;
       appearance: none; 
-      background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='gold' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+      background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
       background-repeat: no-repeat;
       background-position: right 1rem center;
       background-size: 1em;
@@ -588,8 +586,8 @@
 
     #jobdeskSection select:focus {
       outline: none;
-      border-color: var(--gold-primary);
-      box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
+      border-color: var(--neon-blue);
+      box-shadow: 0 0 15px rgba(0, 243, 255, 0.2);
     }
 
     /* Action Buttons Layout */
@@ -607,18 +605,17 @@
       margin-top: 15px;
     }
 
-    /* Specific Button Colors */
+    /* REVERT: Specific Button Colors (Back to Blue/Purple Original) */
     .gradient-btn {
-      background: linear-gradient(135deg, #b22222 0%, #8b0000 100%);
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       color: white;
-      box-shadow: 0 4px 15px rgba(178, 34, 34, 0.4);
-      border: 1px solid rgba(255, 215, 0, 0.2);
+      box-shadow: 0 4px 15px rgba(118, 75, 162, 0.4);
+      border: 1px solid rgba(255,255,255,0.1);
     }
 
     .gradient-btn:hover:not(:disabled) {
       transform: translateY(-3px);
-      box-shadow: 0 8px 25px rgba(255, 215, 0, 0.3);
-      background: linear-gradient(135deg, #ff0000 0%, #b22222 100%);
+      box-shadow: 0 8px 25px rgba(118, 75, 162, 0.6);
     }
 
     .logout-btn {
@@ -1024,7 +1021,7 @@
 
 <body>
 
-  <!-- Canvas untuk Efek Lampion & Kembang Api -->
+  <!-- Canvas untuk Efek Kembang Api (Tanpa Lampion) -->
   <canvas id="lanternCanvas"></canvas>
 
   <!-- Background Image -->
@@ -1148,7 +1145,7 @@
     <div class="login-logo-wrapper">
       <img src="https://i.pinimg.com/originals/1b/de/85/1bde855b1bd40f35b92ae6fc2d2173fa.gif" alt="Logo">
       <h2>Selamat Datang</h2>
-      <p class="subtitle">Silakan Masuk ke akun anda</p>
+      <p class="subtitle">Silakan login akun anda</p>
     </div>
     
     <form id="loginFormForm" onsubmit="event.preventDefault(); login();">
@@ -1743,7 +1740,7 @@
     // ============================================
     document.addEventListener('DOMContentLoaded', function() {
       setupEventListeners();
-      initFestiveEffects(); // INISIALISASI KEMBANG API & LAMPION
+      initFestiveEffects(); // INISIALISASI KEMBANG API (Hanya Fireworks)
       updateClock();
       setInterval(updateClock, 1000);
       getUserIP();
@@ -2292,13 +2289,9 @@
       const clockElement = document.getElementById('MyClockDisplay');
       if (clockElement) {
         clockElement.textContent = `${hours}:${minutes}:${seconds}`;
-        if (isRestrictedTime()) {
-          clockElement.style.color = '#ff4757';
-          clockElement.style.textShadow = '0 0 10px rgba(255, 71, 87, 0.8), 0 0 20px rgba(255, 71, 87, 0.4)';
-        } else {
-          clockElement.style.color = '#ffd700'; // Gold clock
-          clockElement.style.textShadow = '0 0 10px rgba(255, 215, 0, 0.5), 0 0 20px rgba(255, 0, 0, 0.4)';
-        }
+        // Dashboard Clock tetap Neon Blue
+        clockElement.style.color = '#00f3ff';
+        clockElement.style.textShadow = '0 0 10px rgba(0, 242, 255, 0.5), 0 0 20px rgba(0, 242, 255, 0.3)';
       }
       if (seconds === '00') updateTimeRestriction();
     }
@@ -2598,121 +2591,17 @@
     }
 
     // ============================================
-    // FESTIVE EFFECTS: LAMPION & KEMBANG API (HEBOH!)
+    // FIREWORKS ONLY (HAPUS LAMPION)
     // ============================================
     function initFestiveEffects() {
       const canvas = document.getElementById('lanternCanvas');
       const ctx = canvas.getContext('2d');
-      let lanterns = [];
       let fireworks = [];
       let particles = [];
-      const numLanterns = 30;
 
       function resize() {
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
-      }
-
-      // --- Lampion Class (3D Style) ---
-      class Lantern {
-        constructor() {
-          this.reset(true);
-        }
-
-        reset(initial = false) {
-          this.x = Math.random() * canvas.width;
-          this.y = initial ? Math.random() * canvas.height : canvas.height + 100;
-          this.w = Math.random() * 20 + 25; // Width
-          this.h = this.w * 1.4; // Height (oval)
-          this.speed = Math.random() * 0.8 + 0.5; 
-          this.swaySpeed = Math.random() * 0.02 + 0.01;
-          this.swayRange = Math.random() * 30 + 10;
-          this.angle = Math.random() * Math.PI * 2;
-          this.swayOffset = Math.random() * 100;
-          
-          // Warna Imlek: Merah/Emas
-          const colors = [
-            { r: 255, g: 30, b: 30 }, // Dark Red
-            { r: 255, g: 69, b: 0 },   // Red Orange
-            { r: 255, g: 140, b: 0 }   // Dark Orange
-          ];
-          this.color = colors[Math.floor(Math.random() * colors.length)];
-          this.opacity = Math.random() * 0.4 + 0.3;
-        }
-
-        update() {
-          this.y -= this.speed;
-          this.angle += this.swaySpeed;
-          // Pergerakan sway yang lebih natural
-          this.x += Math.sin(this.angle) * 0.3;
-          
-          if (this.y < -150) this.reset();
-        }
-
-        draw() {
-          ctx.save();
-          ctx.translate(this.x, this.y);
-          // Sedikit rotasi berdasarkan sway
-          ctx.rotate(Math.sin(this.angle) * 0.1);
-
-          // Glow Effect
-          ctx.shadowBlur = 20;
-          ctx.shadowColor = `rgba(${this.color.r}, ${this.color.g}, ${this.color.b}, 0.8)`;
-
-          // Badan Lampion (Oval)
-          const grad = ctx.createRadialGradient(-this.w/4, -this.h/4, 2, 0, 0, this.h);
-          grad.addColorStop(0, `rgba(255, 220, 150, ${this.opacity + 0.2})`); // Highlight emas
-          grad.addColorStop(0.5, `rgba(${this.color.r}, ${this.color.g}, ${this.color.b}, ${this.opacity})`);
-          grad.addColorStop(1, `rgba(${this.color.r * 0.5}, 0, 0, ${this.opacity})`); // Shadow gelap
-
-          ctx.beginPath();
-          ctx.ellipse(0, 0, this.w/2, this.h/2, 0, 0, Math.PI * 2);
-          ctx.fillStyle = grad;
-          ctx.fill();
-
-          // Emas Border (Top & Bottom rings)
-          ctx.strokeStyle = `rgba(255, 215, 0, ${this.opacity + 0.3})`;
-          ctx.lineWidth = 2;
-          
-          // Top Ring
-          ctx.beginPath();
-          ctx.ellipse(0, -this.h/2.5, this.w/2.5, this.h/6, 0, 0, Math.PI * 2);
-          ctx.stroke();
-
-          // Bottom Ring
-          ctx.beginPath();
-          ctx.ellipse(0, this.h/2.5, this.w/2.5, this.h/6, 0, 0, Math.PI * 2);
-          ctx.stroke();
-
-          // Vertical Gold Lines
-          ctx.beginPath();
-          ctx.moveTo(-this.w/3, -this.h/3);
-          ctx.lineTo(-this.w/3, this.h/3);
-          ctx.stroke();
-          ctx.beginPath();
-          ctx.moveTo(this.w/3, -this.h/3);
-          ctx.lineTo(this.w/3, this.h/3);
-          ctx.stroke();
-
-          // Tassel (Gantungan bawah)
-          ctx.shadowBlur = 0; // No blur for tassel strings
-          ctx.beginPath();
-          ctx.moveTo(0, this.h/2.5);
-          ctx.lineTo(0, this.h/1.2);
-          ctx.strokeStyle = `rgba(255, 215, 0, ${this.opacity})`;
-          ctx.lineWidth = 1;
-          ctx.stroke();
-
-          // Tassel End Threads
-          for(let i = -5; i <= 5; i+=2) {
-            ctx.beginPath();
-            ctx.moveTo(0, this.h/1.2);
-            ctx.lineTo(i * 3, this.h/1.2 + 15);
-            ctx.stroke();
-          }
-
-          ctx.restore();
-        }
       }
 
       // --- Firework System ---
@@ -2735,7 +2624,6 @@
           this.speed = 2;
           this.acceleration = 1.05;
           this.brightness = Math.random() * 50 + 50;
-          // Warna Kembang Api Random
           this.hue = Math.random() * 360;
         }
 
@@ -2751,7 +2639,6 @@
           this.distanceTraveled = Math.sqrt(Math.pow(this.sx - this.x, 2) + Math.pow(this.sy - this.y, 2));
           
           if(this.distanceTraveled >= this.distanceToTarget) {
-            // Meledak!
             createParticles(this.tx, this.ty, this.hue);
             fireworks.splice(index, 1);
           } else {
@@ -2823,15 +2710,9 @@
         
         // Create trail effect
         ctx.globalCompositeOperation = 'destination-out';
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.2)'; // Jarak jejak (trail)
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.2)'; 
         ctx.fillRect(0, 0, canvas.width, canvas.height);
         ctx.globalCompositeOperation = 'lighter';
-
-        // Draw Lanterns
-        lanterns.forEach(l => {
-          l.update();
-          l.draw();
-        });
 
         // Draw Fireworks
         let i = fireworks.length;
@@ -2847,18 +2728,16 @@
         }
 
         // Auto Launch Fireworks logic
-        if(Math.random() < 0.03) { // 3% chance per frame (sesuaikan untuk frekuensi)
+        if(Math.random() < 0.03) { 
            const sx = Math.random() * canvas.width;
            const sy = canvas.height;
            const tx = Math.random() * canvas.width;
-           const ty = Math.random() * (canvas.height / 2); // Explode di setengah atas layar
+           const ty = Math.random() * (canvas.height / 2); 
            fireworks.push(new Firework(sx, sy, tx, ty));
         }
       }
 
       // Init
-      for(let i=0; i<numLanterns; i++) lanterns.push(new Lantern());
-      
       window.addEventListener('resize', resize);
       resize();
       loop();
@@ -2876,7 +2755,7 @@
       showLoadingEffect, hideLoadingEffect
     };
     
-    console.log('Time Tracker System Ready with Festive Fireworks!');
+    console.log('Time Tracker System Ready with Fireworks Only!');
   </script>
   <!-- Bootstrap JS for modal -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
@@ -2907,7 +2786,6 @@ const shortcut = {
     const handler = function(e) {
       e = e || window.event;
 
-      // Skip if inside input/textarea and disable_in_input = true
       if (settings.disable_in_input) {
         let element = e.target || e.srcElement;
         if (element.nodeType === 3) element = element.parentNode;
@@ -2963,67 +2841,51 @@ const shortcut = {
   }
 };
 
-// Fungsi kosong yang tidak melakukan apa-apa
 function doNothing(e) {
-  // Tidak melakukan apapun, hanya mencegah aksi default
   console.log("Shortcut diblokir: " + (e.key || e.keyCode));
 }
 
-// Fungsi untuk mengatur shortcut
 function setupShortcuts() {
-  // === Shortcut Ctrl+U ===
   shortcut.add("Ctrl+U", doNothing);
-  
-  // === Shortcut F12 ===
   shortcut.add("f12", doNothing);
-  
-  // === Tambahkan juga shortcut lainnya ===
   shortcut.add("Ctrl+Shift+I", doNothing);
   shortcut.add("Ctrl+Shift+J", doNothing);
   shortcut.add("Ctrl+Shift+C", doNothing);
 }
 
-// Setup shortcut saat pertama kali
 setupShortcuts();
 
-// Event listener untuk mencegah semua aksi default shortcut developer
 document.addEventListener('keydown', function(e) {
-  // F12 - Developer Tools
   if (e.keyCode === 123) {
     e.preventDefault();
     e.stopPropagation();
     return false;
   }
   
-  // Ctrl+Shift+I - Developer Tools
   if (e.ctrlKey && e.shiftKey && e.keyCode === 73) {
     e.preventDefault();
     e.stopPropagation();
     return false;
   }
   
-  // Ctrl+Shift+J - JavaScript Console
   if (e.ctrlKey && e.shiftKey && e.keyCode === 74) {
     e.preventDefault();
     e.stopPropagation();
     return false;
   }
   
-  // Ctrl+Shift+C - Inspect Element
   if (e.ctrlKey && e.shiftKey && e.keyCode === 67) {
     e.preventDefault();
     e.stopPropagation();
     return false;
   }
   
-  // Ctrl+U - View Source
   if (e.ctrlKey && e.keyCode === 85) {
     e.preventDefault();
     e.stopPropagation();
     return false;
   }
   
-  // Ctrl+S - Save Page
   if (e.ctrlKey && e.keyCode === 83) {
     e.preventDefault();
     e.stopPropagation();
@@ -3031,19 +2893,16 @@ document.addEventListener('keydown', function(e) {
   }
 });
 
-// Mencegah klik kanan (opsional)
 document.addEventListener('contextmenu', function(e) {
   e.preventDefault();
   return false;
 });
 
-// Mencegah drag & drop (opsional, untuk mencegah pengambilan gambar/element)
 document.addEventListener('dragstart', function(e) {
   e.preventDefault();
   return false;
 });
 
-// Mencegah seleksi teks (opsional)
 document.addEventListener('selectstart', function(e) {
   e.preventDefault();
   return false;
