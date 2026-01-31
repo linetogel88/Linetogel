@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Izin Keluar Linetgl</title>
+  <title>Izin Keluar Linetgl - Imlek Edition</title>
   
   <!-- FAVICON -->
   <link rel="shortcut icon" href="https://cdn-icons-png.flaticon.com/512/190/190411.png" type="image/x-icon">
@@ -18,13 +18,16 @@
   
   <style>
     /* ============================================
-       QUANTUM GLOW DESIGN (REVISED BACKGROUND)
+       LUXURY IMLEK DESIGN (UPGRADED)
     ============================================ */
     :root {
       --neon-blue: #00f3ff;
       --neon-purple: #bc13fe;
+      --gold-primary: #ffd700;
+      --gold-dark: #b8860b;
+      --red-imlek: #ff0f0f;
       --bg-void: #050505;
-      --glass-bg: rgba(0, 0, 0, 0.4); /* Sedikit lebih gelap agar teks tetap terbaca di bg jelas */
+      --glass-bg: rgba(10, 10, 20, 0.65); /* Lebih gelap agar teks jelas di bg ramai */
       --text-glow: #ffffff;
     }
 
@@ -48,11 +51,11 @@
       width: 100%;
       height: 100%;
       background-image: 
-        linear-gradient(rgba(0, 243, 255, 0.05) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0, 243, 255, 0.05) 1px, transparent 1px);
+        linear-gradient(rgba(0, 243, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 243, 255, 0.03) 1px, transparent 1px);
       background-size: 50px 50px;
       z-index: -3;
-      opacity: 0.2;
+      opacity: 0.3;
     }
 
     .vignette {
@@ -61,8 +64,9 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: radial-gradient(circle, transparent 50%, #000 100%);
-      z-index: -1;
+      background: radial-gradient(circle, transparent 30%, #000 100%);
+      z-index: 0;
+      pointer-events: none;
     }
 
     .scanlines {
@@ -71,14 +75,14 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+      background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.05) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
       background-size: 100% 2px, 3px 100%;
       pointer-events: none;
       z-index: 100;
-      opacity: 0.2; /* Dikurangi agar background tidak terganggu */
+      opacity: 0.1;
     }
 
-    /* BACKGROUND IMAGE LOGIC - REVISION: JELAS & TIDAK BLUR */
+    /* BACKGROUND IMAGE LOGIC - KEN BURNS EFFECT */
     .background-image {
       position: fixed;
       top: 0;
@@ -86,18 +90,24 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
-      z-index: -3;
+      z-index: -4;
       opacity: 0;
       transition: opacity 1.5s ease-in-out;
-      /* PERUBAHAN: Tidak ada blur, opasitas lebih tinggi */
+      filter: brightness(0.7); /* Sedikit gelap agar elemen depan terang */
     }
     .background-image.active {
-      opacity: 0.8; /* Lebih jelas/terang */
-      filter: none; /* Blur dihapus */
+      opacity: 0.85;
+      filter: brightness(0.7);
+      animation: slowZoom 20s infinite alternate; /* Animasi hidup */
+    }
+
+    @keyframes slowZoom {
+      0% { transform: scale(1); }
+      100% { transform: scale(1.1); }
     }
 
     /* ============================================
-       CANVAS LANTERN (EFEK LAMPION TERBANG)
+       CANVAS LANTERN & KEMBANG API
     ============================================ */
     #lanternCanvas {
       position: fixed;
@@ -105,60 +115,65 @@
       left: 0;
       width: 100%;
       height: 100%;
-      z-index: -2; /* Di atas background image, di bawah vignette */
+      z-index: -2; /* Di atas background image */
       pointer-events: none;
     }
 
     /* ============================================
-       LOGIN FORM
+       LOGIN FORM (UPGRADED UI)
     ============================================ */
     #loginForm {
       position: relative;
       width: 100%;
       max-width: 420px;
       padding: 40px;
-      /* Background agak lebih gelap untuk kontras teks karena background sekarang jelas */
       background: linear-gradient(
-        135deg,
-        rgba(0, 5, 20, 0.90) 0%,
-        rgba(0, 10, 30, 0.95) 50%,
-        rgba(0, 20, 40, 0.90) 100%
+        160deg,
+        rgba(20, 0, 0, 0.90) 0%,
+        rgba(40, 10, 10, 0.85) 50%,
+        rgba(20, 0, 0, 0.90) 100%
       ), url('https://i.pinimg.com/originals/1b/de/85/1bde855b1bd40f35b92ae6fc2d2173fa.gif');
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
-      background-blend-mode: overlay;
-      border: 1px solid rgba(0, 243, 255, 0.3);
-      border-radius: 4px;
+      background-blend-mode: luminosity;
+      border-radius: 20px;
+      /* Gold Glowing Border */
+      border: 2px solid transparent;
+      background-clip: padding-box;
+      position: relative;
       box-shadow: 
-        0 0 50px rgba(0, 243, 255, 0.3),
-        0 10px 40px rgba(0, 0, 0, 0.8),
-        inset 0 1px 0 rgba(255, 255, 255, 0.1),
-        inset 0 -1px 0 rgba(0, 0, 0, 0.6);
-      animation: cardFloat 6s ease-in-out infinite;
+        0 0 30px rgba(255, 215, 0, 0.2), /* Gold Glow */
+        0 20px 50px rgba(0, 0, 0, 0.8);
+      animation: bounceIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
       z-index: 10;
-      overflow: hidden;
+      overflow: visible; /* Untuk glow */
     }
-
+    
+    /* Pseudo-element untuk Border Emas */
     #loginForm::before {
       content: '';
       position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: radial-gradient(
-        circle at 50% 50%,
-        rgba(0, 243, 255, 0.1) 0%,
-        rgba(0, 0, 0, 0.5) 70%
-      );
+      top: -2px; bottom: -2px;
+      left: -2px; right: -2px;
+      background: linear-gradient(45deg, #ff0000, #ffd700, #ff0000, #ffd700);
       z-index: -1;
-      pointer-events: none;
+      border-radius: 22px;
+      background-size: 400%;
+      animation: glowingBorder 10s linear infinite;
     }
 
-    @keyframes rotateParticles {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
+    @keyframes glowingBorder {
+      0% { background-position: 0 0; }
+      50% { background-position: 400% 0; }
+      100% { background-position: 0 0; }
+    }
+
+    @keyframes bounceIn {
+      0% { opacity: 0; transform: scale(0.3) translateY(100px); }
+      50% { opacity: 1; transform: scale(1.05); }
+      70% { transform: scale(0.9); }
+      100% { transform: scale(1) translateY(0); }
     }
 
     #loginForm .login-logo-wrapper {
@@ -172,50 +187,44 @@
       width: 90px;
       height: auto;
       margin-bottom: 15px;
-      filter: drop-shadow(0 0 15px rgba(0, 243, 255, 0.7));
+      filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.8));
       animation: logoPulse 3s ease-in-out infinite;
       border-radius: 50%;
-      background: rgba(0, 0, 0, 0.3);
+      background: rgba(0, 0, 0, 0.5);
       padding: 10px;
+      border: 2px solid var(--gold-primary);
     }
 
     @keyframes logoPulse {
-      0%, 100% {
-        transform: scale(1);
-        filter: drop-shadow(0 0 15px rgba(0, 243, 255, 0.7));
-      }
-      50% {
-        transform: scale(1.05);
-        filter: drop-shadow(0 0 25px rgba(0, 243, 255, 0.9));
-      }
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
     }
 
     #loginForm h2 {
       text-align: center;
-      color: #ffffff;
+      color: #fff;
       font-family: 'Orbitron', sans-serif;
       font-weight: 700;
       font-size: 26px;
       letter-spacing: 1px;
       margin: 0 0 8px 0;
-      text-shadow: 
-        0 0 10px rgba(0, 243, 255, 0.8),
-        0 0 20px rgba(0, 243, 255, 0.4);
-      background: linear-gradient(45deg, #ffffff, #00f3ff);
+      text-shadow: 0 0 15px var(--gold-primary);
+      background: linear-gradient(to right, #fff, var(--gold-primary));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      background-clip: text;
       position: relative;
       z-index: 2;
     }
 
     #loginForm .subtitle {
       text-align: center;
-      color: rgba(255, 255, 255, 0.9);
+      color: rgba(255, 215, 0, 0.8);
       font-size: 14px;
       margin-bottom: 35px;
-      font-weight: 300;
-      text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.8);
       position: relative;
       z-index: 2;
     }
@@ -232,27 +241,24 @@
       left: 18px;
       top: 50%;
       transform: translateY(-50%);
-      color: rgba(255, 255, 255, 0.7);
+      color: var(--gold-primary);
       font-size: 16px;
       transition: all 0.3s ease;
-      text-shadow: 0 0 5px rgba(0, 243, 255, 0.5);
+      text-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
     }
 
     .modern-input-group input {
       width: 100%;
-      background: rgba(0, 0, 0, 0.6);
-      border: 1px solid rgba(255, 255, 255, 0.2);
+      background: rgba(0, 0, 0, 0.7);
+      border: 1px solid rgba(255, 215, 0, 0.3);
       padding: 16px 50px 16px 50px; 
-      border-radius: 16px;
+      border-radius: 50px; /* Pill shape */
       color: #fff;
       font-size: 15px;
       font-family: 'Poppins', sans-serif;
       box-sizing: border-box;
       transition: all 0.3s ease;
-      backdrop-filter: blur(5px);
-      box-shadow: 
-        inset 0 2px 5px rgba(0, 0, 0, 0.3),
-        0 5px 15px rgba(0, 0, 0, 0.2);
+      box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.5);
     }
 
     .modern-input-group input::placeholder {
@@ -261,17 +267,14 @@
 
     .modern-input-group input:focus {
       outline: none;
-      background: rgba(0, 0, 0, 0.8);
-      border-color: var(--neon-blue);
-      box-shadow: 
-        0 0 20px rgba(0, 243, 255, 0.4),
-        inset 0 2px 5px rgba(0, 0, 0, 0.4);
+      background: rgba(0, 0, 0, 0.9);
+      border-color: var(--gold-primary);
+      box-shadow: 0 0 20px rgba(255, 215, 0, 0.3), inset 0 2px 5px rgba(0, 0, 0, 0.5);
     }
 
     .modern-input-group input:focus + i.icon-left {
-      color: var(--neon-blue);
-      text-shadow: 0 0 10px var(--neon-blue);
-      transform: translateY(-50%) scale(1.1);
+      color: #fff;
+      text-shadow: 0 0 10px var(--gold-primary);
     }
 
     .modern-input-group i.toggle-password, .modern-input-group i.toggle-pwd-icon {
@@ -279,16 +282,12 @@
       right: 18px;
       top: 50%;
       transform: translateY(-50%);
-      color: rgba(255, 255, 255, 0.6);
+      color: rgba(255, 255, 255, 0.5);
       cursor: pointer;
       font-size: 16px;
       transition: all 0.3s ease;
-      text-shadow: 0 0 5px rgba(0, 243, 255, 0.5);
     }
-    .modern-input-group i.toggle-password:hover, .modern-input-group i.toggle-pwd-icon:hover {
-      color: var(--neon-blue);
-      transform: translateY(-50%) scale(1.1);
-    }
+    .modern-input-group i.toggle-password:hover { color: var(--gold-primary); }
 
     /* Error Message */
     #error-message, #ipWhitelistMessage {
@@ -305,37 +304,33 @@
     }
 
     #error-message {
-      color: #ff6b6b;
-      background: rgba(255, 71, 87, 0.2);
-      border: 1px solid rgba(255, 71, 87, 0.3);
-      box-shadow: 0 0 10px rgba(255, 71, 87, 0.3);
+      color: #ff4d4d;
+      background: rgba(255, 50, 50, 0.2);
+      border: 1px solid rgba(255, 50, 50, 0.5);
     }
     
     #ipWhitelistMessage {
-      color: #ffd32a;
-      background: rgba(255, 211, 42, 0.2);
-      border: 1px solid rgba(255, 211, 42, 0.3);
-      box-shadow: 0 0 10px rgba(255, 211, 42, 0.2);
+      color: #ffa500;
+      background: rgba(255, 165, 0, 0.2);
+      border: 1px solid rgba(255, 165, 0, 0.5);
     }
 
     /* Login Button */
     #loginButton {
       width: 100%;
       padding: 16px;
-      background: linear-gradient(135deg, 
-        rgba(0, 243, 255, 0.9) 0%, 
-        rgba(188, 19, 254, 0.9) 100%);
+      background: linear-gradient(90deg, #ff0000, #b22222);
       border: none;
-      border-radius: 16px;
+      border-radius: 50px;
       color: white;
       font-size: 16px;
-      font-weight: 600;
-      letter-spacing: 0.5px;
+      font-weight: 700;
+      letter-spacing: 1px;
       cursor: pointer;
       transition: all 0.3s ease;
       box-shadow: 
-        0 10px 20px rgba(0, 243, 255, 0.3),
-        0 5px 15px rgba(188, 19, 254, 0.2);
+        0 5px 20px rgba(255, 0, 0, 0.4),
+        inset 0 1px 0 rgba(255,255,255,0.3);
       margin-top: 10px;
       display: flex;
       align-items: center;
@@ -347,80 +342,66 @@
       z-index: 2;
       overflow: hidden;
     }
-
-    #loginButton::before {
+    
+    #loginButton::after {
       content: '';
       position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(
-        90deg,
-        transparent,
-        rgba(255, 255, 255, 0.2),
-        transparent
-      );
-      transition: left 0.7s ease;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+      transform: translateX(-100%);
+      transition: 0.5s;
     }
-
-    #loginButton:hover::before {
-      left: 100%;
+    
+    #loginButton:hover::after {
+      transform: translateX(100%);
     }
 
     #loginButton:hover {
-      transform: translateY(-2px);
-      box-shadow: 
-        0 15px 30px rgba(0, 243, 255, 0.5),
-        0 10px 25px rgba(188, 19, 254, 0.3);
-      background: linear-gradient(135deg, 
-        rgba(0, 243, 255, 1) 0%, 
-        rgba(188, 19, 254, 1) 100%);
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: 0 10px 30px rgba(255, 215, 0, 0.4);
+      background: linear-gradient(90deg, #cc0000, #8b0000);
     }
-
-    #loginButton:active {
-      transform: translateY(1px);
-      box-shadow: 
-        0 5px 15px rgba(0, 243, 255, 0.3),
-        0 3px 10px rgba(188, 19, 254, 0.2);
-    }
-
-    #loginButton i {
-      transition: transform 0.3s ease;
-    }
-
-    #loginButton:hover i {
-      transform: translateX(5px);
-    }
+    
+    #loginButton i { transition: transform 0.3s ease; }
+    #loginButton:hover i { transform: translateX(5px); }
 
     /* ============================================
-       DASHBOARD (ASLI: 600px)
+       DASHBOARD (ASLI: 600px) - REVAMPED
     ============================================ */
     .container {
       width: 100%;
       max-width: 600px;
       margin: 20px auto;
       padding: 30px;
-      border-radius: 30px;
-      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-      background: var(--glass-bg); /* Transparan untuk melihat background */
-      backdrop-filter: blur(15px);
-      -webkit-backdrop-filter: blur(15px);
-      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 24px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
+      background: var(--glass-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 215, 0, 0.3); /* Gold Border */
       position: relative;
-      animation: fadeIn 0.5s ease-out;
+      animation: slideUpFade 0.6s ease-out;
+      overflow: visible; /* Untuk glow */
     }
     
-    .container {
-       box-shadow: 0 0 40px rgba(0, 243, 255, 0.1);
-       border: 1px solid rgba(0, 243, 255, 0.2);
+    /* Glowing Border Effect for Dashboard */
+    .container::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      border-radius: 24px;
+      padding: 1px;
+      background: linear-gradient(45deg, transparent, var(--gold-primary), transparent);
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events: none;
     }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
+    @keyframes slideUpFade {
+      from { opacity: 0; transform: translateY(30px) scale(0.95); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
     }
-    @keyframes cardFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
 
     /* Dashboard Elements Styling */
     .account-actions-container {
@@ -428,7 +409,7 @@
       padding: 20px;
       background: rgba(255, 255, 255, 0.05);
       border-radius: 20px;
-      border: 1px solid rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 215, 0, 0.1);
     }
 
     button {
@@ -437,7 +418,7 @@
       border: none;
       border-radius: 14px;
       font-size: 15px;
-      font-weight: 500;
+      font-weight: 600;
       cursor: pointer;
       display: flex;
       align-items: center;
@@ -450,46 +431,53 @@
     #dashboard h2 {
       font-size: 22px;
       color: #fff;
-      font-weight: 600;
+      font-weight: 700;
       margin-bottom: 25px;
       text-transform: uppercase;
       letter-spacing: 1px;
       text-align: center;
       font-family: 'Orbitron', sans-serif;
-      text-shadow: 0 0 15px rgba(0, 243, 255, 0.6);
+      text-shadow: 0 0 15px var(--gold-primary);
     }
     
     #dashboard img.logo {
       width: 80px;
       margin-bottom: 15px;
-      filter: drop-shadow(0 0 10px rgba(255,255,255,0.5));
+      filter: drop-shadow(0 0 15px var(--gold-primary));
+      animation: floatLogo 3s ease-in-out infinite;
+    }
+    
+    @keyframes floatLogo {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
     }
 
     .clock {
       font-family: 'Digital dream Fat', monospace;
       font-size: 3.2rem;
       font-weight: bold;
-      color: var(--neon-blue);
+      color: var(--gold-primary);
       text-align: center;
       margin: 20px 0;
-      text-shadow: 0 0 20px rgba(0, 243, 255, 0.8);
+      text-shadow: 0 0 20px rgba(255, 215, 0, 0.6), 0 0 40px rgba(255, 0, 0, 0.4);
       letter-spacing: 2px;
     }
 
     .fancy-hr {
       border: 0;
       height: 1px;
-      background: linear-gradient(to right, transparent, rgba(0, 243, 255, 0.5), transparent);
+      background: linear-gradient(to right, transparent, var(--gold-primary), transparent);
       margin: 25px 0;
+      box-shadow: 0 0 10px var(--gold-primary);
     }
 
     /* Staff Info Card */
     .staff-info {
-      background: linear-gradient(135deg, rgba(0, 210, 255, 0.1), rgba(58, 123, 213, 0.05));
+      background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(0, 0, 0, 0.3));
       padding: 20px;
       border-radius: 20px;
       margin: 20px 0;
-      border: 1px solid rgba(0, 210, 255, 0.2);
+      border: 1px solid rgba(255, 215, 0, 0.3);
       text-align: center;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
     }
@@ -505,9 +493,9 @@
     }
 
     .staff-info i {
-      color: var(--neon-blue);
+      color: var(--gold-primary);
       width: 20px;
-      text-shadow: 0 0 10px var(--neon-blue);
+      text-shadow: 0 0 10px var(--gold-primary);
     }
     
     .staff-name {
@@ -519,17 +507,17 @@
     
     .role-display {
       font-size: 13px !important;
-      background: rgba(255, 255, 255, 0.1);
+      background: rgba(255, 215, 0, 0.2);
+      color: var(--gold-primary) !important;
       padding: 4px 12px;
       border-radius: 20px;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      color: var(--neon-blue) !important;
-      text-shadow: 0 0 5px var(--neon-blue);
+      border: 1px solid var(--gold-primary);
+      text-shadow: 0 0 5px var(--gold-primary);
     }
 
     /* Status Panel */
     .status-panel {
-      background: rgba(0, 0, 0, 0.3);
+      background: rgba(0, 0, 0, 0.5);
       border: 1px solid rgba(255, 255, 255, 0.1);
       padding: 20px;
       border-radius: 20px;
@@ -541,9 +529,9 @@
     }
     
     .status-panel.active {
-      border-color: #2ed573;
-      box-shadow: 0 0 30px rgba(46, 213, 115, 0.2);
-      background: linear-gradient(135deg, rgba(46, 213, 115, 0.05), rgba(0, 0, 0, 0.3));
+      border-color: #00ff88;
+      box-shadow: 0 0 30px rgba(0, 255, 136, 0.2);
+      background: linear-gradient(135deg, rgba(0, 255, 136, 0.1), rgba(0, 0, 0, 0.5));
     }
 
     .status-title {
@@ -565,14 +553,15 @@
 
     .status-duration {
       font-size: 15px;
-      color: #ffa502;
+      color: var(--gold-primary);
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      background: rgba(255, 165, 2, 0.1);
+      background: rgba(255, 215, 0, 0.1);
       padding: 5px 12px;
       border-radius: 50px;
-      border: 1px solid rgba(255, 165, 2, 0.2);
+      border: 1px solid rgba(255, 215, 0, 0.3);
+      text-shadow: 0 0 5px var(--gold-primary);
     }
 
     /* Jobdesk Select */
@@ -584,23 +573,23 @@
       width: 100%;
       padding: 14px 20px;
       border-radius: 16px;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(255, 215, 0, 0.3);
+      background: rgba(0, 0, 0, 0.5);
       color: white;
       font-size: 15px;
-      appearance: none;
-      background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+      appearance: none; 
+      background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='gold' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
       background-repeat: no-repeat;
       background-position: right 1rem center;
       background-size: 1em;
       cursor: pointer;
-      transition: border-color 0.3s;
+      transition: 0.3s;
     }
 
     #jobdeskSection select:focus {
       outline: none;
-      border-color: var(--neon-blue);
-      box-shadow: 0 0 15px rgba(0, 243, 255, 0.2);
+      border-color: var(--gold-primary);
+      box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
     }
 
     /* Action Buttons Layout */
@@ -620,15 +609,16 @@
 
     /* Specific Button Colors */
     .gradient-btn {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      background: linear-gradient(135deg, #b22222 0%, #8b0000 100%);
       color: white;
-      box-shadow: 0 4px 15px rgba(118, 75, 162, 0.4);
-      border: 1px solid rgba(255,255,255,0.1);
+      box-shadow: 0 4px 15px rgba(178, 34, 34, 0.4);
+      border: 1px solid rgba(255, 215, 0, 0.2);
     }
 
     .gradient-btn:hover:not(:disabled) {
       transform: translateY(-3px);
-      box-shadow: 0 8px 25px rgba(118, 75, 162, 0.6);
+      box-shadow: 0 8px 25px rgba(255, 215, 0, 0.3);
+      background: linear-gradient(135deg, #ff0000 0%, #b22222 100%);
     }
 
     .logout-btn {
@@ -673,22 +663,22 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background-color: rgba(0, 0, 0, 0.8);
-      backdrop-filter: blur(8px);
+      background-color: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(10px);
       z-index: 9999;
       justify-content: center;
       align-items: center;
     }
 
     .custom-modal-content, .password-modal-content {
-      background: #1a1a2e;
+      background: rgba(20, 0, 0, 0.95);
       padding: 40px;
       border-radius: 24px;
       max-width: 400px;
       width: 90%;
       text-align: center;
-      border: 1px solid rgba(0, 243, 255, 0.2);
-      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+      border: 2px solid var(--gold-primary);
+      box-shadow: 0 0 50px rgba(255, 215, 0, 0.3);
       animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
 
@@ -702,6 +692,7 @@
       margin-bottom: 15px;
       color: #fff;
       font-family: 'Orbitron', sans-serif;
+      text-shadow: 0 0 10px var(--gold-primary);
     }
 
     .custom-modal-message, .password-message {
@@ -713,8 +704,8 @@
 
     /* Warning Marquee & Alerts */
     .warning-marquee {
-      background: rgba(255, 71, 87, 0.1);
-      border: 1px solid rgba(255, 71, 87, 0.3);
+      background: rgba(255, 71, 87, 0.15);
+      border: 1px solid rgba(255, 71, 87, 0.4);
       color: #ff6b6b;
       padding: 12px;
       border-radius: 12px;
@@ -836,7 +827,7 @@
       height: 50px;
       border: 3px solid rgba(255,255,255,0.1);
       border-radius: 50%;
-      border-top-color: var(--neon-blue);
+      border-top-color: var(--gold-primary);
       animation: spin 1s ease-in-out infinite;
     }
 
@@ -850,7 +841,7 @@
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      background: #1a1a2e;
+      background: rgba(20, 0, 0, 0.95);
       color: #fff;
       padding: 25px 35px;
       border-radius: 20px;
@@ -858,7 +849,7 @@
       z-index: 10001;
       display: none;
       text-align: center;
-      border: 1px solid rgba(255,255,255,0.1);
+      border: 2px solid var(--gold-primary);
       animation: popIn 0.3s forwards;
       width: 80%;
       max-width: 400px;
@@ -879,11 +870,11 @@
     }
 
     #popupNotification {
-      background: rgba(20, 20, 30, 0.95);
+      background: rgba(20, 0, 0, 0.95);
       padding: 30px;
       border-radius: 24px;
       text-align: center;
-      border: 1px solid rgba(255,255,255,0.1);
+      border: 1px solid var(--gold-primary);
       box-shadow: 0 20px 50px rgba(0,0,0,0.5);
       max-width: 90%;
       width: 400px;
@@ -904,7 +895,7 @@
       box-sizing: border-box;
       transition: 0.3s;
     }
-    .password-form-group input:focus { border-color: var(--neon-blue); outline: none; box-shadow: 0 0 10px rgba(0, 243, 255, 0.2); }
+    .password-form-group input:focus { border-color: var(--gold-primary); outline: none; box-shadow: 0 0 10px rgba(255, 215, 0, 0.3); }
     
     .password-form-group .modal-icon-left {
       position: absolute;
@@ -919,7 +910,7 @@
     .password-message.error { background: rgba(255, 71, 87, 0.1); color: #ff4757; border: 1px solid rgba(255, 71, 87, 0.2); }
 
     .password-modal-buttons { display: flex; gap: 10px; margin-top: 10px; }
-    .password-save-btn { background: linear-gradient(135deg, var(--neon-blue), var(--neon-purple)); color: white; border: none; box-shadow: 0 4px 15px rgba(0, 243, 255, 0.3); }
+    .password-save-btn { background: linear-gradient(135deg, var(--gold-primary), var(--gold-dark)); color: black; border: none; box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4); font-weight: bold; }
     .password-cancel-btn { background: rgba(255, 255, 255, 0.1); color: white; border: 1px solid rgba(255,255,255,0.1); }
 
     /* Loading Effect Modal */
@@ -940,20 +931,20 @@
     }
 
     .loading-effect-content {
-      background: rgba(20, 20, 30, 0.9);
+      background: rgba(20, 0, 0, 0.9);
       border-radius: 24px;
       padding: 30px;
       text-align: center;
       max-width: 400px;
       width: 90%;
-      border: 1px solid rgba(0, 243, 255, 0.3);
-      box-shadow: 0 0 50px rgba(0, 243, 255, 0.2);
+      border: 2px solid var(--gold-primary);
+      box-shadow: 0 0 50px rgba(255, 215, 0, 0.2);
       animation: pulseGlow 2s infinite alternate;
     }
 
     @keyframes pulseGlow {
-      0% { box-shadow: 0 0 30px rgba(0, 243, 255, 0.2); }
-      100% { box-shadow: 0 0 60px rgba(0, 243, 255, 0.4); }
+      0% { box-shadow: 0 0 30px rgba(255, 215, 0, 0.2); }
+      100% { box-shadow: 0 0 60px rgba(255, 215, 0, 0.5); }
     }
 
     .loading-effect-gif {
@@ -961,15 +952,15 @@
       max-width: 250px;
       border-radius: 12px;
       margin-bottom: 20px;
-      border: 2px solid rgba(0, 243, 255, 0.3);
+      border: 2px solid rgba(255, 215, 0, 0.5);
     }
 
     .loading-effect-title {
       font-family: 'Orbitron', sans-serif;
       font-size: 22px;
-      color: #00f3ff;
+      color: var(--gold-primary);
       margin-bottom: 15px;
-      text-shadow: 0 0 15px rgba(0, 243, 255, 0.7);
+      text-shadow: 0 0 15px rgba(255, 215, 0, 0.7);
       letter-spacing: 1px;
     }
 
@@ -994,7 +985,7 @@
     .loading-effect-progress-bar {
       height: 100%;
       width: 0%;
-      background: linear-gradient(90deg, #00f3ff, #bc13fe);
+      background: linear-gradient(90deg, #ff0000, var(--gold-primary));
       border-radius: 3px;
       animation: progressBar 3s ease-in-out forwards;
     }
@@ -1033,7 +1024,7 @@
 
 <body>
 
-  <!-- Canvas untuk Efek Lampion Terbang -->
+  <!-- Canvas untuk Efek Lampion & Kembang Api -->
   <canvas id="lanternCanvas"></canvas>
 
   <!-- Background Image -->
@@ -1085,8 +1076,6 @@
     IP: <span id="currentIPText">Getting IP...</span>
   </div>
 
-
-
   <!-- Custom Modal for Max Limit Warning -->
   <div id="maxLimitModal" class="custom-modal">
     <div class="custom-modal-content">
@@ -1108,7 +1097,7 @@
   <div id="passwordChangeModal" class="password-modal">
     <div class="password-modal-content">
       <div class="password-modal-title">
-        <i class="fas fa-key" style="margin-right: 10px; color: var(--neon-blue);"></i>
+        <i class="fas fa-key" style="margin-right: 10px; color: var(--gold-primary);"></i>
         <span>Ganti Password</span>
       </div>
       
@@ -1153,13 +1142,13 @@
   </div>
 
   <!-- ============================================
-       NEW LOGIN FORM DESIGN
+       NEW LOGIN FORM DESIGN (LUXURY IMLEK)
   ============================================ -->
   <div id="loginForm">
     <div class="login-logo-wrapper">
       <img src="https://i.pinimg.com/originals/1b/de/85/1bde855b1bd40f35b92ae6fc2d2173fa.gif" alt="Logo">
       <h2>Selamat Datang</h2>
-      <p class="subtitle">Silahkan masuk ke akun anda</p>
+      <p class="subtitle">Silakan Masuk ke akun anda</p>
     </div>
     
     <form id="loginFormForm" onsubmit="event.preventDefault(); login();">
@@ -1352,7 +1341,7 @@
         passwordInput.type = "text";
         toggleIcon.classList.remove("fa-eye");
         toggleIcon.classList.add("fa-eye-slash");
-        toggleIcon.style.color = "#00f3ff";
+        toggleIcon.style.color = "#ffd700";
       } else {
         passwordInput.type = "password";
         toggleIcon.classList.remove("fa-eye-slash");
@@ -1370,7 +1359,7 @@
         input.type = "text";
         icon.classList.remove("fa-eye");
         icon.classList.add("fa-eye-slash");
-        icon.style.color = "#00f3ff";
+        icon.style.color = "#ffd700";
       } else {
         input.type = "password";
         icon.classList.remove("fa-eye-slash");
@@ -1729,7 +1718,7 @@
           }
           setTimeout(() => {
             closePasswordChangeModal();
-            showPopup(`<div style="color:#2ed573;text-align:center;"><i class="fas fa-check-circle fa-2x"></i><br><strong>Password Berhasil Diubah!</strong></div>`, 4000);
+            showPopup(`<div style="color:#ffd700;text-align:center;"><i class="fas fa-check-circle fa-2x"></i><br><strong>Password Berhasil Diubah!</strong></div>`, 4000);
           }, 2000);
         } else {
           showPasswordMessage(result.message || 'Gagal mengubah password!', 'error');
@@ -1754,7 +1743,7 @@
     // ============================================
     document.addEventListener('DOMContentLoaded', function() {
       setupEventListeners();
-      initLanterns(); // INISIALISASI LAMPION
+      initFestiveEffects(); // INISIALISASI KEMBANG API & LAMPION
       updateClock();
       setInterval(updateClock, 1000);
       getUserIP();
@@ -1871,7 +1860,7 @@
       elements.loginForm.style.display = 'block';
       
       updateConnectionStatus(true, 'Connected - Please login');
-      showPopup(`<div style="color:#2ed573;text-align:center;"><i class="fas fa-check-circle fa-2x"></i><br><strong>Logout Berhasil!</strong></div>`, 3000);
+      showPopup(`<div style="color:#ffd700;text-align:center;"><i class="fas fa-check-circle fa-2x"></i><br><strong>Logout Berhasil!</strong></div>`, 3000);
     }
 
     async function writeToDatabaseSheet(data) {
@@ -1909,14 +1898,14 @@
     // ==========================================
     async function startTime() {
       if (isRestrictedTime()) {
-        showPopup(`<div style="color:#ffa502;text-align:center;"><i class="fas fa-exclamation-triangle fa-2x"></i><br><strong>IZIN KELUAR TIDAK TERSEDIA!</strong></div>`, 5000);
+        showPopup(`<div style="color:#ffd700;text-align:center;"><i class="fas fa-exclamation-triangle fa-2x"></i><br><strong>IZIN KELUAR TIDAK TERSEDIA!</strong></div>`, 5000);
         return;
       }
       
       // Cek limit cepat di background, tapi UI tidak terblokir
       checkStartTimeLimit().then(limitCheck => {
         if (!limitCheck.success) {
-          showPopup(`<div style="color:#ffa502;text-align:center;"><i class="fas fa-exclamation-triangle fa-2x"></i><br><strong>Gagal memeriksa batas izin keluar!</strong><br>${limitCheck.message}</div>`, 5000);
+          showPopup(`<div style="color:#ffd700;text-align:center;"><i class="fas fa-exclamation-triangle fa-2x"></i><br><strong>Gagal memeriksa batas izin keluar!</strong><br>${limitCheck.message}</div>`, 5000);
           return;
         }
         updateStartCounterUI(limitCheck);
@@ -1941,7 +1930,7 @@
       );
 
       if (hasActiveRecord) {
-        showPopup(`<div style="color:#ffa502;text-align:center;"><i class="fas fa-exclamation-triangle fa-2x"></i><br><strong>Anda sudah sedang keluar!</strong></div>`, 5000);
+        showPopup(`<div style="color:#ffd700;text-align:center;"><i class="fas fa-exclamation-triangle fa-2x"></i><br><strong>Anda sudah sedang keluar!</strong></div>`, 5000);
         return;
       }
 
@@ -1976,7 +1965,7 @@
         startStatusPanelTimer();
 
         // 3. Feedback Instan
-        showPopup(`<div style="color:#2ed573;text-align:center;"><i class="fas fa-check-circle fa-2x"></i><br><strong>Izin Keluar Berhasil!</strong><br><small>Menyimpan ke server...</small></div>`, 3000);
+        showPopup(`<div style="color:#ffd700;text-align:center;"><i class="fas fa-check-circle fa-2x"></i><br><strong>Izin Keluar Berhasil!</strong><br><small>Menyimpan ke server...</small></div>`, 3000);
 
         // 4. Kirim ke Database di Background (Tanpa memblokir user)
         const databaseData = { sheetName: SHEET_NAMES.DATABASE, action: 'insert', data: attendanceData };
@@ -2017,7 +2006,7 @@
       }
       
       if (activeRecordIndex === -1) {
-        showPopup(`<div style="color:#ffa502;text-align:center;"><i class="fas fa-exclamation-triangle fa-2x"></i><br><strong>Tidak ada sesi izin keluar aktif!</strong></div>`, 5000);
+        showPopup(`<div style="color:#ffd700;text-align:center;"><i class="fas fa-exclamation-triangle fa-2x"></i><br><strong>Tidak ada sesi izin keluar aktif!</strong></div>`, 5000);
         return;
       }
       
@@ -2048,7 +2037,7 @@
         updateStatusPanel();
         
         // 3. Feedback Instan
-        showPopup(`<div style="color:#2ed573;text-align:center;"><i class="fas fa-check-circle fa-2x"></i><br><strong>Kembali Masuk Berhasil!</strong><br><small>Durasi: ${durationHours}j ${durationMinutes}m ${durationSeconds}d</small><br>Menyimpan ke server...</small></div>`, 3000);
+        showPopup(`<div style="color:#ffd700;text-align:center;"><i class="fas fa-check-circle fa-2x"></i><br><strong>Kembali Masuk Berhasil!</strong><br><small>Durasi: ${durationHours}j ${durationMinutes}m ${durationSeconds}d</small><br>Menyimpan ke server...</small></div>`, 3000);
         
         // 4. Update Limit di Background
         setTimeout(async () => {
@@ -2307,8 +2296,8 @@
           clockElement.style.color = '#ff4757';
           clockElement.style.textShadow = '0 0 10px rgba(255, 71, 87, 0.8), 0 0 20px rgba(255, 71, 87, 0.4)';
         } else {
-          clockElement.style.color = '#00f2ff';
-          clockElement.style.textShadow = '0 0 10px rgba(0, 242, 255, 0.5), 0 0 20px rgba(0, 242, 255, 0.3)';
+          clockElement.style.color = '#ffd700'; // Gold clock
+          clockElement.style.textShadow = '0 0 10px rgba(255, 215, 0, 0.5), 0 0 20px rgba(255, 0, 0, 0.4)';
         }
       }
       if (seconds === '00') updateTimeRestriction();
@@ -2609,19 +2598,22 @@
     }
 
     // ============================================
-    // ANIMASI LAMPION TERBANG (NEW FEATURE)
+    // FESTIVE EFFECTS: LAMPION & KEMBANG API (HEBOH!)
     // ============================================
-    function initLanterns() {
+    function initFestiveEffects() {
       const canvas = document.getElementById('lanternCanvas');
       const ctx = canvas.getContext('2d');
       let lanterns = [];
-      const numLanterns = 25; // Jumlah lampion
+      let fireworks = [];
+      let particles = [];
+      const numLanterns = 30;
 
       function resize() {
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
       }
 
+      // --- Lampion Class (3D Style) ---
       class Lantern {
         constructor() {
           this.reset(true);
@@ -2629,66 +2621,247 @@
 
         reset(initial = false) {
           this.x = Math.random() * canvas.width;
-          this.y = initial ? Math.random() * canvas.height : canvas.height + 50;
-          // Ukuran bervariasi
-          this.size = Math.random() * 8 + 5; 
-          // Kecepatan naik pelan
-          this.speed = Math.random() * 0.8 + 0.3; 
-          // Gerakan sway (kiri-kanan)
-          this.swaySpeed = Math.random() * 0.02 + 0.005;
-          this.swayRange = Math.random() * 2;
+          this.y = initial ? Math.random() * canvas.height : canvas.height + 100;
+          this.w = Math.random() * 20 + 25; // Width
+          this.h = this.w * 1.4; // Height (oval)
+          this.speed = Math.random() * 0.8 + 0.5; 
+          this.swaySpeed = Math.random() * 0.02 + 0.01;
+          this.swayRange = Math.random() * 30 + 10;
           this.angle = Math.random() * Math.PI * 2;
+          this.swayOffset = Math.random() * 100;
           
-          // Warna Imlek: Merah, Oranye, Gold
+          // Warna Imlek: Merah/Emas
           const colors = [
-            'rgba(255, 69, 0, ',    // Red Orange
-            'rgba(255, 140, 0, ',   // Dark Orange
-            'rgba(255, 215, 0, ',   // Gold
-            'rgba(220, 20, 60, '    // Crimson
+            { r: 255, g: 30, b: 30 }, // Dark Red
+            { r: 255, g: 69, b: 0 },   // Red Orange
+            { r: 255, g: 140, b: 0 }   // Dark Orange
           ];
-          this.baseColor = colors[Math.floor(Math.random() * colors.length)];
-          this.opacity = Math.random() * 0.4 + 0.2; // Transparansi
+          this.color = colors[Math.floor(Math.random() * colors.length)];
+          this.opacity = Math.random() * 0.4 + 0.3;
         }
 
         update() {
           this.y -= this.speed;
           this.angle += this.swaySpeed;
-          this.x += Math.sin(this.angle) * 0.5;
+          // Pergerakan sway yang lebih natural
+          this.x += Math.sin(this.angle) * 0.3;
           
-          // Reset jika keluar layar atas
-          if (this.y < -50) this.reset();
+          if (this.y < -150) this.reset();
+        }
+
+        draw() {
+          ctx.save();
+          ctx.translate(this.x, this.y);
+          // Sedikit rotasi berdasarkan sway
+          ctx.rotate(Math.sin(this.angle) * 0.1);
+
+          // Glow Effect
+          ctx.shadowBlur = 20;
+          ctx.shadowColor = `rgba(${this.color.r}, ${this.color.g}, ${this.color.b}, 0.8)`;
+
+          // Badan Lampion (Oval)
+          const grad = ctx.createRadialGradient(-this.w/4, -this.h/4, 2, 0, 0, this.h);
+          grad.addColorStop(0, `rgba(255, 220, 150, ${this.opacity + 0.2})`); // Highlight emas
+          grad.addColorStop(0.5, `rgba(${this.color.r}, ${this.color.g}, ${this.color.b}, ${this.opacity})`);
+          grad.addColorStop(1, `rgba(${this.color.r * 0.5}, 0, 0, ${this.opacity})`); // Shadow gelap
+
+          ctx.beginPath();
+          ctx.ellipse(0, 0, this.w/2, this.h/2, 0, 0, Math.PI * 2);
+          ctx.fillStyle = grad;
+          ctx.fill();
+
+          // Emas Border (Top & Bottom rings)
+          ctx.strokeStyle = `rgba(255, 215, 0, ${this.opacity + 0.3})`;
+          ctx.lineWidth = 2;
+          
+          // Top Ring
+          ctx.beginPath();
+          ctx.ellipse(0, -this.h/2.5, this.w/2.5, this.h/6, 0, 0, Math.PI * 2);
+          ctx.stroke();
+
+          // Bottom Ring
+          ctx.beginPath();
+          ctx.ellipse(0, this.h/2.5, this.w/2.5, this.h/6, 0, 0, Math.PI * 2);
+          ctx.stroke();
+
+          // Vertical Gold Lines
+          ctx.beginPath();
+          ctx.moveTo(-this.w/3, -this.h/3);
+          ctx.lineTo(-this.w/3, this.h/3);
+          ctx.stroke();
+          ctx.beginPath();
+          ctx.moveTo(this.w/3, -this.h/3);
+          ctx.lineTo(this.w/3, this.h/3);
+          ctx.stroke();
+
+          // Tassel (Gantungan bawah)
+          ctx.shadowBlur = 0; // No blur for tassel strings
+          ctx.beginPath();
+          ctx.moveTo(0, this.h/2.5);
+          ctx.lineTo(0, this.h/1.2);
+          ctx.strokeStyle = `rgba(255, 215, 0, ${this.opacity})`;
+          ctx.lineWidth = 1;
+          ctx.stroke();
+
+          // Tassel End Threads
+          for(let i = -5; i <= 5; i+=2) {
+            ctx.beginPath();
+            ctx.moveTo(0, this.h/1.2);
+            ctx.lineTo(i * 3, this.h/1.2 + 15);
+            ctx.stroke();
+          }
+
+          ctx.restore();
+        }
+      }
+
+      // --- Firework System ---
+      class Firework {
+        constructor(sx, sy, tx, ty) {
+          this.x = sx;
+          this.y = sy;
+          this.sx = sx;
+          this.sy = sy;
+          this.tx = tx;
+          this.ty = ty;
+          this.distanceToTarget = Math.sqrt(Math.pow(tx - sx, 2) + Math.pow(ty - sy, 2));
+          this.distanceTraveled = 0;
+          this.coordinates = [];
+          this.coordinateCount = 3;
+          while(this.coordinateCount--) {
+            this.coordinates.push([this.x, this.y]);
+          }
+          this.angle = Math.atan2(ty - sy, tx - sx);
+          this.speed = 2;
+          this.acceleration = 1.05;
+          this.brightness = Math.random() * 50 + 50;
+          // Warna Kembang Api Random
+          this.hue = Math.random() * 360;
+        }
+
+        update(index) {
+          this.coordinates.pop();
+          this.coordinates.unshift([this.x, this.y]);
+          
+          if(this.speed < 8) this.speed *= this.acceleration;
+          
+          const vx = Math.cos(this.angle) * this.speed;
+          const vy = Math.sin(this.angle) * this.speed;
+          
+          this.distanceTraveled = Math.sqrt(Math.pow(this.sx - this.x, 2) + Math.pow(this.sy - this.y, 2));
+          
+          if(this.distanceTraveled >= this.distanceToTarget) {
+            // Meledak!
+            createParticles(this.tx, this.ty, this.hue);
+            fireworks.splice(index, 1);
+          } else {
+            this.x += vx;
+            this.y += vy;
+          }
         }
 
         draw() {
           ctx.beginPath();
-          ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-          ctx.fillStyle = this.baseColor + this.opacity + ')';
-          ctx.shadowBlur = 15; // Efek cahaya (glow)
-          ctx.shadowColor = this.baseColor + '1)';
-          ctx.fill();
-          ctx.closePath();
+          ctx.moveTo(this.coordinates[this.coordinates.length - 1][0], this.coordinates[this.coordinates.length - 1][1]);
+          ctx.lineTo(this.x, this.y);
+          ctx.strokeStyle = `hsl(${this.hue}, 100%, ${this.brightness}%)`;
+          ctx.stroke();
         }
       }
 
-      // Inisialisasi Array Lampion
-      for(let i=0; i<numLanterns; i++) {
-        lanterns.push(new Lantern());
+      class Particle {
+        constructor(x, y, hue) {
+          this.x = x;
+          this.y = y;
+          this.coordinates = [];
+          this.coordinateCount = 5;
+          while(this.coordinateCount--) {
+            this.coordinates.push([this.x, this.y]);
+          }
+          this.angle = Math.random() * Math.PI * 2;
+          this.speed = Math.random() * 10 + 1;
+          this.friction = 0.95;
+          this.gravity = 1;
+          this.hue = Math.random() * 20 + hue - 10;
+          this.brightness = Math.random() * 50 + 50;
+          this.alpha = 1;
+          this.decay = Math.random() * 0.03 + 0.015;
+        }
+
+        update(index) {
+          this.coordinates.pop();
+          this.coordinates.unshift([this.x, this.y]);
+          this.speed *= this.friction;
+          this.x += Math.cos(this.angle) * this.speed;
+          this.y += Math.sin(this.angle) * this.speed + this.gravity;
+          this.alpha -= this.decay;
+          
+          if(this.alpha <= this.decay) {
+            particles.splice(index, 1);
+          }
+        }
+
+        draw() {
+          ctx.beginPath();
+          ctx.moveTo(this.coordinates[this.coordinates.length - 1][0], this.coordinates[this.coordinates.length - 1][1]);
+          ctx.lineTo(this.x, this.y);
+          ctx.strokeStyle = `hsla(${this.hue}, 100%, ${this.brightness}%, ${this.alpha})`;
+          ctx.stroke();
+        }
       }
 
-      // Loop Animasi
-      function animate() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        lanterns.forEach(l => { 
-          l.update(); 
-          l.draw(); 
+      function createParticles(x, y, hue) {
+        let particleCount = 30;
+        while(particleCount--) {
+          particles.push(new Particle(x, y, hue));
+        }
+      }
+
+      // --- Main Loop ---
+      function loop() {
+        requestAnimationFrame(loop);
+        
+        // Create trail effect
+        ctx.globalCompositeOperation = 'destination-out';
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.2)'; // Jarak jejak (trail)
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.globalCompositeOperation = 'lighter';
+
+        // Draw Lanterns
+        lanterns.forEach(l => {
+          l.update();
+          l.draw();
         });
-        requestAnimationFrame(animate);
+
+        // Draw Fireworks
+        let i = fireworks.length;
+        while(i--) {
+          fireworks[i].draw();
+          fireworks[i].update(i);
+        }
+
+        let j = particles.length;
+        while(j--) {
+          particles[j].draw();
+          particles[j].update(j);
+        }
+
+        // Auto Launch Fireworks logic
+        if(Math.random() < 0.03) { // 3% chance per frame (sesuaikan untuk frekuensi)
+           const sx = Math.random() * canvas.width;
+           const sy = canvas.height;
+           const tx = Math.random() * canvas.width;
+           const ty = Math.random() * (canvas.height / 2); // Explode di setengah atas layar
+           fireworks.push(new Firework(sx, sy, tx, ty));
+        }
       }
 
-      // Event Listeners
+      // Init
+      for(let i=0; i<numLanterns; i++) lanterns.push(new Lantern());
+      
       window.addEventListener('resize', resize);
       resize();
-      animate();
+      loop();
     }
 
     // ============================================
@@ -2703,7 +2876,7 @@
       showLoadingEffect, hideLoadingEffect
     };
     
-    console.log('Time Tracker System Ready with Lantern Animation!');
+    console.log('Time Tracker System Ready with Festive Fireworks!');
   </script>
   <!-- Bootstrap JS for modal -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
