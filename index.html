@@ -18,16 +18,16 @@
   
   <style>
     /* ============================================
-       QUANTUM GLOW DESIGN (REVISI UI MIX)
+       QUANTUM GLOW DESIGN (LOGIN ASLI)
     ============================================ */
     :root {
       --neon-blue: #00f3ff;
       --neon-purple: #bc13fe;
       --gold-primary: #ffd700;
       --gold-dark: #b8860b;
-      --red-imlek: #ff0f0f;
       --bg-void: #050505;
-      --glass-bg: rgba(255, 255, 255, 0.05); /* Warna Glass Transparan Asli */
+      /* Dashboard Background: Transparan (Glass) */
+      --glass-bg: rgba(255, 255, 255, 0.05); 
       --text-glow: #ffffff;
     }
 
@@ -51,8 +51,8 @@
       width: 100%;
       height: 100%;
       background-image: 
-        linear-gradient(rgba(0, 243, 255, 0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0, 243, 255, 0.03) 1px, transparent 1px);
+        linear-gradient(rgba(0, 243, 255, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 243, 255, 0.05) 1px, transparent 1px);
       background-size: 50px 50px;
       z-index: -3;
       opacity: 0.3;
@@ -64,9 +64,8 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: radial-gradient(circle, transparent 30%, #000 100%);
-      z-index: 0;
-      pointer-events: none;
+      background: radial-gradient(circle, transparent 40%, #000 100%);
+      z-index: -1;
     }
 
     .scanlines {
@@ -75,11 +74,11 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.05) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+      background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
       background-size: 100% 2px, 3px 100%;
       pointer-events: none;
       z-index: 100;
-      opacity: 0.1;
+      opacity: 0.2;
     }
 
     /* BACKGROUND IMAGE LOGIC */
@@ -115,66 +114,82 @@
       left: 0;
       width: 100%;
       height: 100%;
-      z-index: -2; /* Di atas background image */
+      z-index: -2;
       pointer-events: none;
     }
 
     /* ============================================
-       LOGIN FORM (LUXURY IMLEK - TIDAK DIUBAH)
+       LOGIN FORM (KEMBALI KE ASLI: QUANTUM GLOW)
     ============================================ */
     #loginForm {
       position: relative;
       width: 100%;
-      max-width: 420px;
+      max-width: 420px; /* UKURAN ASLI */
       padding: 40px;
+      /* Background GIF yang hidup (Asli) */
       background: linear-gradient(
-        160deg,
-        rgba(20, 0, 0, 0.90) 0%,
-        rgba(40, 10, 10, 0.85) 50%,
-        rgba(20, 0, 0, 0.90) 100%
+        135deg,
+        rgba(0, 5, 20, 0.85) 0%,
+        rgba(0, 10, 30, 0.9) 50%,
+        rgba(0, 20, 40, 0.85) 100%
       ), url('https://i.pinimg.com/originals/1b/de/85/1bde855b1bd40f35b92ae6fc2d2173fa.gif');
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
-      background-blend-mode: luminosity;
-      border-radius: 20px;
-      /* Gold Glowing Border */
-      border: 2px solid transparent;
-      background-clip: padding-box;
-      position: relative;
+      background-blend-mode: overlay;
+      border: 1px solid rgba(0, 243, 255, 0.3); /* Border Neon Blue Asli */
+      border-radius: 4px; /* Bentuk Tech Asli */
       box-shadow: 
-        0 0 30px rgba(255, 215, 0, 0.2),
-        0 20px 50px rgba(0, 0, 0, 0.8);
-      animation: bounceIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        0 0 50px rgba(0, 243, 255, 0.3),
+        0 10px 40px rgba(0, 0, 0, 0.8),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.6);
+      animation: cardFloat 6s ease-in-out infinite; /* Animasi Asli */
       z-index: 10;
-      overflow: visible;
+      overflow: hidden;
     }
-    
-    /* Pseudo-element untuk Border Emas */
+
+    /* Efek partikel bergerak (Asli) */
     #loginForm::before {
       content: '';
       position: absolute;
-      top: -2px; bottom: -2px;
-      left: -2px; right: -2px;
-      background: linear-gradient(45deg, #ff0000, #ffd700, #ff0000, #ffd700);
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: radial-gradient(
+        circle at 50% 50%,
+        rgba(0, 243, 255, 0.1) 0%,
+        rgba(0, 0, 0, 0.5) 70%
+      );
       z-index: -1;
-      border-radius: 22px;
-      background-size: 400%;
-      animation: glowingBorder 10s linear infinite;
+      pointer-events: none;
     }
 
-    @keyframes glowingBorder {
-      0% { background-position: 0 0; }
-      50% { background-position: 400% 0; }
-      100% { background-position: 0 0; }
+    /* Efek partikel bergerak (Asli) */
+    #loginForm::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(
+        circle,
+        rgba(0, 243, 255, 0.05) 0%,
+        transparent 70%
+      );
+      animation: rotateParticles 20s linear infinite;
+      z-index: -1;
+      pointer-events: none;
     }
 
-    @keyframes bounceIn {
-      0% { opacity: 0; transform: scale(0.3) translateY(100px); }
-      50% { opacity: 1; transform: scale(1.05); }
-      70% { transform: scale(0.9); }
-      100% { transform: scale(1) translateY(0); }
+    @keyframes rotateParticles {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
     }
+    
+    @keyframes cardFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
 
     #loginForm .login-logo-wrapper {
       text-align: center;
@@ -187,49 +202,47 @@
       width: 90px;
       height: auto;
       margin-bottom: 15px;
-      filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.8));
+      filter: drop-shadow(0 0 15px rgba(0, 243, 255, 0.7));
       animation: logoPulse 3s ease-in-out infinite;
       border-radius: 50%;
-      background: rgba(0, 0, 0, 0.5);
+      background: rgba(0, 0, 0, 0.3);
       padding: 10px;
-      border: 2px solid var(--gold-primary);
     }
 
     @keyframes logoPulse {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.05); }
+      0%, 100% { transform: scale(1); filter: drop-shadow(0 0 15px rgba(0, 243, 255, 0.7)); }
+      50% { transform: scale(1.05); filter: drop-shadow(0 0 25px rgba(0, 243, 255, 0.9)); }
     }
 
     #loginForm h2 {
       text-align: center;
-      color: #fff;
+      color: #ffffff;
       font-family: 'Orbitron', sans-serif;
       font-weight: 700;
       font-size: 26px;
       letter-spacing: 1px;
       margin: 0 0 8px 0;
-      text-shadow: 0 0 15px var(--gold-primary);
-      background: linear-gradient(to right, #fff, var(--gold-primary));
+      text-shadow: 0 0 10px rgba(0, 243, 255, 0.8), 0 0 20px rgba(0, 243, 255, 0.4);
+      background: linear-gradient(45deg, #ffffff, #00f3ff);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
+      background-clip: text;
       position: relative;
       z-index: 2;
     }
 
     #loginForm .subtitle {
       text-align: center;
-      color: rgba(255, 215, 0, 0.8);
+      color: rgba(255, 255, 255, 0.9);
       font-size: 14px;
       margin-bottom: 35px;
-      font-weight: 500;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+      font-weight: 300;
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
       position: relative;
       z-index: 2;
     }
 
-    /* Modern Inputs */
+    /* Modern Inputs (Login Style) */
     .modern-input-group {
       position: relative;
       margin-bottom: 25px;
@@ -241,24 +254,25 @@
       left: 18px;
       top: 50%;
       transform: translateY(-50%);
-      color: var(--gold-primary);
+      color: rgba(255, 255, 255, 0.7); /* Putih Asli */
       font-size: 16px;
       transition: all 0.3s ease;
-      text-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
+      text-shadow: 0 0 5px rgba(0, 243, 255, 0.5);
     }
 
     .modern-input-group input {
       width: 100%;
-      background: rgba(0, 0, 0, 0.7);
-      border: 1px solid rgba(255, 215, 0, 0.3);
+      background: rgba(0, 0, 0, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.2);
       padding: 16px 50px 16px 50px; 
-      border-radius: 50px;
+      border-radius: 16px;
       color: #fff;
       font-size: 15px;
       font-family: 'Poppins', sans-serif;
       box-sizing: border-box;
       transition: all 0.3s ease;
-      box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(5px);
+      box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.3), 0 5px 15px rgba(0, 0, 0, 0.2);
     }
 
     .modern-input-group input::placeholder {
@@ -267,14 +281,15 @@
 
     .modern-input-group input:focus {
       outline: none;
-      background: rgba(0, 0, 0, 0.9);
-      border-color: var(--gold-primary);
-      box-shadow: 0 0 20px rgba(255, 215, 0, 0.3), inset 0 2px 5px rgba(0, 0, 0, 0.5);
+      background: rgba(0, 0, 0, 0.8);
+      border-color: var(--neon-blue);
+      box-shadow: 0 0 20px rgba(0, 243, 255, 0.4), inset 0 2px 5px rgba(0, 0, 0, 0.4);
     }
 
     .modern-input-group input:focus + i.icon-left {
-      color: #fff;
-      text-shadow: 0 0 10px var(--gold-primary);
+      color: var(--neon-blue);
+      text-shadow: 0 0 10px var(--neon-blue);
+      transform: translateY(-50%) scale(1.1);
     }
 
     .modern-input-group i.toggle-password, .modern-input-group i.toggle-pwd-icon {
@@ -282,12 +297,16 @@
       right: 18px;
       top: 50%;
       transform: translateY(-50%);
-      color: rgba(255, 255, 255, 0.5);
+      color: rgba(255, 255, 255, 0.6);
       cursor: pointer;
       font-size: 16px;
       transition: all 0.3s ease;
+      text-shadow: 0 0 5px rgba(0, 243, 255, 0.5);
     }
-    .modern-input-group i.toggle-password:hover { color: var(--gold-primary); }
+    .modern-input-group i.toggle-password:hover, .modern-input-group i.toggle-pwd-icon:hover {
+      color: var(--neon-blue);
+      transform: translateY(-50%) scale(1.1);
+    }
 
     /* Error Message */
     #error-message, #ipWhitelistMessage {
@@ -304,33 +323,37 @@
     }
 
     #error-message {
-      color: #ff4d4d;
-      background: rgba(255, 50, 50, 0.2);
-      border: 1px solid rgba(255, 50, 50, 0.5);
+      color: #ff6b6b;
+      background: rgba(255, 71, 87, 0.2);
+      border: 1px solid rgba(255, 71, 87, 0.3);
+      box-shadow: 0 0 10px rgba(255, 71, 87, 0.3);
     }
     
     #ipWhitelistMessage {
-      color: #ffa500;
-      background: rgba(255, 165, 0, 0.2);
-      border: 1px solid rgba(255, 165, 0, 0.5);
+      color: #ffd32a;
+      background: rgba(255, 211, 42, 0.2);
+      border: 1px solid rgba(255, 211, 42, 0.3);
+      box-shadow: 0 0 10px rgba(255, 211, 42, 0.2);
     }
 
-    /* Login Button */
+    /* Login Button (Original Style) */
     #loginButton {
       width: 100%;
       padding: 16px;
-      background: linear-gradient(90deg, #ff0000, #b22222);
+      background: linear-gradient(135deg, 
+        rgba(0, 243, 255, 0.9) 0%, 
+        rgba(188, 19, 254, 0.9) 100%);
       border: none;
-      border-radius: 50px;
+      border-radius: 16px;
       color: white;
       font-size: 16px;
-      font-weight: 700;
-      letter-spacing: 1px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
       cursor: pointer;
       transition: all 0.3s ease;
       box-shadow: 
-        0 5px 20px rgba(255, 0, 0, 0.4),
-        inset 0 1px 0 rgba(255,255,255,0.3);
+        0 10px 20px rgba(0, 243, 255, 0.3),
+        0 5px 15px rgba(188, 19, 254, 0.2);
       margin-top: 10px;
       display: flex;
       align-items: center;
@@ -342,28 +365,51 @@
       z-index: 2;
       overflow: hidden;
     }
-    
-    #loginButton::after {
+
+    #loginButton::before {
       content: '';
       position: absolute;
-      top: 0; left: 0; width: 100%; height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-      transform: translateX(-100%);
-      transition: 0.5s;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.2),
+        transparent
+      );
+      transition: left 0.7s ease;
     }
-    
-    #loginButton:hover::after {
-      transform: translateX(100%);
+
+    #loginButton:hover::before {
+      left: 100%;
     }
 
     #loginButton:hover {
-      transform: translateY(-3px) scale(1.02);
-      box-shadow: 0 10px 30px rgba(255, 215, 0, 0.4);
-      background: linear-gradient(90deg, #cc0000, #8b0000);
+      transform: translateY(-2px);
+      box-shadow: 
+        0 15px 30px rgba(0, 243, 255, 0.5),
+        0 10px 25px rgba(188, 19, 254, 0.3);
+      background: linear-gradient(135deg, 
+        rgba(0, 243, 255, 1) 0%, 
+        rgba(188, 19, 254, 1) 100%);
     }
-    
-    #loginButton i { transition: transform 0.3s ease; }
-    #loginButton:hover i { transform: translateX(5px); }
+
+    #loginButton:active {
+      transform: translateY(1px);
+      box-shadow: 
+        0 5px 15px rgba(0, 243, 255, 0.3),
+        0 3px 10px rgba(188, 19, 254, 0.2);
+    }
+
+    #loginButton i {
+      transition: transform 0.3s ease;
+    }
+
+    #loginButton:hover i {
+      transform: translateX(5px);
+    }
 
     /* ============================================
        DASHBOARD (GLASS TRANSPARENT + GLOWING BORDER)
@@ -374,19 +420,18 @@
       margin: 20px auto;
       padding: 30px;
       border-radius: 30px;
-      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-      /* REVERT: Background Glass Transparan */
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
+      /* Glass Background Transparan */
       background: var(--glass-bg);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
-      /* RETAIN: Border Emas Menyala */
-      border: 1px solid rgba(255, 215, 0, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.1);
       position: relative;
-      animation: slideUpFade 0.6s ease-out;
+      animation: fadeIn 0.6s ease-out;
       overflow: visible;
     }
     
-    /* Glowing Border Effect for Dashboard */
+    /* Glowing Border Effect for Dashboard (Gold) */
     .container::before {
       content: '';
       position: absolute;
@@ -400,10 +445,16 @@
       pointer-events: none;
       animation: glowingBorder 10s linear infinite;
     }
+    
+    @keyframes glowingBorder {
+      0% { background-position: 0 0; }
+      50% { background-position: 400% 0; }
+      100% { background-position: 0 0; }
+    }
 
-    @keyframes slideUpFade {
-      from { opacity: 0; transform: translateY(30px) scale(0.95); }
-      to { opacity: 1; transform: translateY(0) scale(1); }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     /* Dashboard Elements Styling */
@@ -440,7 +491,7 @@
       letter-spacing: 1px;
       text-align: center;
       font-family: 'Orbitron', sans-serif;
-      text-shadow: 0 0 15px var(--neon-blue); /* Kembali ke Blue Glow */
+      text-shadow: 0 0 15px var(--neon-blue);
     }
     
     #dashboard img.logo {
@@ -453,7 +504,6 @@
       font-family: 'Digital dream Fat', monospace;
       font-size: 3.2rem;
       font-weight: bold;
-      /* REVERT: Warna Jam Kembali Biru Neon */
       color: var(--neon-blue);
       text-align: center;
       margin: 20px 0;
@@ -464,7 +514,6 @@
     .fancy-hr {
       border: 0;
       height: 1px;
-      /* REVERT: Divider Kembali Biru */
       background: linear-gradient(to right, transparent, rgba(0, 243, 255, 0.5), transparent);
       margin: 25px 0;
       box-shadow: 0 0 10px rgba(0, 243, 255, 0.5);
@@ -605,7 +654,7 @@
       margin-top: 15px;
     }
 
-    /* REVERT: Specific Button Colors (Back to Blue/Purple Original) */
+    /* Specific Button Colors */
     .gradient-btn {
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       color: white;
@@ -824,7 +873,7 @@
       height: 50px;
       border: 3px solid rgba(255,255,255,0.1);
       border-radius: 50%;
-      border-top-color: var(--gold-primary);
+      border-top-color: var(--neon-blue);
       animation: spin 1s ease-in-out infinite;
     }
 
@@ -1139,13 +1188,13 @@
   </div>
 
   <!-- ============================================
-       NEW LOGIN FORM DESIGN (LUXURY IMLEK)
+       NEW LOGIN FORM DESIGN (KEMBALI KE ASLI)
   ============================================ -->
   <div id="loginForm">
     <div class="login-logo-wrapper">
       <img src="https://i.pinimg.com/originals/1b/de/85/1bde855b1bd40f35b92ae6fc2d2173fa.gif" alt="Logo">
       <h2>Selamat Datang</h2>
-      <p class="subtitle">Silakan login akun anda</p>
+      <p class="subtitle">Silahkan masuk ke akun anda</p>
     </div>
     
     <form id="loginFormForm" onsubmit="event.preventDefault(); login();">
@@ -1338,7 +1387,7 @@
         passwordInput.type = "text";
         toggleIcon.classList.remove("fa-eye");
         toggleIcon.classList.add("fa-eye-slash");
-        toggleIcon.style.color = "#ffd700";
+        toggleIcon.style.color = "#00f3ff";
       } else {
         passwordInput.type = "password";
         toggleIcon.classList.remove("fa-eye-slash");
@@ -1356,7 +1405,7 @@
         input.type = "text";
         icon.classList.remove("fa-eye");
         icon.classList.add("fa-eye-slash");
-        icon.style.color = "#ffd700";
+        icon.style.color = "#00f3ff";
       } else {
         input.type = "password";
         icon.classList.remove("fa-eye-slash");
@@ -1715,7 +1764,7 @@
           }
           setTimeout(() => {
             closePasswordChangeModal();
-            showPopup(`<div style="color:#ffd700;text-align:center;"><i class="fas fa-check-circle fa-2x"></i><br><strong>Password Berhasil Diubah!</strong></div>`, 4000);
+            showPopup(`<div style="color:#2ed573;text-align:center;"><i class="fas fa-check-circle fa-2x"></i><br><strong>Password Berhasil Diubah!</strong></div>`, 4000);
           }, 2000);
         } else {
           showPasswordMessage(result.message || 'Gagal mengubah password!', 'error');
@@ -1857,7 +1906,7 @@
       elements.loginForm.style.display = 'block';
       
       updateConnectionStatus(true, 'Connected - Please login');
-      showPopup(`<div style="color:#ffd700;text-align:center;"><i class="fas fa-check-circle fa-2x"></i><br><strong>Logout Berhasil!</strong></div>`, 3000);
+      showPopup(`<div style="color:#2ed573;text-align:center;"><i class="fas fa-check-circle fa-2x"></i><br><strong>Logout Berhasil!</strong></div>`, 3000);
     }
 
     async function writeToDatabaseSheet(data) {
@@ -1969,7 +2018,6 @@
         writeToDatabaseSheet(databaseData).then(dbSuccess => {
           if (dbSuccess) {
             console.log("Server sync successful");
-            // Optional: show small silent toast if needed
           } else {
             console.log("Server sync failed, saved locally");
           }
@@ -2289,9 +2337,13 @@
       const clockElement = document.getElementById('MyClockDisplay');
       if (clockElement) {
         clockElement.textContent = `${hours}:${minutes}:${seconds}`;
-        // Dashboard Clock tetap Neon Blue
-        clockElement.style.color = '#00f3ff';
-        clockElement.style.textShadow = '0 0 10px rgba(0, 242, 255, 0.5), 0 0 20px rgba(0, 242, 255, 0.3)';
+        if (isRestrictedTime()) {
+          clockElement.style.color = '#ff4757';
+          clockElement.style.textShadow = '0 0 10px rgba(255, 71, 87, 0.8), 0 0 20px rgba(255, 71, 87, 0.4)';
+        } else {
+          clockElement.style.color = '#00f2ff';
+          clockElement.style.textShadow = '0 0 10px rgba(0, 242, 255, 0.5), 0 0 20px rgba(0, 242, 255, 0.3)';
+        }
       }
       if (seconds === '00') updateTimeRestriction();
     }
@@ -2708,13 +2760,11 @@
       function loop() {
         requestAnimationFrame(loop);
         
-        // Create trail effect
         ctx.globalCompositeOperation = 'destination-out';
         ctx.fillStyle = 'rgba(0, 0, 0, 0.2)'; 
         ctx.fillRect(0, 0, canvas.width, canvas.height);
         ctx.globalCompositeOperation = 'lighter';
 
-        // Draw Fireworks
         let i = fireworks.length;
         while(i--) {
           fireworks[i].draw();
@@ -2727,7 +2777,6 @@
           particles[j].update(j);
         }
 
-        // Auto Launch Fireworks logic
         if(Math.random() < 0.03) { 
            const sx = Math.random() * canvas.width;
            const sy = canvas.height;
@@ -2737,7 +2786,6 @@
         }
       }
 
-      // Init
       window.addEventListener('resize', resize);
       resize();
       loop();
