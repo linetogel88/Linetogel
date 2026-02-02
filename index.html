@@ -691,6 +691,20 @@
       box-shadow: 0 5px 15px rgba(0, 210, 255, 0.4);
     }
 
+    /* Dashboard Button untuk Blocked View */
+    .dashboard-btn {
+      background: linear-gradient(135deg, #2ed573 0%, #1e90ff 100%);
+      color: white;
+      border: 1px solid rgba(46, 213, 115, 0.3);
+      box-shadow: 0 4px 15px rgba(46, 213, 115, 0.4);
+    }
+
+    .dashboard-btn:hover:not(:disabled) {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(46, 213, 115, 0.6);
+      background: linear-gradient(135deg, #2ed573 0%, #1e90ff 100%);
+    }
+
     /* Disabled State */
     .disabled-btn {
       opacity: 0.4 !important;
@@ -1259,18 +1273,23 @@
       <div class="blocked-icon">
         <i class="fas fa-ban"></i>
       </div>
-      <h3 class="blocked-title">⛔ </h3>
+      <h3 class="blocked-title">⛔ BATAS IZIN TELAH HABIS</h3>
       <p class="blocked-message">
         Anda telah mencapai batas maksimal 4 izin keluar hari ini.<br>
-        Semua fitur telah dinonaktifkan.<br>
+        Semua fitur izin telah dinonaktifkan.<br>
         Silakan lanjut besok!
       </p>
-      <div class="account-actions">
-        <!-- Tombol Dashboard Data ditambahkan di sini agar tetap bisa diklik walau di block -->
-        <a href="https://linetogel-izin.vercel.app/izin-staff-Linetgl.html" target="_blank" style="text-decoration: none;">
-          <button type="button" class="gradient-btn"><i class="fas fa-tachometer-alt"></i> Dashboard Data</button>
-        </a>
-        <button class="logout-btn" id="logoutButtonBlocked"><i class="fas fa-sign-out-alt"></i> Logout</button>
+      <div class="account-actions-container">
+        <div class="account-actions">
+          <a href="https://linetogel-izin.vercel.app/izin-staff-Linetgl.html" target="_blank" style="text-decoration: none;">
+            <button type="button" class="dashboard-btn">
+              <i class="fas fa-tachometer-alt"></i> Dashboard Data
+            </button>
+          </a>
+          <button class="logout-btn" id="logoutButtonBlocked">
+            <i class="fas fa-sign-out-alt"></i> Logout
+          </button>
+        </div>
       </div>
     </div>
 
