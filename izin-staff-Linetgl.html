@@ -287,6 +287,160 @@
       75% { transform: rotate(10deg); }
     }
 
+    /* --- ROLE LIMIT PANEL BARU --- */
+    .role-limit-panel {
+      width: 100%;
+      max-width: 1400px;
+      margin: 0 auto 25px auto;
+      background: rgba(0, 30, 60, 0.7);
+      border: 1px solid rgba(10, 121, 223, 0.5);
+      border-radius: 15px;
+      padding: 20px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 0 20px rgba(10, 121, 223, 0.3);
+      display: none;
+      animation: slideIn 0.5s ease-out;
+    }
+
+    .role-limit-panel.active {
+      display: block;
+    }
+
+    .role-limit-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #0A79DF;
+      margin-bottom: 15px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .role-limit-title i {
+      color: #0A79DF;
+      font-size: 1.5rem;
+    }
+
+    .role-limit-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 15px;
+      margin-top: 15px;
+    }
+
+    .role-limit-card {
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 10px;
+      padding: 15px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .role-limit-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+      border-color: rgba(10, 121, 223, 0.3);
+    }
+
+    .role-limit-card.full {
+      background: rgba(100, 0, 0, 0.3);
+      border-color: rgba(255, 50, 50, 0.4);
+      animation: pulseWarning 2s infinite;
+    }
+
+    .role-limit-card .role-name {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 5px;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .role-limit-card .role-count {
+      font-size: 2rem;
+      font-weight: 900;
+      color: #0A79DF;
+      text-align: center;
+      margin: 10px 0;
+    }
+
+    .role-limit-card.full .role-count {
+      color: #ff4757;
+    }
+
+    .role-limit-card .role-progress {
+      height: 8px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 4px;
+      overflow: hidden;
+      margin: 10px 0;
+    }
+
+    .role-limit-card .role-progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, #0A79DF, #4facfe);
+      border-radius: 4px;
+      transition: width 0.5s ease;
+    }
+
+    .role-limit-card.full .role-progress-bar {
+      background: linear-gradient(90deg, #ff4757, #ff6b6b);
+      width: 100% !important;
+    }
+
+    .role-limit-card .role-limit-text {
+      font-size: 0.8rem;
+      color: var(--dim-text);
+      text-align: center;
+      margin-top: 5px;
+    }
+
+    .role-limit-card .role-status {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      font-size: 0.7rem;
+      padding: 3px 8px;
+      border-radius: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .role-status.available {
+      background: rgba(46, 213, 115, 0.2);
+      color: #2ed573;
+      border: 1px solid rgba(46, 213, 115, 0.3);
+    }
+
+    .role-status.full {
+      background: rgba(255, 71, 87, 0.2);
+      color: #ff4757;
+      border: 1px solid rgba(255, 71, 87, 0.3);
+      animation: pulse 1s infinite;
+    }
+
+    @keyframes pulseWarning {
+      0%, 100% { box-shadow: 0 0 5px rgba(255, 71, 87, 0.3); }
+      50% { box-shadow: 0 0 15px rgba(255, 71, 87, 0.6); }
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+
+    @keyframes slideIn {
+      from { transform: translateY(-20px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
     /* --- MAIN CONTAINER & TABLE --- */
     .main-container {
       width: 100%;
@@ -749,6 +903,17 @@
         justify-content: flex-start; /* Mobile: Teks kiri */
       }
       .rt-text { font-size: 0.9rem; }
+      
+      /* Role Limit Panel Mobile */
+      .role-limit-grid {
+        grid-template-columns: 1fr;
+      }
+      .role-limit-card {
+        padding: 12px;
+      }
+      .role-limit-card .role-count {
+        font-size: 1.5rem;
+      }
     }
 
     td {
@@ -769,6 +934,17 @@
         <span class="title-sub">Monitor</span>
         <div class="title-underline"></div>
       </h2>
+
+      <!-- ROLE LIMIT PANEL BARU -->
+      <div id="roleLimitPanel" class="role-limit-panel">
+        <div class="role-limit-title">
+          <i class="fas fa-users-cog"></i>
+          <span>LIVE ROLE LIMITS</span>
+        </div>
+        <div class="role-limit-grid" id="roleLimitGrid">
+          <!-- Role cards will be inserted here by JavaScript -->
+        </div>
+      </div>
 
       <!-- RUNNING TEXT (FINAL: RATA KIRI) -->
       <div class="running-text-container" id="rt-container">
@@ -824,11 +1000,15 @@
     const SHEET_NAME = 'DATABASE LINETOGEL';
     const BACKGROUND_SHEET_NAME = 'background';
     const RUNNING_TEXT_SHEET_NAME = 'Running Teks';
+    const ACCESS_SHEET_NAME = 'Access'; // Sheet baru untuk role limits
     
     // URL
     const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(SHEET_NAME)}`;
     const BACKGROUND_SHEET_URL = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(BACKGROUND_SHEET_NAME)}`;
     const RUNNING_TEXT_SHEET_URL = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(RUNNING_TEXT_SHEET_NAME)}`;
+    
+    // Google Apps Script URL untuk role limit info
+    const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwh4hxwZA3e8PDGY_oeTV0nYFkxVYKeHFH4zubp0n70WASJaIHK4-issvFQwBuKJxg/exec';
     
     // Variabel Global
     let lastDataHash = '';
@@ -841,6 +1021,22 @@
     const MAX_RETRIES = 10;
     let updateInterval;
     let backgroundInterval;
+    let roleLimitInterval;
+    
+    // Role limits dari Access sheet
+    let roleLimits = {
+      CS_LINE: null,
+      CS: null,
+      KKS: null,
+      KS: null,
+      KHMER: null,
+      AUDIT: null,
+      CRM: null,
+      OPS: null
+    };
+    
+    // Active counts per role
+    let activeRoleCounts = {};
     
     // Background slideshow default
     let backgroundLinks = [
@@ -866,6 +1062,225 @@
         return values;
     }
 
+    // --- FUNGSI BARU: AMBIL ROLE LIMITS DARI ACCESS SHEET ---
+    async function fetchRoleLimits() {
+      try {
+        const accessUrl = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(ACCESS_SHEET_NAME)}`;
+        const response = await fetch(accessUrl);
+        
+        if (!response.ok) {
+          console.error('Gagal fetch role limits');
+          return roleLimits;
+        }
+        
+        const csvText = await response.text();
+        const lines = csvText.split('\n').filter(line => line.trim() !== '');
+        
+        if (lines.length === 0) {
+          console.log('Access sheet kosong');
+          return roleLimits;
+        }
+        
+        // Parse berdasarkan struktur yang ditentukan
+        // B6: CS_LINE, D6: CS, B9: KKS, D9: KS, B12: KHMER, D12: AUDIT, B15: CRM, D15: OPS
+        for (let i = 0; i < lines.length; i++) {
+          const values = parseCSVLine(lines[i]);
+          
+          // Row 6 (index 5 dalam array)
+          if (i === 5 && values.length >= 4) {
+            roleLimits.CS_LINE = parseLimitValue(values[1]); // B6
+            roleLimits.CS = parseLimitValue(values[3]);      // D6
+          }
+          
+          // Row 9 (index 8 dalam array)
+          if (i === 8 && values.length >= 4) {
+            roleLimits.KKS = parseLimitValue(values[1]); // B9
+            roleLimits.KS = parseLimitValue(values[3]);  // D9
+          }
+          
+          // Row 12 (index 11 dalam array)
+          if (i === 11 && values.length >= 4) {
+            roleLimits.KHMER = parseLimitValue(values[1]); // B12
+            roleLimits.AUDIT = parseLimitValue(values[3]); // D12
+          }
+          
+          // Row 15 (index 14 dalam array)
+          if (i === 14 && values.length >= 4) {
+            roleLimits.CRM = parseLimitValue(values[1]); // B15
+            roleLimits.OPS = parseLimitValue(values[3]); // D15
+          }
+        }
+        
+        console.log('Role limits loaded:', roleLimits);
+        return roleLimits;
+        
+      } catch (error) {
+        console.error('Error fetching role limits:', error);
+        return roleLimits;
+      }
+    }
+    
+    function parseLimitValue(value) {
+      if (!value) return null;
+      
+      const strValue = value.toString().trim().toUpperCase();
+      
+      // Jika "OFF", berarti tidak ada batas
+      if (strValue === "OFF") {
+        return null;
+      }
+      
+      // Coba parse angka
+      const num = parseInt(strValue);
+      if (!isNaN(num) && num >= 0) {
+        return num;
+      }
+      
+      return null;
+    }
+    
+    // --- FUNGSI BARU: HITUNG ACTIVE COUNT PER ROLE ---
+    function calculateActiveRoleCounts(data) {
+      const today = getTodayDateStandard();
+      const counts = {
+        CS_LINE: 0,
+        CS: 0,
+        KKS: 0,
+        KS: 0,
+        KHMER: 0,
+        AUDIT: 0,
+        CRM: 0,
+        OPS: 0
+      };
+      
+      // Reset counts
+      Object.keys(counts).forEach(key => counts[key] = 0);
+      
+      // Hitung dari data yang sedang aktif (incomplete entries)
+      if (data && data.incompleteEntries) {
+        data.incompleteEntries.forEach(entry => {
+          const role = entry.jobdesk?.toUpperCase().trim() || '';
+          
+          // Mapping role untuk matching
+          if (role.includes('CS') && role.includes('LINE')) {
+            counts.CS_LINE++;
+          } else if (role === 'CS') {
+            counts.CS++;
+          } else if (role === 'KKS') {
+            counts.KKS++;
+          } else if (role === 'KS') {
+            counts.KS++;
+          } else if (role === 'KHMER') {
+            counts.KHMER++;
+          } else if (role === 'AUDIT') {
+            counts.AUDIT++;
+          } else if (role === 'CRM') {
+            counts.CRM++;
+          } else if (role === 'OPS') {
+            counts.OPS++;
+          }
+        });
+      }
+      
+      activeRoleCounts = counts;
+      return counts;
+    }
+    
+    // --- FUNGSI BARU: UPDATE ROLE LIMIT PANEL ---
+    function updateRoleLimitPanel() {
+      const panel = document.getElementById('roleLimitPanel');
+      const grid = document.getElementById('roleLimitGrid');
+      
+      // Hitung total active roles
+      const totalActive = Object.values(activeRoleCounts).reduce((a, b) => a + b, 0);
+      
+      if (totalActive === 0) {
+        panel.classList.remove('active');
+        return;
+      }
+      
+      panel.classList.add('active');
+      
+      // Buat card untuk setiap role
+      let gridHTML = '';
+      
+      const roles = [
+        { key: 'CS_LINE', name: 'CS LINE', icon: 'fa-headset' },
+        { key: 'CS', name: 'CS', icon: 'fa-phone-alt' },
+        { key: 'KKS', name: 'KKS', icon: 'fa-user-tie' },
+        { key: 'KS', name: 'KS', icon: 'fa-user-shield' },
+        { key: 'KHMER', name: 'KHMER', icon: 'fa-globe-asia' },
+        { key: 'AUDIT', name: 'AUDIT', icon: 'fa-search-dollar' },
+        { key: 'CRM', name: 'CRM', icon: 'fa-handshake' },
+        { key: 'OPS', name: 'OPS', icon: 'fa-cogs' }
+      ];
+      
+      roles.forEach(role => {
+        const activeCount = activeRoleCounts[role.key] || 0;
+        const limit = roleLimits[role.key];
+        
+        // Jika role tidak memiliki limit, skip
+        if (limit === null || limit === undefined) return;
+        
+        const percentage = Math.min(100, (activeCount / limit) * 100);
+        const isFull = activeCount >= limit;
+        
+        let cardClass = 'role-limit-card';
+        if (isFull) cardClass += ' full';
+        
+        let statusHTML = '';
+        if (isFull) {
+          statusHTML = `<div class="role-status full">FULL</div>`;
+        } else {
+          statusHTML = `<div class="role-status available">AVAILABLE</div>`;
+        }
+        
+        gridHTML += `
+          <div class="${cardClass}" data-role="${role.key}">
+            ${statusHTML}
+            <div class="role-name">
+              <i class="fas ${role.icon}"></i>
+              <span>${role.name}</span>
+            </div>
+            <div class="role-count">${activeCount}/${limit}</div>
+            <div class="role-progress">
+              <div class="role-progress-bar" style="width: ${percentage}%"></div>
+            </div>
+            <div class="role-limit-text">
+              ${isFull ? 
+                '⛔ BATAS TERCAPAI - TUNGGU ADA YANG MASUK' : 
+                `Sisa ${limit - activeCount} slot tersedia`}
+            </div>
+          </div>
+        `;
+      });
+      
+      grid.innerHTML = gridHTML;
+      
+      // Tambahkan event listener untuk card
+      document.querySelectorAll('.role-limit-card').forEach(card => {
+        card.addEventListener('click', function() {
+          const role = this.getAttribute('data-role');
+          const roleName = this.querySelector('.role-name span').textContent;
+          const activeCount = activeRoleCounts[role] || 0;
+          const limit = roleLimits[role];
+          
+          // Tampilkan alert dengan info detail
+          alert(`ROLE: ${roleName}\n\n` +
+                `✅ Aktif: ${activeCount} orang\n` +
+                `🎯 Batas: ${limit === null ? 'Tidak dibatasi' : limit + ' orang'}\n` +
+                `📊 Status: ${activeCount >= limit ? 'BATAS TERCAPAI' : 'MASIH TERSEDIA'}\n\n` +
+                `ℹ️ Role akan terbuka lagi jika ada yang masuk kembali.`);
+        });
+      });
+    }
+    
+    // --- FUNGSI BARU: GET TODAY DATE STANDARD ---
+    function getTodayDateStandard() {
+      const today = new Date();
+      return `${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,'0')}-${String(today.getDate()).padStart(2,'0')}`;
+    }
+
     // --- FUNGSI RUNNING TEXT ---
     async function fetchRunningText() {
         try {
@@ -873,7 +1288,6 @@
             if (!response.ok) throw new Error('Gagal fetch running text');
             const csvText = await response.text();
             
-            // Hitung hash untuk deteksi perubahan data tanpa reload
             const newHash = csvText.split('').reduce((a,b) => (((a << 5) - a) + b.charCodeAt(0))|0, 0);
 
             if (newHash !== lastRtHash) {
@@ -881,24 +1295,19 @@
                 const lines = csvText.split('\n').filter(line => line.trim() !== '');
                 const messages = [];
                 
-                // Mulai dari index 1 (skip header)
                 for (let i = 1; i < lines.length; i++) {
                     const line = lines[i].trim();
                     if (!line) continue;
                     
                     const values = parseCSVLine(line);
                     
-                    // Kolom B adalah index 1
                     if (values[1]) {
                         const text = values[1].replace(/"/g, '').trim();
                         if (text) messages.push(text);
                     }
                 }
                 
-                // Update pesan global
                 rtMessages = messages;
-                
-                // Reset animasi UI jika data berubah
                 resetRunningTextAnimation();
             }
         } catch (error) {
@@ -907,48 +1316,39 @@
     }
 
     function resetRunningTextAnimation() {
-        // Stop animasi lama
         if (rtAnimationInterval) clearInterval(rtAnimationInterval);
         
         const container = document.getElementById('rt-container');
         const textEl = document.getElementById('rt-text-content');
 
-        // Jika tidak ada data, HIDE container
         if (rtMessages.length === 0) {
             container.style.display = 'none';
             return;
         }
 
-        // Jika ada data, SHOW container
         container.style.display = 'flex';
         currentRtIndex = 0;
 
-        // Tampilkan pesan pertama langsung
         textEl.textContent = rtMessages[0];
         textEl.className = 'rt-text rt-visible';
 
-        // Jika hanya ada 1 data, tidak perlu interval ganti (statis)
         if (rtMessages.length === 1) {
             return;
         }
 
-        // Jika lebih dari 1 data, jalankan interval ganti teks
         rtAnimationInterval = setInterval(() => {
-            // 1. Fade Out
             textEl.classList.remove('rt-visible');
             textEl.classList.add('rt-hidden');
 
-            // 2. Ganti Teks setelah transisi selesai (500ms)
             setTimeout(() => {
                 currentRtIndex = (currentRtIndex + 1) % rtMessages.length;
                 textEl.textContent = rtMessages[currentRtIndex];
                 
-                // 3. Fade In
                 textEl.classList.remove('rt-hidden');
                 textEl.classList.add('rt-visible');
-            }, 500); 
+            }, 500);
 
-        }, 5000); // Ganti teks setiap 5 detik
+        }, 5000);
     }
 
     // ---------------------------------------------------------
@@ -1214,6 +1614,7 @@
       }
     }
     
+    // --- FUNGSI UTAMA YANG DIPERBAIKI ---
     function checkForUpdates() {
       // 1. Cek Data Utama
       fetchData().then(data => {
@@ -1222,6 +1623,10 @@
           lastDataHash = newHash;
           currentData = data;
           updateTable(data);
+          
+          // Update role counts setelah data berubah
+          calculateActiveRoleCounts(data);
+          updateRoleLimitPanel();
         }
       }).catch(error => {
         console.error('Error fetching data:', error);
@@ -1235,6 +1640,24 @@
 
       // 2. Cek Running Text
       fetchRunningText();
+    }
+    
+    // --- FUNGSI BARU: PERBARUI ROLE LIMITS PERIODIC ---
+    async function updateRoleLimitsPeriodic() {
+      try {
+        const newLimits = await fetchRoleLimits();
+        const limitsChanged = JSON.stringify(newLimits) !== JSON.stringify(roleLimits);
+        
+        if (limitsChanged) {
+          roleLimits = newLimits;
+          console.log('Role limits updated:', roleLimits);
+          
+          // Update panel jika ada perubahan
+          updateRoleLimitPanel();
+        }
+      } catch (error) {
+        console.error('Error updating role limits:', error);
+      }
     }
     
     async function fetchData() {
@@ -1254,7 +1677,7 @@
       
       const columnMapping = {
         namaStaff: ['Nama Staff', 'Nama', 'Name', 'Staff'],
-        jobdesk: ['Jobdesk', 'Posisi', 'Job'],
+        jobdesk: ['Jobdesk', 'Posisi', 'Job', 'Role'],
         date: ['Tanggal', 'Date'],
         startTime: ['Jam Masuk', 'Masuk', 'Start Time'],
         endTime: ['Jam Keluar', 'Keluar', 'End Time'],
@@ -1289,6 +1712,7 @@
           }
         });
         
+        // Fallback ke posisi kolom default jika mapping gagal
         if (!rowData.namaStaff && values.length > 0) rowData.namaStaff = values[0] || '';
         if (!rowData.jobdesk && values.length > 1) rowData.jobdesk = values[1] || '';
         if (!rowData.date && values.length > 2) rowData.date = values[2] || '';
@@ -1299,6 +1723,9 @@
         if (!rowData.count && values.length > 7) rowData.count = values[7] || '';
         
         if (!isToday(rowData.date)) continue;
+        
+        // Normalize role untuk counting
+        rowData.normalizedRole = normalizeRoleForCounting(rowData.jobdesk);
         
         if (!rowData.endTime || rowData.endTime === '-' || rowData.endTime === '' || 
             rowData.endTime === 'Belum' || rowData.endTime.toLowerCase().includes('belum')) {
@@ -1315,6 +1742,33 @@
       return result;
     }
     
+    // --- FUNGSI BARU: NORMALIZE ROLE UNTUK COUNTING ---
+    function normalizeRoleForCounting(role) {
+      if (!role) return '';
+      
+      const roleUpper = role.toUpperCase().trim();
+      
+      if (roleUpper.includes('CS') && roleUpper.includes('LINE')) {
+        return 'CS_LINE';
+      } else if (roleUpper === 'CS') {
+        return 'CS';
+      } else if (roleUpper === 'KKS') {
+        return 'KKS';
+      } else if (roleUpper === 'KS') {
+        return 'KS';
+      } else if (roleUpper === 'KHMER') {
+        return 'KHMER';
+      } else if (roleUpper === 'AUDIT') {
+        return 'AUDIT';
+      } else if (roleUpper === 'CRM') {
+        return 'CRM';
+      } else if (roleUpper === 'OPS') {
+        return 'OPS';
+      }
+      
+      return roleUpper;
+    }
+
     // ---------------------------------------------------------
     // FUNGSI UTAMA: Tabel dengan Grouping (Parent/Child)
     // ---------------------------------------------------------
@@ -1365,6 +1819,13 @@
           }
         });
         
+        // --- Cek role limit untuk staff ini ---
+        const staffRole = staff.role || '';
+        const normalizedRole = normalizeRoleForCounting(staffRole);
+        const roleLimit = roleLimits[normalizedRole];
+        const activeRoleCount = activeRoleCounts[normalizedRole] || 0;
+        const isRoleFull = roleLimit !== null && activeRoleCount >= roleLimit;
+        
         // --- Parent Row (Header) ---
         const parentTr = document.createElement('tr');
         
@@ -1378,7 +1839,15 @@
         const overLimitBadgeHTML = overLimitCount > 0 
           ? `<div class="overlimit-badge"><i class="fas fa-exclamation-triangle"></i> ${overLimitCount}x LEWAT</div>` 
           : '';
-
+        
+        // --- Role Limit Badge (BARU) ---
+        let roleLimitBadgeHTML = '';
+        if (isRoleFull && staff.isActive) {
+          roleLimitBadgeHTML = `<div class="overlimit-badge" style="background: linear-gradient(135deg, #ff0000, #990000);">
+            <i class="fas fa-ban"></i> ROLE FULL (${activeRoleCount}/${roleLimit})
+          </div>`;
+        }
+        
         parentTr.innerHTML = `
             <td colspan="8">
                 <div class="staff-header-content">
@@ -1387,7 +1856,7 @@
                         <i class="fas fa-user-shield" style="font-size: 1.5rem; color:${staff.isActive ? 'var(--marvel-red)' : 'var(--cap-blue)'}"></i>
                         <div class="header-info">
                             <span class="staff-main-name">${name}</span>
-                            <span class="staff-sub-role">${staff.role}</span>
+                            <span class="staff-sub-role">${staffRole || '-'}</span>
                         </div>
                     </div>
                     <div class="header-right">
@@ -1397,6 +1866,7 @@
                         </div>
                         <div style="width: 1px; height: 30px; background: rgba(255,255,255,0.1);"></div>
                         ${overLimitBadgeHTML}
+                        ${roleLimitBadgeHTML}
                         ${staff.isActive ? 
                             '<div style="color:var(--hulk-green); font-weight:bold; font-size:0.9rem;"><i class="fas fa-circle-notch fa-spin"></i> SEDANG KELUAR</div>' : 
                             '<div style="color:var(--dim-text);">SELESAI</div>'}
@@ -1537,11 +2007,22 @@
           
           const displayTimeOut = formatTimeDisplay(entry.startTime);
           
+          // Cek role limit untuk entry ini
+          const entryRole = normalizeRoleForCounting(entry.jobdesk);
+          const roleLimit = roleLimits[entryRole];
+          const activeCount = activeRoleCounts[entryRole] || 0;
+          const isRoleFull = roleLimit !== null && activeCount >= roleLimit;
+          
+          let roleCellHTML = entry.jobdesk || '-';
+          if (isRoleFull) {
+            roleCellHTML += ` <span style="color:#ff4757; font-size:0.8em;" title="Role sudah mencapai batas maksimal"><i class="fas fa-ban"></i></span>`;
+          }
+          
           const row = document.createElement('tr');
           row.className = 'warning-row';
           row.innerHTML = `
             <td><i class="fas fa-running" style="margin-right: 8px; color: var(--hulk-green);"></i>${entry.namaStaff || '-'}</td>
-            <td>${entry.jobdesk || '-'}</td>
+            <td>${roleCellHTML}</td>
             <td><i class="fas fa-sign-in-alt" style="margin-right: 8px;"></i>${displayTimeOut || '-'}</td>
             <td>
               <div class="stopwatch ${timeResult.isOver15Min ? 'stopwatch-over' : 'stopwatch-normal'}" 
@@ -1655,6 +2136,7 @@
       }
     }
 
+    // --- INITIALIZE ---
     document.addEventListener('DOMContentLoaded', async function() {
       startBackgroundSlideshow(backgroundLinks);
       
@@ -1668,16 +2150,31 @@
         console.error('Gagal mengambil data background:', error);
       }
       
+      // Load role limits pertama kali
+      await fetchRoleLimits();
+      
       // Fetch Running Text Awal
       fetchRunningText();
 
+      // Load data utama
       fetchData().then(data => {
         currentData = data;
         lastDataHash = calculateDataHash(data);
-        updateTable(data);
         
+        // Hitung active role counts
+        calculateActiveRoleCounts(data);
+        
+        // Update tabel dan panel
+        updateTable(data);
+        updateRoleLimitPanel();
+        
+        // Setup interval untuk updates
         updateInterval = setInterval(checkForUpdates, 3000);
         
+        // Setup interval untuk update role limits
+        roleLimitInterval = setInterval(updateRoleLimitsPeriodic, 10000);
+        
+        // Additional update interval
         setTimeout(() => {
           setInterval(checkForUpdates, 4500);
         }, 1500);
@@ -1688,6 +2185,7 @@
         }, 10000);
       });
       
+      // Keyboard shortcuts
       document.addEventListener('keydown', function(e) {
         if (e.ctrlKey && e.key === 'r') {
           e.preventDefault();
@@ -1697,12 +2195,25 @@
           document.getElementById('searchInput').value = '';
           filterByName();
         }
+        if (e.key === 'F1') {
+          e.preventDefault();
+          document.getElementById('roleLimitPanel').classList.toggle('active');
+        }
       });
     });
     
+    // Security features
     document.addEventListener('contextmenu', event => event.preventDefault());
     
+    // Expose functions to global scope
     window.filterByName = filterByName;
+    
+    // Debug function untuk testing
+    window.debugRoleLimits = function() {
+      console.log('Current Role Limits:', roleLimits);
+      console.log('Active Role Counts:', activeRoleCounts);
+      alert(`Role Limits:\n${JSON.stringify(roleLimits, null, 2)}\n\nActive Counts:\n${JSON.stringify(activeRoleCounts, null, 2)}`);
+    };
   </script>
 <script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon='{"version":"2024.11.0","token":"e3c1c9af36de41759418005494a48906","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
 </body>
@@ -1825,4 +2336,3 @@ document.addEventListener('selectstart', function(e) {
 });
 </script>
 </html>
-
