@@ -29,9 +29,6 @@
       /* Dashboard Background: Transparan (Glass) */
       --glass-bg: rgba(255, 255, 255, 0.05); 
       --text-glow: #ffffff;
-      --success-green: #2ed573;
-      --warning-orange: #ffa502;
-      --danger-red: #ff4757;
     }
 
     body {
@@ -326,14 +323,14 @@
     }
 
     #error-message {
-      color: var(--danger-red);
+      color: #ff6b6b;
       background: rgba(255, 71, 87, 0.2);
       border: 1px solid rgba(255, 71, 87, 0.3);
       box-shadow: 0 0 10px rgba(255, 71, 87, 0.3);
     }
     
     #ipWhitelistMessage {
-      color: var(--warning-orange);
+      color: #ffd32a;
       background: rgba(255, 211, 42, 0.2);
       border: 1px solid rgba(255, 211, 42, 0.3);
       box-shadow: 0 0 10px rgba(255, 211, 42, 0.2);
@@ -566,82 +563,6 @@
       text-shadow: 0 0 5px var(--neon-blue);
     }
 
-    /* ============================================
-       ROLE LIMIT INFO CARD (BARU)
-    ============================================ */
-    .role-limit-info {
-      background: rgba(0, 210, 255, 0.1);
-      border: 1px solid rgba(0, 210, 255, 0.3);
-      border-radius: 16px;
-      padding: 18px;
-      margin: 15px 0;
-      text-align: center;
-      font-size: 14px;
-      color: var(--neon-blue);
-      display: none;
-      animation: slideIn 0.5s ease-out;
-      backdrop-filter: blur(10px);
-    }
-
-    .role-limit-info.active {
-      display: block;
-    }
-
-    .role-limit-info.limit-reached {
-      background: rgba(255, 71, 87, 0.1);
-      border-color: rgba(255, 71, 87, 0.3);
-      color: var(--danger-red);
-    }
-
-    .role-limit-info .limit-progress {
-      margin-top: 12px;
-    }
-
-    .role-limit-info .progress-bar {
-      height: 10px;
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: 5px;
-      overflow: hidden;
-      margin: 8px 0;
-    }
-
-    .role-limit-info .progress-fill {
-      height: 100%;
-      background: linear-gradient(90deg, #00d2ff, #4facfe);
-      border-radius: 5px;
-      transition: width 0.5s ease;
-      width: 0%;
-    }
-
-    .role-limit-info.limit-reached .progress-fill {
-      background: linear-gradient(90deg, #ff4757, #ff6b6b);
-    }
-
-    .role-limit-info .limit-text {
-      font-size: 13px;
-      opacity: 0.9;
-      margin-top: 6px;
-      font-weight: 600;
-    }
-
-    .role-limit-info .limit-message {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      font-weight: 500;
-    }
-
-    @keyframes slideIn {
-      from { opacity: 0; transform: translateY(-10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    @keyframes pulseWarning {
-      0%, 100% { box-shadow: 0 0 10px rgba(255, 71, 87, 0.3); }
-      50% { box-shadow: 0 0 20px rgba(255, 71, 87, 0.6); }
-    }
-
     /* Status Panel */
     .status-panel {
       background: rgba(0, 0, 0, 0.3);
@@ -656,7 +577,7 @@
     }
     
     .status-panel.active {
-      border-color: var(--success-green);
+      border-color: #2ed573;
       box-shadow: 0 0 30px rgba(46, 213, 115, 0.2);
       background: linear-gradient(135deg, rgba(46, 213, 115, 0.05), rgba(0, 0, 0, 0.3));
     }
@@ -680,7 +601,7 @@
 
     .status-duration {
       font-size: 15px;
-      color: var(--warning-orange);
+      color: #ffa502;
       display: inline-flex;
       align-items: center;
       gap: 6px;
@@ -748,12 +669,12 @@
 
     .logout-btn {
       background: rgba(255, 71, 87, 0.1);
-      color: var(--danger-red);
+      color: #ff6b6b;
       border: 1px solid rgba(255, 71, 87, 0.3);
     }
 
     .logout-btn:hover:not(:disabled) {
-      background: var(--danger-red);
+      background: #ff4757;
       color: white;
       box-shadow: 0 5px 15px rgba(255, 71, 87, 0.4);
     }
@@ -772,7 +693,7 @@
 
     /* Dashboard Button untuk Blocked View */
     .dashboard-btn {
-      background: linear-gradient(135deg, var(--success-green) 0%, #1e90ff 100%);
+      background: linear-gradient(135deg, #2ed573 0%, #1e90ff 100%);
       color: white;
       border: 1px solid rgba(46, 213, 115, 0.3);
       box-shadow: 0 4px 15px rgba(46, 213, 115, 0.4);
@@ -781,7 +702,7 @@
     .dashboard-btn:hover:not(:disabled) {
       transform: translateY(-3px);
       box-shadow: 0 8px 25px rgba(46, 213, 115, 0.6);
-      background: linear-gradient(135deg, var(--success-green) 0%, #1e90ff 100%);
+      background: linear-gradient(135deg, #2ed573 0%, #1e90ff 100%);
     }
 
     /* Disabled State */
@@ -845,7 +766,7 @@
     .warning-marquee {
       background: rgba(255, 71, 87, 0.15);
       border: 1px solid rgba(255, 71, 87, 0.4);
-      color: var(--danger-red);
+      color: #ff6b6b;
       padding: 12px;
       border-radius: 12px;
       margin: 20px 0;
@@ -857,7 +778,7 @@
     .danger-alert {
       background: rgba(255, 71, 87, 0.15);
       border: 1px solid rgba(255, 71, 87, 0.4);
-      color: var(--danger-red);
+      color: #ff4757;
       padding: 20px;
       border-radius: 16px;
       text-align: center;
@@ -874,7 +795,7 @@
 
     .blocked-icon {
       font-size: 50px;
-      color: var(--danger-red);
+      color: #ff4757;
       margin-bottom: 20px;
       animation: shake 3s infinite;
     }
@@ -917,7 +838,7 @@
       top: 20px;
       left: 20px;
       background: rgba(46, 213, 115, 0.1);
-      color: var(--success-green);
+      color: #2ed573;
       border-color: rgba(46, 213, 115, 0.3);
       display: none;
       align-items: center;
@@ -942,8 +863,8 @@
       border-radius: 50%;
     }
 
-    .status-connected { background: var(--success-green); box-shadow: 0 0 10px var(--success-green); }
-    .status-disconnected { background: var(--danger-red); box-shadow: 0 0 10px var(--danger-red); }
+    .status-connected { background: #2ed573; box-shadow: 0 0 10px #2ed573; }
+    .status-disconnected { background: #ff4757; box-shadow: 0 0 10px #ff4757; }
 
     /* Spinner */
     .loading-spinner {
@@ -1045,8 +966,8 @@
     }
 
     .password-message { padding: 10px; border-radius: 10px; font-size: 14px; margin-bottom: 15px; display: none; }
-    .password-message.success { background: rgba(46, 213, 115, 0.1); color: var(--success-green); border: 1px solid rgba(46, 213, 115, 0.2); }
-    .password-message.error { background: rgba(255, 71, 87, 0.1); color: var(--danger-red); border: 1px solid rgba(255, 71, 87, 0.2); }
+    .password-message.success { background: rgba(46, 213, 115, 0.1); color: #2ed573; border: 1px solid rgba(46, 213, 115, 0.2); }
+    .password-message.error { background: rgba(255, 71, 87, 0.1); color: #ff4757; border: 1px solid rgba(255, 71, 87, 0.2); }
 
     .password-modal-buttons { display: flex; gap: 10px; margin-top: 10px; }
     .password-save-btn { background: linear-gradient(135deg, var(--gold-primary), var(--gold-dark)); color: black; border: none; box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4); font-weight: bold; }
@@ -1157,7 +1078,6 @@
       .loading-effect-content { padding: 20px; }
       .loading-effect-title { font-size: 18px; }
       .loading-effect-message { font-size: 14px; }
-      .role-limit-info { padding: 15px; font-size: 13px; }
     }
   </style>
 </head>
@@ -1375,29 +1295,12 @@
 
     <!-- Normal Dashboard View (shown when not blocked) -->
     <div id="normalDashboard">
-      <!-- Staff Info -->
+      <!-- Hanya tampilkan nama staff dan role saja -->
       <div class="staff-info">
         <p><i class="fas fa-user"></i> Staff Name: <span id="staffNameDisplay" class="staff-name"></span></p>
         <p><i class="fas fa-id-badge"></i> Role: <span id="userRoleDisplay" class="role-display"></span></p>
       </div>
 
-      <!-- ============================================
-           ROLE LIMIT INFO CARD (BARU)
-      ============================================ -->
-      <div id="roleLimitInfo" class="role-limit-info">
-        <div class="limit-message" id="roleLimitMessage">
-          <i class="fas fa-users"></i>
-          <span>Loading role limit info...</span>
-        </div>
-        <div class="limit-progress">
-          <div class="progress-bar">
-            <div class="progress-fill" id="roleProgressFill" style="width: 0%"></div>
-          </div>
-          <div class="limit-text" id="roleLimitText">0/0</div>
-        </div>
-      </div>
-
-      <!-- Jobdesk Selection -->
       <div id="jobdeskSection" class="hidden">
         <label for="jobdesk" style="display:block; margin-bottom: 8px; color: #ccc;">Pilih Jobdesk</label>
         <select id="jobdesk">
@@ -1406,7 +1309,6 @@
         <div id="jobdeskError" style="color: #ff6b6b; display: none; margin-top: 8px; font-size: 13px; text-align: center;">Silahkan Pilih Jobdesk Anda</div>
       </div>
 
-      <!-- Time Buttons -->
       <div class="time-btns">
         <button id="startTimeButton" class="gradient-btn"><i class="fas fa-door-open"></i> Izin Keluar</button>
         <button id="endTimeButton" class="gradient-btn"><i class="fas fa-sign-in-alt"></i> Kembali Masuk</button>
@@ -1425,7 +1327,6 @@
         </div>
       </div>
 
-      <!-- Dashboard Link -->
       <div style="text-align: center; margin-top: 30px;">
         <a href="https://linetogel-izin.vercel.app/izin-staff-Linetgl.html" target="_blank" style="text-decoration: none;">
           <button type="button" class="gradient-btn"><i class="fas fa-tachometer-alt"></i> Dashboard Data</button>
@@ -1442,7 +1343,6 @@
         </div>
       </div>
 
-      <!-- Account Actions -->
       <div class="account-actions-container">
         <div class="account-actions">
           <button class="logout-btn" id="logoutButton"><i class="fas fa-sign-out-alt"></i> Logout</button>
@@ -1572,80 +1472,6 @@
     }
 
     // ============================================
-    // FUNGSI BARU: UPDATE ROLE LIMIT INFO
-    // ============================================
-    async function updateRoleLimitInfo() {
-      try {
-        if (!currentUser || !currentUser.username) return;
-        
-        const response = await fetch(`${GOOGLE_SCRIPT_URL}?action=getRoleLimitInfo&username=${encodeURIComponent(currentUser.username)}`);
-        const result = await response.json();
-        
-        const roleLimitInfo = document.getElementById('roleLimitInfo');
-        const roleLimitMessage = document.getElementById('roleLimitMessage');
-        const roleProgressFill = document.getElementById('roleProgressFill');
-        const roleLimitText = document.getElementById('roleLimitText');
-        
-        if (result.success) {
-          const roleData = result.data;
-          
-          if (roleData.allowed) {
-            // Role masih boleh keluar
-            roleLimitInfo.classList.remove('limit-reached');
-            roleLimitInfo.classList.add('active');
-            
-            if (roleData.limit) {
-              const percentage = Math.min(100, (roleData.current / roleData.limit) * 100);
-              roleProgressFill.style.width = `${percentage}%`;
-              roleLimitText.textContent = `${roleData.current}/${roleData.limit}`;
-              
-              // Update message based on count
-              if (roleData.current === 0) {
-                roleLimitMessage.innerHTML = `<i class="fas fa-users"></i> <span>${roleData.role}: Belum ada yang keluar (Batas: ${roleData.limit})</span>`;
-              } else if (roleData.current < roleData.limit) {
-                const remaining = roleData.limit - roleData.current;
-                roleLimitMessage.innerHTML = `<i class="fas fa-users"></i> <span>${roleData.role}: ${roleData.current}/${roleData.limit} aktif (Sisa: ${remaining})</span>`;
-              } else {
-                roleLimitMessage.innerHTML = `<i class="fas fa-users"></i> <span>${roleData.role}: ${roleData.current}/${roleData.limit} aktif</span>`;
-              }
-            } else {
-              roleProgressFill.style.width = '0%';
-              roleLimitText.textContent = 'Tidak dibatasi';
-              roleLimitMessage.innerHTML = `<i class="fas fa-users"></i> <span>${roleData.role}: Tidak ada batasan</span>`;
-            }
-          } else {
-            // Role sudah mencapai batas
-            roleLimitInfo.classList.add('limit-reached');
-            roleLimitInfo.classList.add('active');
-            
-            if (roleData.limit) {
-              roleProgressFill.style.width = '100%';
-              roleLimitText.textContent = `${roleData.current}/${roleData.limit}`;
-              roleLimitMessage.innerHTML = `<i class="fas fa-ban"></i> <span>${roleData.message}</span>`;
-              
-              // Disable start button jika role limit tercapai
-              const startButton = document.getElementById('startTimeButton');
-              if (startButton) {
-                startButton.disabled = true;
-                startButton.classList.add('disabled-btn');
-                startButton.innerHTML = '<i class="fas fa-ban"></i> Role Sudah Penuh';
-              }
-            }
-          }
-          
-          console.log('Role limit info updated:', roleData);
-        } else {
-          // Hide role limit info jika error
-          roleLimitInfo.classList.remove('active');
-        }
-      } catch (error) {
-        console.error('Error updating role limit info:', error);
-        const roleLimitInfo = document.getElementById('roleLimitInfo');
-        roleLimitInfo.classList.remove('active');
-      }
-    }
-
-    // ============================================
     // FUNGSI FORMAT TANGGAL & WAKTU
     // ============================================
 
@@ -1677,13 +1503,6 @@
       ipWhitelistMessage: document.getElementById('ipWhitelistMessage'),
       staffNameDisplay: document.getElementById('staffNameDisplay'),
       userRoleDisplay: document.getElementById('userRoleDisplay'),
-      
-      // Role Limit Elements (BARU)
-      roleLimitInfo: document.getElementById('roleLimitInfo'),
-      roleLimitMessage: document.getElementById('roleLimitMessage'),
-      roleProgressFill: document.getElementById('roleProgressFill'),
-      roleLimitText: document.getElementById('roleLimitText'),
-      
       jobdeskSection: document.getElementById('jobdeskSection'),
       jobdeskSelect: document.getElementById('jobdesk'),
       jobdeskError: document.getElementById('jobdeskError'),
@@ -1848,13 +1667,9 @@
         } else {
             warningElement.style.display = 'none';
             if (!isBlocked && !checkActiveRecord() && todayStartCount < maxStartLimit) {
-                // Cek role limit sebelum enable button
-                const roleLimitInfo = document.getElementById('roleLimitInfo');
-                if (!roleLimitInfo.classList.contains('limit-reached')) {
-                  startButton.disabled = false;
-                  startButton.classList.remove('disabled-btn');
-                  startButton.innerHTML = '<i class="fas fa-door-open"></i> Izin Keluar';
-                }
+                startButton.disabled = false;
+                startButton.classList.remove('disabled-btn');
+                startButton.innerHTML = '<i class="fas fa-door-open"></i> Izin Keluar';
             }
             return false;
         }
@@ -1882,10 +1697,6 @@
             const data = await response.json();
             if (data.hardStop && data.count >= maxStartLimit) isMaxLimitReached = true;
             else isMaxLimitReached = false;
-            
-            // Update role limit info juga
-            await updateRoleLimitInfo();
-            
             return data;
         } catch (error) {
             console.error('Error checking izin keluar limit:', error);
@@ -1914,13 +1725,9 @@
                 elements.normalDashboard.style.display = 'block';
                 elements.blockedDashboard.style.display = 'none';
                 if (!checkActiveRecord() && !isRestrictedTime() && todayStartCount < maxCount) {
-                    // Cek role limit sebelum enable button
-                    const roleLimitInfo = document.getElementById('roleLimitInfo');
-                    if (!roleLimitInfo.classList.contains('limit-reached')) {
-                      elements.startTimeButton.disabled = false;
-                      elements.startTimeButton.classList.remove('disabled-btn');
-                      elements.startTimeButton.innerHTML = '<i class="fas fa-door-open"></i> Izin Keluar';
-                    }
+                    elements.startTimeButton.disabled = false;
+                    elements.startTimeButton.classList.remove('disabled-btn');
+                    elements.startTimeButton.innerHTML = '<i class="fas fa-door-open"></i> Izin Keluar';
                 }
             }
             
@@ -2014,14 +1821,6 @@
       testConnection();
       setInterval(updateTimeRestriction, 30000);
       
-      // Update role limit info secara berkala
-      setInterval(async () => {
-          if (currentUser && !isBlocked) {
-              await updateRoleLimitInfo();
-          }
-      }, 30000); // Setiap 30 detik
-      
-      // Update start counter
       setInterval(async () => {
           if (currentUser && !isBlocked) {
               const limitData = await checkStartTimeLimit();
@@ -2109,12 +1908,6 @@
       elements.modalNewPassword.value = '';
       elements.modalConfirmPassword.value = '';
       
-      // Reset role limit info
-      elements.roleLimitInfo.classList.remove('active');
-      elements.roleLimitInfo.classList.remove('limit-reached');
-      elements.roleProgressFill.style.width = '0%';
-      elements.roleLimitText.textContent = '0/0';
-      
       elements.passwordChangeModal.style.display = 'none';
       elements.jobdeskError.style.display = 'none';
       elements.errorMessage.textContent = '';
@@ -2178,13 +1971,6 @@
         return;
       }
       
-      // Cek role limit sebelum izin keluar
-      const roleLimitInfo = document.getElementById('roleLimitInfo');
-      if (roleLimitInfo.classList.contains('limit-reached')) {
-        showPopup(`<div style="color:#ff4757;text-align:center;"><i class="fas fa-ban fa-2x"></i><br><strong>ROLE SUDAH PENUH!</strong><br>${document.getElementById('roleLimitMessage').textContent}</div>`, 5000);
-        return;
-      }
-      
       // Cek limit cepat di background, tapi UI tidak terblokir
       checkStartTimeLimit().then(limitCheck => {
         if (!limitCheck.success) {
@@ -2245,16 +2031,12 @@
           success: true, count: todayStartCount, remaining: maxStartLimit - todayStartCount,
           maxCount: maxStartLimit, hardStop: false
         });
-        
-        // 3. Update role limit info setelah izin keluar
-        await updateRoleLimitInfo();
-        
         startStatusPanelTimer();
 
-        // 4. Feedback Instan
+        // 3. Feedback Instan
         showPopup(`<div style="color:#ffd700;text-align:center;"><i class="fas fa-check-circle fa-2x"></i><br><strong>Izin Keluar Berhasil!</strong><br><small>Menyimpan ke server...</small></div>`, 3000);
 
-        // 5. Kirim ke Database di Background (Tanpa memblokir user)
+        // 4. Kirim ke Database di Background (Tanpa memblokir user)
         const databaseData = { sheetName: SHEET_NAMES.DATABASE, action: 'insert', data: attendanceData };
         writeToDatabaseSheet(databaseData).then(dbSuccess => {
           if (dbSuccess) {
@@ -2322,19 +2104,16 @@
         updateTimeButtonsUI(false);
         updateStatusPanel();
         
-        // 3. Update role limit info setelah kembali masuk
-        await updateRoleLimitInfo();
-        
-        // 4. Feedback Instan
+        // 3. Feedback Instan
         showPopup(`<div style="color:#ffd700;text-align:center;"><i class="fas fa-check-circle fa-2x"></i><br><strong>Kembali Masuk Berhasil!</strong><br><small>Durasi: ${durationHours}j ${durationMinutes}m ${durationSeconds}d</small><br>Menyimpan ke server...</small></div>`, 3000);
         
-        // 5. Update Limit di Background
+        // 4. Update Limit di Background
         setTimeout(async () => {
           const limitData = await checkStartTimeLimit();
           updateStartCounterUI(limitData);
         }, 500);
 
-        // 6. Kirim ke Database di Background
+        // 5. Kirim ke Database di Background
         const databaseData = { sheetName: SHEET_NAMES.DATABASE, action: 'update', data: records[activeRecordIndex] };
         writeToDatabaseSheet(databaseData).then(dbSuccess => {
            console.log(dbSuccess ? "Server sync successful" : "Saved locally");
@@ -2346,41 +2125,10 @@
       }
     }
 
-    function updateTimeButtonsUI(isActive) {
-      if (isActive) {
-        elements.startTimeButton.disabled = true;
-        elements.startTimeButton.style.opacity = '0.5';
-        elements.endTimeButton.disabled = false;
-        elements.endTimeButton.style.opacity = '1';
-        elements.startTimeButton.innerHTML = '<i class="fas fa-door-open"></i> Sedang Keluar';
-        elements.endTimeButton.innerHTML = '<i class="fas fa-sign-in-alt"></i> Kembali Masuk';
-      } else {
-        // Cek semua kondisi sebelum enable start button
-        const roleLimitInfo = document.getElementById('roleLimitInfo');
-        const isRoleLimited = roleLimitInfo.classList.contains('limit-reached');
-        
-        if (!isRestrictedTime() && 
-            !isRoleLimited && 
-            todayStartCount < maxStartLimit && 
-            !isBlocked) {
-          elements.startTimeButton.disabled = false;
-          elements.startTimeButton.style.opacity = '1';
-          elements.startTimeButton.innerHTML = '<i class="fas fa-door-open"></i> Izin Keluar';
-        }
-        elements.endTimeButton.disabled = true;
-        elements.endTimeButton.style.opacity = '0.5';
-        elements.endTimeButton.innerHTML = '<i class="fas fa-sign-in-alt"></i> Tidak Aktif';
-      }
-    }
-
     function startRealtimeUpdates() {
       console.log('Starting real-time updates...');
       elements.realtimeIndicator.style.display = 'flex';
-      realtimeUpdateInterval = setInterval(async () => { 
-        await checkForUpdates(); 
-        // Update role limit info secara real-time
-        if (currentUser) await updateRoleLimitInfo();
-      }, 10000);
+      realtimeUpdateInterval = setInterval(async () => { await checkForUpdates(); }, 10000);
       lastUpdateCheck = new Date().toISOString();
       console.log('Real-time updates started');
     }
@@ -2660,10 +2408,6 @@
         
         const limitData = await checkStartTimeLimit();
         updateStartCounterUI(limitData);
-        
-        // Update role limit info setelah login
-        await updateRoleLimitInfo();
-        
         startStatusPanelTimer();
         startRealtimeUpdates();
         
@@ -2724,10 +2468,6 @@
         await loadAccessSettings();
         await loadJobdeskOptions();
         updateTimeRestriction();
-        
-        // Update role limit info
-        await updateRoleLimitInfo();
-        
         elements.errorMessage.textContent = '';
         elements.ipWhitelistMessage.style.display = 'none';
         elements.jobdeskError.style.display = 'none';
@@ -2796,20 +2536,35 @@
       }
     }
 
-    function startBackgroundSlideshow(links) {
-      if (backgroundInterval) clearInterval(backgroundInterval);
-      
-      if (links && links.length > 0) {
-        let index = 0;
-        const body = document.body;
-        if (links[0]) body.style.backgroundImage = `url('${links[0]}')`;
-        
-        if (links.length > 1) {
-          backgroundInterval = setInterval(() => {
-            index = (index + 1) % links.length;
-            if (links[index]) body.style.backgroundImage = `url('${links[index]}')`;
-          }, 8000);
+    function startBackgroundSlideshow() {
+      if (backgroundImages.length <= 1) return;
+      setInterval(() => {
+        currentBackgroundIndex = (currentBackgroundIndex + 1) % backgroundImages.length;
+        elements.backgroundImage.classList.remove('active');
+        setTimeout(() => {
+          elements.backgroundImage.src = backgroundImages[currentBackgroundIndex];
+          setTimeout(() => { elements.backgroundImage.classList.add('active'); }, 100);
+        }, 1000);
+      }, 10000);
+    }
+
+    function updateTimeButtonsUI(isActive) {
+      if (isActive) {
+        elements.startTimeButton.disabled = true;
+        elements.startTimeButton.style.opacity = '0.5';
+        elements.endTimeButton.disabled = false;
+        elements.endTimeButton.style.opacity = '1';
+        elements.startTimeButton.innerHTML = '<i class="fas fa-door-open"></i> Sedang Keluar';
+        elements.endTimeButton.innerHTML = '<i class="fas fa-sign-in-alt"></i> Kembali Masuk';
+      } else {
+        if (!isRestrictedTime() && todayStartCount < maxStartLimit && !isBlocked) {
+          elements.startTimeButton.disabled = false;
+          elements.startTimeButton.style.opacity = '1';
+          elements.startTimeButton.innerHTML = '<i class="fas fa-door-open"></i> Izin Keluar';
         }
+        elements.endTimeButton.disabled = true;
+        elements.endTimeButton.style.opacity = '0.5';
+        elements.endTimeButton.innerHTML = '<i class="fas fa-sign-in-alt"></i> Tidak Aktif';
       }
     }
 
@@ -2894,8 +2649,6 @@
             setTimeout(async () => {
               const limitData = await checkStartTimeLimit();
               updateStartCounterUI(limitData);
-              // Update role limit info
-              await updateRoleLimitInfo();
             }, 500);
             console.log('Auto login successful with state restoration');
             return true;
@@ -3070,10 +2823,10 @@
       writeToDatabaseSheet, checkStartTimeLimit, updateStartCounterUI, isRestrictedTime,
       updateTimeRestriction, isBlocked, isMaxLimitReached, updateStatusPanel,
       showPasswordChangeModal, changePassword, toggleModalPassword,
-      showLoadingEffect, hideLoadingEffect, updateRoleLimitInfo
+      showLoadingEffect, hideLoadingEffect
     };
     
-    console.log('Time Tracker System Ready with Role Limit Feature!');
+    console.log('Time Tracker System Ready with Fireworks Only!');
   </script>
   <!-- Bootstrap JS for modal -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
@@ -3227,3 +2980,4 @@ document.addEventListener('selectstart', function(e) {
 });
 </script>
 </html>
+ 
