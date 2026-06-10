@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
-<title>Jadwal Shift | Mobile Friendly</title>
+<title>Jadwal Shift | Linetogel</title>
 
 <style>
 /* ========== RESET & TEMA MODERN ========== */
@@ -18,6 +18,25 @@ body {
   background: #f4f7fc;
   padding: 20px 16px;
   color: #1e2a3e;
+}
+
+/* HEADER UTAMA - hanya judul, tanpa subjudul */
+.main-header {
+  text-align: center;
+  margin-bottom: 24px;
+  background: linear-gradient(135deg, #1a4b6e 0%, #2c7da0 100%);
+  padding: 16px 12px;
+  border-radius: 28px;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
+}
+
+.main-header h1 {
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  color: white;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+  margin: 0;
 }
 
 /* navigasi */
@@ -129,23 +148,15 @@ body {
   letter-spacing: 0.3px;
 }
 
+/* JAM KERJA: HITAM, PUTIH TEBAL */
 .jam-block {
   text-align: center;
   font-size: 15px;
-  font-weight: 600;
+  font-weight: 700;
   padding: 12px;
-  background: #f8fafc;
-  border-bottom: 1px solid #eef2f6;
-}
-
-.jam-pagi {
-  background-color: #e3f5e9;
-  color: #1c6e3f;
-}
-
-.jam-malam {
-  background-color: #e2eaf1;
-  color: #1e506e;
+  background-color: #000000 !important;
+  color: #ffffff !important;
+  border-bottom: 1px solid #333;
 }
 
 .offday-card {
@@ -179,7 +190,7 @@ body {
   font-size: 14px;
 }
 
-/* role styling soft */
+/* role styling */
 .role-csline { background-color: #2c5282; }
 .role-cs { background-color: #4299c1; color: #0f2c3b; text-shadow: none; }
 .role-kks { background-color: #805ad5; }
@@ -194,10 +205,13 @@ body {
   font-size: 14px;
 }
 
-/* responsive: jika layar sangat kecil (<480px) pastikan gap tetap rapi */
+/* responsive */
 @media (max-width: 550px) {
   body {
     padding: 12px;
+  }
+  .main-header h1 {
+    font-size: 18px;
   }
   .wrapper-grid {
     gap: 12px;
@@ -229,7 +243,6 @@ body {
   }
 }
 
-/* desktop tetap enak dilihat */
 @media (min-width: 800px) {
   .wrapper-grid {
     gap: 24px;
@@ -242,6 +255,11 @@ body {
 </head>
 
 <body>
+
+<!-- HEADER TANPA SUB JUDUL "Pagi | Malam | Offday" -->
+<div class="main-header">
+  <h1>📋 JADWAL SHIFT LINETOGEL</h1>
+</div>
 
 <div id="app">⏳ Memuat jadwal...</div>
 
@@ -306,11 +324,10 @@ function formatDateIndonesia(dateObj) {
 }
 
 // global data
-let masterTanggalList = [];     // { dateObj, colIndex }
-let masterStaffRows = [];       // { nama, role, shiftsByCol: {} }
+let masterTanggalList = [];
+let masterStaffRows = [];
 let currentIndex = -1;
 
-// role class helper
 function roleClass(role) {
   if (role === "CS LINE") return "role-csline";
   if (role === "CS") return "role-cs";
@@ -319,7 +336,6 @@ function roleClass(role) {
   return "";
 }
 
-// RENDER ULANG dengan GRID (PAGI & MALAM bersebelahan, OFFDAY di bawah melintang)
 function renderByCurrentIndex() {
   if (!masterTanggalList.length || currentIndex < 0 || currentIndex >= masterTanggalList.length) {
     document.getElementById("app").innerHTML = `<div style="background:#fff3cd; padding:16px; border-radius:20px;">⚠️ Data tanggal tidak valid.</div>`;
@@ -331,7 +347,6 @@ function renderByCurrentIndex() {
   const colIndex = target.colIndex;
   const tanggalFormatted = formatDateIndonesia(dateObj);
   
-  // kumpulkan data shift
   const data = { PAGI: [], MALAM: [], OFFDAY: [] };
   for (let staff of masterStaffRows) {
     const shiftRaw = staff.shiftsByCol[colIndex] || "";
@@ -340,12 +355,10 @@ function renderByCurrentIndex() {
       data[shift].push({ nama: staff.nama, role: staff.role });
     }
   }
-  // urutkan berdasarkan roleOrder
   Object.keys(data).forEach(shift => {
     data[shift].sort((a, b) => roleOrder.indexOf(a.role) - roleOrder.indexOf(b.role));
   });
   
-  // fungsi render list nama
   const renderNameList = (list) => {
     if (!list.length) return `<div class="empty-state">— Tidak ada staff —</div>`;
     return list.map(item => `<div class="name-item ${roleClass(item.role)}">${item.nama}</div>`).join('');
@@ -360,25 +373,18 @@ function renderByCurrentIndex() {
     </div>
     <div class="date-box">
       <div class="date-title">📅 ${tanggalFormatted}</div>
-      
-      <!-- GRID: PAGI dan MALAM bersebelahan -->
       <div class="wrapper-grid">
-        <!-- SHIFT PAGI -->
         <div class="shift-card">
           <div class="shift-header">🌅 SHIFT PAGI</div>
-          <div class="jam-block jam-pagi">07:45 - 19:45</div>
+          <div class="jam-block">07:45 - 19:45</div>
           <div class="name-list">${renderNameList(data.PAGI)}</div>
         </div>
-        
-        <!-- SHIFT MALAM -->
         <div class="shift-card">
           <div class="shift-header">🌙 SHIFT MALAM</div>
-          <div class="jam-block jam-malam">19:45 - 07:45</div>
+          <div class="jam-block">19:45 - 07:45</div>
           <div class="name-list">${renderNameList(data.MALAM)}</div>
         </div>
       </div>
-      
-      <!-- OFFDAY (full width di bawah) -->
       <div class="shift-card offday-card">
         <div class="offday-header">🚫 OFFDAY / LIBUR</div>
         <div class="name-list">${renderNameList(data.OFFDAY)}</div>
@@ -388,7 +394,6 @@ function renderByCurrentIndex() {
   
   document.getElementById("app").innerHTML = html;
   
-  // attach events
   const prevBtn = document.getElementById("prevBtn");
   const nextBtn = document.getElementById("nextBtn");
   const todayBtn = document.getElementById("todayBtn");
@@ -424,22 +429,18 @@ function goToToday() {
     currentIndex = foundIdx;
     renderByCurrentIndex();
   } else {
-    // fallback terdekat
     let closestIdx = 0;
     let minDiff = Math.abs(masterTanggalList[0].dateObj - todayDate);
     for (let i = 1; i < masterTanggalList.length; i++) {
       const diff = Math.abs(masterTanggalList[i].dateObj - todayDate);
-      if (diff < minDiff) {
-        minDiff = diff;
-        closestIdx = i;
-      }
+      if (diff < minDiff) { minDiff = diff; closestIdx = i; }
     }
     currentIndex = closestIdx;
     renderByCurrentIndex();
   }
 }
 
-// ------------------ FETCH & PROSES DATA ------------------
+// FETCH DATA
 fetch(url)
   .then(res => res.text())
   .then(text => {
@@ -456,7 +457,6 @@ fetch(url)
       return String(value).trim();
     }
     
-    // 1. cari baris tanggal
     let tanggalRowIndex = -1;
     for (let r = 0; r <= Math.min(4, rows.length-1); r++) {
       let found = false;
@@ -474,7 +474,6 @@ fetch(url)
       return;
     }
     
-    // 2. cari baris staf pertama
     let startRow = 5;
     for (let r = 3; r <= 40; r++) {
       const namaTest = getCell(r, 1);
@@ -493,7 +492,6 @@ fetch(url)
       }
     }
     
-    // 3. kumpulkan semua tanggal kolom E-AB (index 4-27)
     const tanggalList = [];
     for (let col = 4; col <= 27; col++) {
       const raw = getCell(tanggalRowIndex, col);
@@ -510,7 +508,6 @@ fetch(url)
     }
     masterTanggalList = tanggalList;
     
-    // 4. baca data staff (nama, role, shift per kolom)
     const staffData = [];
     for (let row = startRow; row <= endRow; row++) {
       const nama = getCell(row, 1);
@@ -524,7 +521,6 @@ fetch(url)
     }
     masterStaffRows = staffData;
     
-    // 5. tentukan index default (hari ini)
     const today = getTodayLocalDate();
     let defaultIdx = 0;
     let found = false;
